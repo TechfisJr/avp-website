@@ -73,9 +73,9 @@ sequence.
 
 ### S10 · THERMAL UPGRADING (t 0.70-0.765)
 
-Conventional wood pellets enter a controlled thermal environment. Phase 1 still
-uses the old packaging visual slot; phase 2 must rebuild this as a thermal
-chamber, kiln, or reactor entrance.
+Conventional wood pellets enter a controlled thermal environment. The visual
+slot now reads as a thermal tunnel/chamber, with heat, containment and
+instrumentation replacing the old packaging emphasis.
 **Camera:** low controlled-entry angle, moving toward heat and instrumentation.
 
 ### S11 · TORREFACTION (t 0.765-0.825)
@@ -108,15 +108,16 @@ message resolve together.
 
 ---
 
-## Phase 2 visual rebuild notes
+## Completed late-stage rebuild notes
 
-The following stations currently have target copy but legacy visuals:
+The following legacy station ids remain for import stability, but their visuals
+now carry the target AVP Wood Pellet story:
 
-| Station | Target role | Phase 2 need |
+| Station id | Target role | Current visual direction |
 |---|---|---|
-| S10 packaging | Thermal Upgrading | Replace bag-filling scene with controlled thermal environment |
-| S11 warehouse | Torrefaction | Replace storage aisle with reactor/treatment chamber |
-| S12 logistics | Value Creation | Replace shipping emphasis with technology-to-value logic |
-| S13 energy | Black Wood Pellet | Restage furnace into upgraded product hero |
-| S14 circular | Advanced Bioenergy | Reframe final loop as higher-value bioenergy close |
-
+| S09 qc | Value Upgrading | Product selection and technology handoff gate |
+| S10 packaging | Thermal Upgrading | Controlled heat tunnel/chamber |
+| S11 warehouse | Torrefaction | Sealed reactor/treatment chamber |
+| S12 logistics | Value Creation | White pellet -> technology core -> black pellet |
+| S13 energy | Black Wood Pellet | Upgraded product hero |
+| S14 circular | Advanced Bioenergy | Premium value ladder and final brand close |

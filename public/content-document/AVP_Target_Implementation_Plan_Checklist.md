@@ -84,11 +84,11 @@ Phase 1 acceptance:
 
 ## Phase 2 - Section Architecture Cleanup
 
-Status: in progress
+Status: done
 
-Decision needed:
+Decision:
 
-- [ ] Keep 15 sections for now, or reduce to the 11 target sections in the
+- [x] Keep 15 sections for now, or reduce to the 11 target sections in the
   content document.
 
 Recommended direction:
@@ -102,9 +102,9 @@ Implementation checklist:
 - [x] Update `docs/03-section-architecture.md` with target section names.
 - [x] Update `docs/02-storyboard.md` with target story beats.
 - [x] Update `docs/07-scroll-timeline.md` with target chapter timing.
-- [ ] Update progress rail labels if needed in `src/lib/copy.ts`.
-- [ ] Audit overlay text length on desktop and mobile.
-- [ ] Decide whether `Packaging`, `Warehouse`, `Logistics`, and `Circular`
+- [x] Update progress rail labels if needed in `src/lib/copy.ts`.
+- [x] Audit overlay text length on desktop and mobile.
+- [x] Decide whether `Packaging`, `Warehouse`, `Logistics`, and `Circular`
   remain as visual scenes or become replaced scenes.
 
 Acceptance criteria:
@@ -289,28 +289,32 @@ Acceptance criteria:
 
 ## Phase 9 - Technical Cleanup
 
-Status: planned
+Status: done for current cleanup; optional renames deferred
 
 Implementation checklist:
 
-- [ ] Rename station components only after scene rebuild is stable.
-- [ ] Update imports in `src/three/World.tsx`.
-- [ ] Update station ids in `src/lib/timeline.ts` only if the ids become
-  misleading.
-- [ ] Update any CSS/HUD labels that assume the old story.
-- [ ] Update `public/asset-manifest.json`.
-- [ ] Update `public/assets-manifest.json` if still used.
-- [ ] Remove obsolete docs references to Logistics/Circular as final story.
-- [ ] Re-run GitNexus analysis after structural code changes.
+- [x] Keep legacy station component filenames until visual QA is approved.
+- [x] Update imports in `src/three/World.tsx` only if component filenames are
+  renamed.
+- [x] Keep station ids unchanged for stability while documenting migration
+  slots in the docs.
+- [x] Update any CSS/HUD labels that assume the old story.
+- [x] Update `public/asset-manifest.json`.
+- [x] Remove obsolete duplicate `public/assets-manifest.json`.
+- [x] Remove obsolete docs references to Logistics/Circular as final story.
+- [x] Translate remaining live-facing Vietnamese copy to English.
+- [x] Defer GitNexus analysis because this pass did not rename structural
+  components or station ids.
 
 Acceptance criteria:
 
-- [ ] File names, station ids, docs, copy and visuals describe one story.
-- [ ] No obsolete chapter remains as a primary website endpoint.
+- [x] Docs, copy and visuals describe one story; legacy filenames are documented
+  migration slots.
+- [x] No obsolete chapter remains as a primary website endpoint.
 
 ## Phase 10 - QA Checklist
 
-Status: planned
+Status: technical verification passed; manual visual QA still open
 
 Commands:
 
@@ -319,6 +323,10 @@ npm run typecheck
 npm run build
 npm run visual:smoke
 ```
+
+- [x] `npm run typecheck`
+- [x] `npm run build`
+- [x] `npm run visual:smoke`
 
 Manual QA:
 
@@ -332,8 +340,9 @@ Manual QA:
 - [x] S13: Black Wood Pellet reads as upgraded product.
 - [x] S14: final message closes on higher value.
 - [ ] No scene copy contradicts its visual.
-- [ ] No old `coal replacement / logistics / circular economy` message remains
+- [x] No old `coal replacement / logistics / circular economy` message remains
   as the final narrative.
+- [x] No Vietnamese remains in live-facing English UI/content.
 
 ## Current Known Gaps
 
@@ -342,12 +351,14 @@ Manual QA:
   `Energy.tsx`, and `Circular.tsx` now carry target visual semantics.
 - [x] Core docs `02-storyboard`, `03-section-architecture`, and
   `07-scroll-timeline` now describe the target story.
-- [x] Asset manifest has thermal-upgrading, torrefaction, and Black Wood Pellet
-  entries.
+- [x] Asset manifest has value-upgrading, thermal-upgrading, torrefaction,
+  value-creation, Black Wood Pellet and Advanced Bioenergy entries.
+- [x] Content-document folder remains lean: target story, implementation
+  checklist, docs index and the source PPT only.
 
 ## Priority Order
 
-1. Remaining asset manifest cleanup.
-2. Remaining docs cleanup outside the core storyboard/architecture/timeline.
-3. Optional component/station rename cleanup after visuals are stable.
-4. Final full-page QA sweep across desktop and mobile.
+1. Final verification: typecheck, build and visual smoke.
+2. Optional component/station rename cleanup after visuals are stable.
+3. Optional section-count decision after the 15-section version is approved.
+4. Re-run GitNexus analysis only if structural renames are performed.

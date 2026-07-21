@@ -17,7 +17,7 @@ export default function SpecComparison() {
 
   const metrics: SpecMetric[] = [
     {
-      name: "Net Calorific Value (Nhiệt lượng tịnh)",
+      name: "Net Calorific Value",
       unit: "kcal/kg",
       whiteVal: 4500,
       blackVal: 5200,
@@ -26,7 +26,7 @@ export default function SpecComparison() {
       maxVal: 6000,
     },
     {
-      name: "Moisture Content (Độ ẩm)",
+      name: "Moisture Content",
       unit: "%",
       whiteVal: 8, // lower is better, but bar represents dryness or value
       blackVal: 1.5,
@@ -35,7 +35,7 @@ export default function SpecComparison() {
       maxVal: 10,
     },
     {
-      name: "Bulk Density (Mật độ khối)",
+      name: "Bulk Density",
       unit: "kg/m³",
       whiteVal: 650,
       blackVal: 730,
@@ -44,7 +44,7 @@ export default function SpecComparison() {
       maxVal: 800,
     },
     {
-      name: "Outdoor Storage (Chống nước)",
+      name: "Outdoor Storage",
       unit: "",
       whiteVal: 10, // Representation value
       blackVal: 100,

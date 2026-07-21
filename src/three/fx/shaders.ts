@@ -173,7 +173,7 @@ export const PELLET_FRAG = /* glsl */ `
     torrefied += spec * vec3(1.0, 0.72, 0.42) * 1.35;
     col = mix(col, torrefied, clamp(uChar * 1.25, 0.0, 1.0));
 
-    // circular-economy green rim
+    // legacy green accent, kept at zero in the target higher-value narrative
     col += uGreen * fres * vec3(0.45, 0.85, 0.5) * 1.2;
     col = mix(col, col + vec3(0.1, 0.3, 0.14), uGreen * 0.25);
 

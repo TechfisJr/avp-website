@@ -25,22 +25,22 @@ The target narrative is defined by:
 
 ## Current implementation status
 
-Phase 1 is already applied in code:
+The target narrative is now applied in code:
 
 - Live copy updated in `src/lib/copy.ts`
 - Metadata updated in `src/app/layout.tsx`
 - No-WebGL fallback updated in `src/components/NoWebGL.tsx`
+- Late-stage visuals rebuilt for Value Upgrading, Thermal Upgrading,
+  Torrefaction, Value Creation, Black Wood Pellet and Advanced Bioenergy
+- Asset inventory consolidated to `public/asset-manifest.json`
 
 Next implementation priority:
 
-1. Rebuild Torrefaction scene.
-2. Rebuild Black Wood Pellet product hero.
-3. Rebuild Thermal Upgrading controlled environment.
-4. Reframe Value Upgrading transition.
-5. Reframe final Advanced Bioenergy close.
+1. Finish technical/docs cleanup and remove obsolete references.
+2. Run full QA: typecheck, build and visual smoke.
+3. Decide later whether to rename legacy station filenames after QA is stable.
 
 ## Cleanup rule
 
 Keep `content-document` lean. Do not add separate migration notes unless they
 contain decisions that are not already captured in the checklist.
-

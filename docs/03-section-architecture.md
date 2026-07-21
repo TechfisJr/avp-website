@@ -30,7 +30,7 @@ TO HIGHER VALUE
 | 11 | warehouse | TORREFACTION | The technology behind the transformation. | Heat changes structure |
 | 12 | logistics | VALUE CREATION | The pellet is not merely darkened. | White pellet → technology → black pellet |
 | 13 | energy | BLACK WOOD PELLET | Biomass. Upgraded. | The result of the second transformation |
-| 14 | circular | ADVANCED BIOENERGY | We create more value from it. | Wood → pellet → higher value |
+| 14 | circular | ADVANCED BIOENERGY | From wood. To pellet. To higher value. | Wood → pelletization → Black Wood Pellet |
 
 ## Chapter grouping
 
@@ -50,9 +50,9 @@ TO HIGHER VALUE
   left/right thirds. Mobile remains bottom-third, center-aligned.
 - **Persistent HUD:** progress rail, wordmark, CTA, scroll cue and QC scan ring
   still use the existing overlay component.
-- **Phase 2 note:** late-stage station ids still use old component names
-  (`Packaging`, `Warehouse`, `Logistics`, `Energy`, `Circular`) until their
-  visuals are rebuilt.
+- **Migration note:** late-stage station ids still use old component names
+  (`Packaging`, `Warehouse`, `Logistics`, `Energy`, `Circular`) for import
+  stability, but their visuals now carry the target chapters.
 
 ## Component tree
 
@@ -73,7 +73,6 @@ app/page.tsx
 
 ## Cleanup rule
 
-Do not rename station ids until visual rebuilds are stable. During phase 2,
-the copy can describe the target chapter while the component name remains the
-legacy implementation slot.
-
+Do not rename station ids until visual rebuilds are stable and QA remains
+green. For now, copy, timeline and visuals describe the target story while a
+few component filenames remain legacy implementation slots.

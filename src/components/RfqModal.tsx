@@ -78,7 +78,7 @@ export default function RfqModal({ isOpen, onClose }: RfqModalProps) {
           <form onSubmit={handleSubmit} className="rfq-form">
             <h2 className="rfq-title">
               Request B2B Specification & Quote
-              <span className="rfq-subtitle">Yêu cầu thông số kỹ thuật & Báo giá</span>
+              <span className="rfq-subtitle">Submit your specifications and details for a quick quote</span>
             </h2>
             
             <div className="rfq-grid">
@@ -137,9 +137,9 @@ export default function RfqModal({ isOpen, onClose }: RfqModalProps) {
                   value={formData.product}
                   onChange={(e) => setFormData({ ...formData, product: e.target.value })}
                 >
-                  <option value="white-pellet">White Wood Pellet (Premium Keo)</option>
+                  <option value="white-pellet">White Wood Pellet (Premium Acacia)</option>
                   <option value="black-pellet">Black Torrefied Wood Pellet (High Energy)</option>
-                  <option value="both">Both Products (Cả hai loại)</option>
+                  <option value="both">Both Products (White & Black Pellets)</option>
                 </select>
               </div>
 
@@ -178,7 +178,7 @@ export default function RfqModal({ isOpen, onClose }: RfqModalProps) {
             </div>
 
             <button type="submit" className="rfq-submit-btn">
-              <span>Send Request / Gửi yêu cầu</span>
+              <span>Send Inquiry</span>
               <div className="rfq-submit-glow" />
             </button>
           </form>
@@ -189,10 +189,6 @@ export default function RfqModal({ isOpen, onClose }: RfqModalProps) {
             <p className="rfq-success-msg">
               Your inquiry has been successfully transmitted to the AVP Biomass export department. 
               We will contact you within 24 business hours with details and spec sheets.
-            </p>
-            <p className="rfq-success-msg-vi">
-              Yêu cầu đã được gửi đến bộ phận xuất khẩu của AVP Biomass. 
-              Chúng tôi sẽ liên hệ lại với bạn trong vòng 24 giờ làm việc.
             </p>
             <button className="rfq-success-btn" onClick={resetForm}>
               Close Window

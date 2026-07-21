@@ -31,12 +31,12 @@
 | Conditioning | vortex curl strength, steam jet length |
 | Pelletizing | die rotation, strand extrusion scale 0→1, pellet rain rate, ember glow |
 | Cooling | color temp lerp amber→teal, shimmer amplitude→0, steam→0 |
-| QC | scan ring sweep angle 0→360°, HUD values count in |
-| Packaging | bag fill level 0→1, pellet waterfall rate, scale ticker |
-| Warehouse | aisle lights sequence on, forklift beacon sweep |
-| Logistics | route arcs draw 0→1, ship position along lane, horizon curve |
-| Energy | furnace core intensity, ember rise rate, pellet feed stream |
-| Circular | ember→leaf color morph, ring formation radius, palette→forest |
+| Value Upgrading | scan-selection ring pulse, value arcs draw in, pellet handoff warms |
+| Thermal Upgrading | conveyor run, heater-ring pulse, chamber glow and controlled-atmosphere particles |
+| Torrefaction | reactor heat pulse, pellet color/material shift, sealed-treatment particles |
+| Value Creation | white-to-black value-flow arcs, technology-core pulse, comparison score bars |
+| Black Wood Pellet | product halo, black pellet cluster shimmer, premium value particles |
+| Advanced Bioenergy | value ladder reveal, Black Wood Pellet proof halo, final brand-close particles |
 
 ## Transitions between stations (the connective tissue)
 Departing particles inherit velocity toward the next station’s world position;

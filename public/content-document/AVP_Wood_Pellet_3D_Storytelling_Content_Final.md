@@ -20,10 +20,6 @@ Key message:
 
 > Nature provides the resource. Technology creates the value.
 
-Tiếng Việt:
-
-> Thiên nhiên tạo ra nguồn nguyên liệu. Công nghệ tạo ra giá trị.
-
 ---
 
 ## 02 — RAW WOOD
@@ -32,12 +28,12 @@ Tiếng Việt:
 
 > Selected wood resources enter the production journey.
 
-Nội dung chính:
+Core content:
 
 - Acacia
 - Wood resources
-- Wood residues, nếu phù hợp với thực tế AVP
-- Nguồn nguyên liệu đầu vào
+- Wood residues, if aligned with AVP's actual sourcing model
+- Incoming raw material resources
 
 Flow:
 

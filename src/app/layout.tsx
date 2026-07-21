@@ -14,7 +14,7 @@ const grotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Trang chủ - An Việt Phát Group | AVP Biomass",
+  title: "Home - An Viet Phat Group | AVP Biomass",
   description:
     "A cinematic journey from responsibly sourced biomass through pelletization, value upgrading, torrefaction and black wood pellet production.",
   icons: {
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     apple: "/icons/avp-logo-full.png",
   },
   openGraph: {
-    title: "Trang chủ - An Việt Phát Group | AVP Biomass",
+    title: "Home - An Viet Phat Group | AVP Biomass",
     description:
       "From natural wood resources to pelletization, thermal upgrading and higher-value advanced bioenergy.",
     type: "website",

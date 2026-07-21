@@ -143,14 +143,13 @@ export default function Overlay() {
       <div className="hud-header-bar" />
       
       <div className="hud" aria-hidden="true">
-        <a className="brand" href="#top" aria-label="An Việt Phát Group">
-          <img src="/icons/avp-logo-full.png" alt="An Việt Phát" className="w-auto object-contain" />
+        <a className="brand" href="#top" aria-label="An Viet Phat Group">
+          <img src="/icons/avp-logo-full.png" alt="An Viet Phat" className="w-auto object-contain" />
         </a>
         
         <button 
           className="cta" 
           onClick={() => setIsRfqOpen(true)}
-          style={{ background: "transparent", cursor: "pointer" }}
         >
           Request specification
         </button>

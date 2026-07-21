@@ -19,7 +19,7 @@ at runtime. Rationale:
 - **Hero pellet (H/C):** `CapsuleGeometry(0.5, 1.6)` + custom `ShaderMaterial`;
   triplanar wood-fiber noise (fbm), radial extrusion striations, `uPhase`
   uniform morphs albedo/roughness raw-bark → fiber → compressed → ember-hot →
-  cooled product. One asset, reused in S00, S07–S10, S13, S14.
+  torrefied product. One asset, reused in S00 and the transformation beats.
 - **Pellet mass (H/C):** `InstancedMesh` capsules — cooler bed 3,000 (desktop)
   / 900 (mobile); streams use the shared GPU particle engine with capsule
   sprites. Per-instance hue jitter via `instanceColor`.
@@ -45,18 +45,26 @@ PBR materials + a `Frame`, `Hopper`, `Duct`, `Guard` primitive kit. Machines:
 - **Counterflow cooler:** glass-walled bin (transmission material) over a
   discharge grid, pellet bed inside.
 - **Conveyors (H):** parameterized belt module (rails, rollers, scrolling
-  UV-striped belt shader) reused in S07–S10.
-- **Jumbo bags:** rounded-box lathe with displaced cloth noise, strap loops,
-  woven-poly sheen; instanced in warehouse.
-- **Truck / ship / plant:** stylized silhouette meshes (boxes + lathes) —
-  intentionally graphic at distance, carried by lighting and particles.
+  UV-striped belt shader) reused across pelletizing, cooling and upgrading.
+- **Value upgrading gate:** selection ring, completed pellet bed, technology
+  handoff portal and warm value-flow arcs.
+- **Thermal upgrading chamber:** sealed entry conveyor, transparent preheat
+  tunnel, heater rings, rotating airlock door and instrumentation panel.
+- **Torrefaction chamber:** sealed reactor tube, heater rings, controlled
+  atmosphere and pellet-gradient material change.
+- **Value creation bridge:** pale pellet cluster, torrefaction core, black
+  pellet cluster and comparative value markers.
+- **Black Wood Pellet product hero:** premium plinth, darker dense-pellet
+  material state, comparison ghost and thermal proof halo.
+- **Advanced bioenergy close:** value ladder from wood to pellet to higher
+  value, Black Wood Pellet proof point and final brand-close arcs.
 
 ### Effects (all C, one shared engine)
 `fx/ParticleField` — a single BufferGeometry points system with per-use config
 {count, spawn volume, velocity field, curl strength, size, color ramp, opacity
 over life, gravity}. Instances: spores, dust motes, chip rain, sawdust burst,
-steam, smoke plume, sparks, ember rise, leaf motes, route arcs use
-`TubeGeometry` + dash shader instead.
+steam, controlled-atmosphere haze, heat motes, ember rise and value particles.
+Value arcs use `TubeGeometry` + dash shader instead.
 
 ### SVG/UI (F)
 Wordmark, progress-rail ticks, scroll cue, QC scan-ring, section eyebrow tick,
@@ -66,5 +74,6 @@ noise/grain overlay (SVG turbulence) — authored in `public/icons/`.
 If photoreal models are later commissioned: export GLB → `gltf-transform`
 Draco + Meshopt + KTX2; drop into `/public/models`; each station component
 accepts a `model` prop that swaps the procedural group for the GLB while
-keeping animation hooks. Photography/video (D/E) slots exist for warehouse
-and plant b-roll as background plates on mobile’s reduced mode.
+keeping animation hooks. Photography/video (D/E) slots should support source,
+process and product proof only; packaging/logistics plates are no longer part
+of the primary target narrative.

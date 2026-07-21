@@ -11,14 +11,13 @@ global t     0.000                                                        1.000
              ├─S00──┬─S01──┬─S02──┬─S03──┬─S04──┬─S05──┬─S06──┬─S07──┬─S08──┬─S09──┬─S10──┬─S11──┬─S12──┬─S13──┬─S14──┤
 chapter      hero   origin origin prep   prep   prep   prep   pellet pellet value  thermal torre  value  black  advanced
 target beat  thesis forest raw    chips  part.  dry    ready  form   product shift  upgrade faction create pellet bioenergy
-camera       push   dolly  sweep  tilt   push   track  orbit  reveal topdwn macro  lowang aisle* crane* approach pullback
-visual note  live   live   live   live   live   live   live   live   live   partial rebuild rebuild rebuild partial partial
+camera       push   dolly  sweep  tilt   push   track  orbit  reveal topdwn macro  chamber reactor bridge product pullback
+visual note  live   live   live   live   live   live   live   live   live   rebuilt rebuilt rebuilt rebuilt rebuilt rebuilt
 local beats  .2 arrive → .8 hold(scrub) → 1.0 depart      (every station)
 ```
 
-`*` Camera labels on S10-S12 describe the current implementation slots. They
-should be revised after the Thermal Upgrading, Torrefaction and Value Creation
-visual rebuilds.
+Late-stage camera labels describe the target rebuilt scenes while component
+filenames remain legacy migration slots.
 
 ## Numeric windows
 
@@ -56,9 +55,8 @@ Lenis (lerp .09, syncTouch)
   → DOM overlay reads the same store in a rAF for reveal windows
 ```
 
-## Phase 2 timing guidance
+## Timing guidance
 
-Do not change `N`, `SECTION_VH` or station ids until the target late-stage
-visuals are rebuilt. After the rebuild, revisit whether S10-S14 should stay as
-five separate beats or collapse closer to the 11-section target document.
-
+Do not change `N`, `SECTION_VH` or station ids during the current cleanup.
+After full QA, revisit whether S10-S14 should stay as five separate beats or
+collapse closer to the 11-section target document.
