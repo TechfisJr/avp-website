@@ -115,7 +115,7 @@ Acceptance criteria:
 
 ## Phase 3 - Visual Rebuild: Value Upgrading
 
-Status: done
+Status: planned
 
 Current temporary station:
 
@@ -154,24 +154,24 @@ Target role:
 
 Implementation checklist:
 
-- [ ] Replace or heavily restage packaging visuals.
-- [ ] Create a controlled chamber, kiln, reactor entrance, or thermal tunnel.
-- [ ] Show conventional wood pellets entering a controlled heat environment.
-- [ ] Use heat, containment, and instrumentation instead of bag filling.
-- [ ] Add readable thermal control cues: temperature band, sealed chamber,
+- [x] Replace or heavily restage packaging visuals.
+- [x] Create a controlled chamber, kiln, reactor entrance, or thermal tunnel.
+- [x] Show conventional wood pellets entering a controlled heat environment.
+- [x] Use heat, containment, and instrumentation instead of bag filling.
+- [x] Add readable thermal control cues: temperature band, sealed chamber,
   controlled atmosphere.
-- [ ] Update `src/three/stations/Packaging.tsx`, or create a new station file
+- [x] Update `src/three/stations/Packaging.tsx`, or create a new station file
   and swap import in `src/three/World.tsx`.
-- [ ] Update asset manifest for thermal-upgrading scene assets.
+- [x] Update asset manifest for thermal-upgrading scene assets.
 
 Acceptance criteria:
 
-- [ ] Scene reads as controlled thermal upgrading, not packaging.
-- [ ] Heat feels precise and technological, not combustion.
+- [x] Scene reads as controlled thermal upgrading, not packaging.
+- [x] Heat feels precise and technological, not combustion.
 
 ## Phase 5 - Visual Rebuild: Torrefaction
 
-Status: planned
+Status: done
 
 Current temporary station:
 
@@ -230,7 +230,7 @@ Acceptance criteria:
 
 ## Phase 7 - Visual Rebuild: Black Wood Pellet
 
-Status: planned
+Status: done
 
 Current temporary station:
 
@@ -326,7 +326,7 @@ Manual QA:
 - [ ] Mobile hero: headline wraps cleanly.
 - [ ] S01-S08: first transformation reads as wood-to-pellet.
 - [ ] S09: chapter shift to Value Upgrading is clear.
-- [ ] S10: Thermal Upgrading reads as controlled heat.
+- [x] S10: Thermal Upgrading reads as controlled heat.
 - [x] S11: Torrefaction reads as material transformation.
 - [ ] S12: Value Creation explains higher value.
 - [x] S13: Black Wood Pellet reads as upgraded product.
@@ -338,16 +338,17 @@ Manual QA:
 ## Current Known Gaps
 
 - [ ] Late-stage visuals still need rebuild after phase 1 copy migration.
-- [ ] `Packaging.tsx`, `Logistics.tsx`, and `Circular.tsx` still carry old
+- [ ] `QualityControl.tsx`, `Logistics.tsx`, and `Circular.tsx` still carry old
   visual semantics.
 - [x] Core docs `02-storyboard`, `03-section-architecture`, and
   `07-scroll-timeline` now describe the target story.
-- [ ] Asset manifest still needs thermal-upgrading entries.
+- [x] Asset manifest has thermal-upgrading, torrefaction, and Black Wood Pellet
+  entries.
 
 ## Priority Order
 
-1. Thermal Upgrading controlled environment.
-2. Value Upgrading transition.
+1. Value Upgrading transition.
+2. Value Creation bridge.
 3. Final Advanced Bioenergy close.
-4. Asset manifest cleanup.
+4. Remaining asset manifest cleanup.
 5. Remaining docs cleanup outside the core storyboard/architecture/timeline.

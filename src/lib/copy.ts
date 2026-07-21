@@ -4,6 +4,7 @@ export type SectionCopy = {
   headline: string[]; // one entry per masked line
   body?: string;
   data?: string;
+  tags?: string[]; // optional badge chips shown on content card
   align: "left" | "right" | "center";
 };
 
@@ -13,6 +14,7 @@ export const COPY: SectionCopy[] = [
     eyebrow: "AVP Biomass",
     headline: ["From wood.", "To pellet.", "To higher value."],
     body: "A journey that begins with natural biomass and evolves through technology into advanced bioenergy.",
+    tags: ["2M Tons / Year", "Green Energy", "Global Export"],
     align: "center",
   },
   {
@@ -21,6 +23,7 @@ export const COPY: SectionCopy[] = [
     headline: ["It begins", "with nature."],
     body: "Renewable energy begins with responsibly sourced biomass.",
     data: "Forest → renewable biomass",
+    tags: ["FSC 100% Certified", "Plantation Wood"],
     align: "left",
   },
   {
@@ -29,6 +32,7 @@ export const COPY: SectionCopy[] = [
     headline: ["The raw", "material."],
     body: "Selected wood resources enter the production journey.",
     data: "Acacia · wood resources · residues",
+    tags: ["100% Acacia", "Clean Source"],
     align: "right",
   },
   {
@@ -37,6 +41,7 @@ export const COPY: SectionCopy[] = [
     headline: ["Reducing size.", "Preparing material."],
     body: "Wood is reduced into consistent chips, preparing the material for further processing.",
     data: "Raw wood → chipping → wood chips",
+    tags: ["Industrial Chipping", "Uniform Size"],
     align: "left",
   },
   {
@@ -45,6 +50,7 @@ export const COPY: SectionCopy[] = [
     headline: ["Refined", "for consistency."],
     body: "The biomass is further refined into smaller and more uniform particles.",
     data: "Wood chips → grinding → particles",
+    tags: ["Hammer Mill", "2–4mm Particles"],
     align: "right",
   },
   {
@@ -53,6 +59,7 @@ export const COPY: SectionCopy[] = [
     headline: ["Moisture", "under control."],
     body: "Controlled drying prepares the biomass for efficient densification.",
     data: "Wet biomass → drying → dry biomass",
+    tags: ["Rotary Drum Dryer", "Moisture < 10%"],
     align: "left",
   },
   {
@@ -61,6 +68,7 @@ export const COPY: SectionCopy[] = [
     headline: ["Precision begins", "before pelletization."],
     body: "The material is conditioned for a stable transformation under pressure.",
     data: "Prepared biomass · ready for densification",
+    tags: ["Steam Conditioning", "Natural Lignin"],
     align: "right",
   },
   {
@@ -69,6 +77,7 @@ export const COPY: SectionCopy[] = [
     headline: ["Pressure", "creates form."],
     body: "Under controlled pressure, prepared biomass is transformed into a compact and consistent solid fuel.",
     data: "Compression → densification → pellet",
+    tags: ["CPM Industrial Mill", "4,500 kcal/kg"],
     align: "left",
   },
   {
@@ -77,6 +86,7 @@ export const COPY: SectionCopy[] = [
     headline: ["Renewable energy.", "Densified."],
     body: "Natural biomass is transformed into a compact, consistent and transportable renewable fuel.",
     data: "The result of the first transformation",
+    tags: ["Durability > 97.5%", "Diameter 6–8mm"],
     align: "right",
   },
   {
@@ -85,6 +95,7 @@ export const COPY: SectionCopy[] = [
     headline: ["More than", "a transformation."],
     body: "The journey continues beyond conventional wood pellets into a new layer of value.",
     data: "Product → technology → higher value",
+    tags: ["ISO 9001", "SGS / Intertek Tested"],
     align: "left",
   },
   {
@@ -93,6 +104,7 @@ export const COPY: SectionCopy[] = [
     headline: ["Upgrading what", "biomass can become."],
     body: "Conventional wood pellets enter a carefully controlled thermal environment.",
     data: "Wood pellet → controlled heat",
+    tags: ["Jumbo Bag 800kg", "Bulk Vessel Export"],
     align: "right",
   },
   {
@@ -101,6 +113,7 @@ export const COPY: SectionCopy[] = [
     headline: ["The technology behind", "the transformation."],
     body: "Through controlled thermal treatment, the internal characteristics of biomass begin to change.",
     data: "Heat changes structure",
+    tags: ["250–300°C Treatment", "100% Hydrophobic"],
     align: "left",
   },
   {
@@ -109,6 +122,7 @@ export const COPY: SectionCopy[] = [
     headline: ["The pellet is not", "merely darkened."],
     body: "Technology transforms an established biomass product into a higher-value energy material.",
     data: "White pellet → technology → black pellet",
+    tags: ["Coal Substitute", "CO2 Reduction"],
     align: "right",
   },
   {
@@ -117,6 +131,7 @@ export const COPY: SectionCopy[] = [
     headline: ["Biomass.", "Upgraded."],
     body: "The result of manufacturing plus technology: a new generation of solid bioenergy.",
     data: "The result of the second transformation",
+    tags: ["> 5,000 kcal/kg", "Outdoor Storage"],
     align: "left",
   },
   {
@@ -125,6 +140,7 @@ export const COPY: SectionCopy[] = [
     headline: ["We create", "more value from it."],
     body: "From natural resources to pelletization, then through technology into a higher-value energy product.",
     data: "Wood → pellet → higher value",
+    tags: ["An Việt Phát Group", "Global 24/7 Supply"],
     align: "center",
   },
 ];
