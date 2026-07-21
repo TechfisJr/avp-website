@@ -58,6 +58,9 @@ PBR materials + a `Frame`, `Hopper`, `Duct`, `Guard` primitive kit. Machines:
   material state, comparison ghost and thermal proof halo.
 - **Advanced bioenergy close:** value ladder from wood to pellet to higher
   value, Black Wood Pellet proof point and final brand-close arcs.
+- **Material flow bridges:** world-space transition objects in
+  `src/three/bridges/`, mounted outside station groups and visible only during
+  camera travel windows.
 
 ### Effects (all C, one shared engine)
 `fx/ParticleField` — a single BufferGeometry points system with per-use config

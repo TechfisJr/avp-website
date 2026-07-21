@@ -344,6 +344,48 @@ Manual QA:
   as the final narrative.
 - [x] No Vietnamese remains in live-facing English UI/content.
 
+## Phase 11 - Material Flow Continuity
+
+Status: phase 1 implemented; expansion deferred pending visual review
+
+Approach:
+
+- [x] Use Approach B: transition objects that travel between stations.
+- [x] Keep bridges outside station groups so objects can move in world space.
+- [x] Use global scroll windows instead of clamped `stationLocal()` values, so
+  bridges cannot remain visible after their transition ends.
+- [x] Avoid adding `handoffExit` / `handoffEnter` fields to `timeline.ts` until
+  the visual language is approved.
+
+Phase 1 implemented bridges:
+
+- [x] `ForestToCollection`: organic log travels from source forest into Raw
+  Wood.
+- [x] `PelletizingToCooling`: hot extruded pellet cluster cools into the Wood
+  Pellet milestone.
+- [x] `TorrefactionToValueCreation`: Black Wood Pellet cluster carries the
+  torrefaction result into Value Creation.
+
+Deferred bridges:
+
+- [ ] Raw Wood -> Wood Chips.
+- [ ] Wood Chips -> Wood Particles.
+- [ ] Wood Particles -> Dry Biomass.
+- [ ] Dry Biomass -> Preparation.
+- [ ] Preparation -> Pelletizing.
+- [ ] Wood Pellet -> Value Upgrading.
+- [ ] Value Upgrading -> Thermal Upgrading.
+- [ ] Thermal Upgrading -> Torrefaction.
+- [ ] Value Creation -> Black Wood Pellet.
+- [ ] Black Wood Pellet -> Advanced Bioenergy.
+
+Acceptance criteria:
+
+- [ ] Bridges add continuity without competing with the main station visuals.
+- [ ] Bridges do not cover overlay text on desktop or mobile.
+- [ ] Only the bridge for the current travel window is visible.
+- [ ] Bridge objects disappear before the destination dwell scene takes over.
+
 ## Current Known Gaps
 
 - [x] Late-stage visuals have been rebuilt after phase 1 copy migration.
@@ -353,12 +395,14 @@ Manual QA:
   `07-scroll-timeline` now describe the target story.
 - [x] Asset manifest has value-upgrading, thermal-upgrading, torrefaction,
   value-creation, Black Wood Pellet and Advanced Bioenergy entries.
+- [x] Asset manifest includes the phase-1 Material Flow Continuity bridge
+  system and three live bridge assets.
 - [x] Content-document folder remains lean: target story, implementation
   checklist, docs index and the source PPT only.
 
 ## Priority Order
 
-1. Final verification: typecheck, build and visual smoke.
-2. Optional component/station rename cleanup after visuals are stable.
-3. Optional section-count decision after the 15-section version is approved.
-4. Re-run GitNexus analysis only if structural renames are performed.
+1. Visual-review the three phase-1 bridge moments.
+2. Expand remaining bridges only after the phase-1 visual language is approved.
+3. Optional component/station rename cleanup after visuals are stable.
+4. Optional section-count decision after the 15-section version is approved.

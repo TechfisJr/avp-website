@@ -142,6 +142,30 @@ export function createPelletMaterial(overrides: Params = {}) {
   return m;
 }
 
+export function createHotPelletMaterial(overrides: Params = {}) {
+  return createPelletMaterial({
+    color: "#b96b24",
+    emissive: "#ff6a22",
+    emissiveIntensity: 1.2,
+    roughness: 0.58,
+    metalness: 0.02,
+    envMapIntensity: 0.22,
+    ...overrides,
+  });
+}
+
+export function createBlackPelletMaterial(overrides: Params = {}) {
+  return createPelletMaterial({
+    color: "#17110c",
+    emissive: "#6a3518",
+    emissiveIntensity: 0.12,
+    roughness: 0.64,
+    metalness: 0.04,
+    envMapIntensity: 0.24,
+    ...overrides,
+  });
+}
+
 export function createMetalMaterial(overrides: Params = {}, variation: Partial<VariationOpts> = {}) {
   const m = new THREE.MeshStandardMaterial({
     color: "#6b7078",

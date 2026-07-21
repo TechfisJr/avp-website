@@ -19,6 +19,9 @@ import Warehouse from "./stations/Warehouse";
 import Logistics from "./stations/Logistics";
 import Energy from "./stations/Energy";
 import Circular from "./stations/Circular";
+import ForestToCollection from "./bridges/ForestToCollection";
+import PelletizingToCooling from "./bridges/PelletizingToCooling";
+import TorrefactionToValueCreation from "./bridges/TorrefactionToValueCreation";
 
 export default function World({ quality }: { quality: Quality }) {
   const q = quality;
@@ -42,6 +45,9 @@ export default function World({ quality }: { quality: Quality }) {
       <Logistics quality={q} />
       <Energy quality={q} />
       <Circular quality={q} />
+      <ForestToCollection />
+      <PelletizingToCooling />
+      <TorrefactionToValueCreation />
     </>
   );
 }
