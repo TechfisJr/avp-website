@@ -200,7 +200,7 @@ export function PelletBed({
   }, [instanceCount, area]);
   return (
     <instancedMesh ref={inst} args={[undefined, undefined, instanceCount]} material={M.pellet} {...props}>
-      <capsuleGeometry args={[0.035, 0.1, 3, 8]} />
+      <cylinderGeometry args={[0.035, 0.035, 0.15, 8, 1, false]} />
     </instancedMesh>
   );
 }

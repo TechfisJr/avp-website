@@ -91,7 +91,7 @@ function UpgradePelletStream({ count = 72 }: { count?: number }) {
 
   return (
     <instancedMesh ref={inst} args={[undefined, undefined, slots.length]} material={warmPelletMat}>
-      <capsuleGeometry args={[0.04, 0.12, 3, 8]} />
+      <cylinderGeometry args={[0.04, 0.04, 0.18, 8, 1, false]} />
     </instancedMesh>
   );
 }

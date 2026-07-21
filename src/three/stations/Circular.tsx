@@ -88,7 +88,7 @@ function BlackPelletCluster({ count = 120 }: { count?: number }) {
 
   return (
     <instancedMesh ref={inst} args={[undefined, undefined, slots.length]} material={blackPelletMat}>
-      <capsuleGeometry args={[0.045, 0.15, 3, 8]} />
+      <cylinderGeometry args={[0.045, 0.045, 0.22, 8, 1, false]} />
     </instancedMesh>
   );
 }

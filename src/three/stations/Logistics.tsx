@@ -103,7 +103,7 @@ function PelletCluster({
 
   return (
     <instancedMesh ref={inst} args={[undefined, undefined, slots.length]} material={dark ? blackPelletMat : whitePelletMat}>
-      <capsuleGeometry args={[0.04, 0.13, 3, 8]} />
+      <cylinderGeometry args={[0.04, 0.04, 0.2, 8, 1, false]} />
     </instancedMesh>
   );
 }

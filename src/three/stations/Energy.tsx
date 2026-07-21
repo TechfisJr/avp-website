@@ -85,7 +85,7 @@ function BlackPelletCluster({ count = 72 }: { count?: number }) {
 
   return (
     <instancedMesh ref={inst} args={[undefined, undefined, slots.length]} material={blackPelletMat}>
-      <capsuleGeometry args={[0.045, 0.15, 3, 8]} />
+      <cylinderGeometry args={[0.045, 0.045, 0.22, 8, 1, false]} />
     </instancedMesh>
   );
 }
@@ -154,16 +154,16 @@ export default function Energy({ quality }: { quality: Quality }) {
         <mesh material={M.steel}>
           <cylinderGeometry args={[0.82, 0.92, 0.18, 28]} />
         </mesh>
-        <mesh position={[0, 0.34, 0]} rotation={[Math.PI / 2, 0.2, 0.1]} material={palePelletMat}>
-          <capsuleGeometry args={[0.16, 0.62, 8, 18]} />
+        <mesh position={[0, 0.48, 0]} rotation={[Math.PI / 2, 0.2, 0.1]} material={palePelletMat}>
+          <cylinderGeometry args={[0.16, 0.16, 0.9, 12, 1, false]} />
         </mesh>
       </group>
       <group position={[-2.75, 1.18, -1.1]} rotation={[0, 0.08, 0]}>
         <mesh material={M.steel}>
           <cylinderGeometry args={[0.82, 0.92, 0.18, 28]} />
         </mesh>
-        <mesh position={[0, 0.34, 0]} rotation={[Math.PI / 2, -0.2, -0.12]} material={blackPelletMat}>
-          <capsuleGeometry args={[0.16, 0.62, 8, 18]} />
+        <mesh position={[0, 0.48, 0]} rotation={[Math.PI / 2, -0.2, -0.12]} material={blackPelletMat}>
+          <cylinderGeometry args={[0.16, 0.16, 0.9, 12, 1, false]} />
         </mesh>
       </group>
 

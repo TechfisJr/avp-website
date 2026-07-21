@@ -95,7 +95,7 @@ function TorrefactionPellets({ count = 96 }: { count?: number }) {
 
   return (
     <instancedMesh ref={inst} args={[undefined, undefined, slots.length]} material={palePelletMat}>
-      <capsuleGeometry args={[0.045, 0.14, 3, 8]} />
+      <cylinderGeometry args={[0.045, 0.045, 0.22, 8, 1, false]} />
     </instancedMesh>
   );
 }

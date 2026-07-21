@@ -88,15 +88,58 @@ export function createBarkMaterial(overrides: Params = {}, variation: Partial<Va
   return withSurfaceVariation(m, { scale: 3.2, roughVar: 0.3, colorVar: 0.16, ...variation });
 }
 
-export function createPelletMaterial(overrides: Params = {}, variation: Partial<VariationOpts> = {}) {
+export function createPelletMaterial(overrides: Params = {}) {
   const m = new THREE.MeshStandardMaterial({
-    color: "#9c6a33",
-    roughness: 0.72,
-    metalness: 0.03,
-    envMapIntensity: 0.2,
+    color: "#a47846",
+    roughness: 0.78,
+    metalness: 0.02,
+    envMapIntensity: 0.16,
     ...overrides,
   });
-  return withSurfaceVariation(m, { scale: 14, roughVar: 0.18, colorVar: 0.12, ...variation });
+  m.onBeforeCompile = (shader) => {
+    shader.vertexShader = shader.vertexShader
+      .replace("#include <common>", `#include <common>\nvarying vec3 vObjPos;`)
+      .replace("#include <begin_vertex>", `#include <begin_vertex>\nvObjPos = transformed;`);
+    shader.fragmentShader = shader.fragmentShader
+      .replace("#include <common>", `#include <common>\nvarying vec3 vObjPos;\n${HASH_GLSL}`)
+      .replace(
+        "#include <color_fragment>",
+        `#include <color_fragment>
+        {
+          // Extrusion fiber noise (stretched along Y axis)
+          vec3 pExt = vObjPos * vec3(50.0, 5.0, 50.0);
+          float fibers = pbrHash(pExt);
+          
+          // Extrusion compression rings along Y axis
+          float rings = sin(vObjPos.y * 65.0 + pbrHash(vec3(0.0, floor(vObjPos.y * 65.0), 0.0)) * 4.0);
+          float ringSoft = smoothstep(-0.35, 0.65, rings);
+          
+          // Combine fibers and compression rings
+          float surface = mix(fibers, ringSoft, 0.4);
+          
+          // Speckled wood particles
+          float speckle = step(0.93, pbrHash(vObjPos * 140.0));
+          
+          // Apply wood color variations
+          diffuseColor.rgb *= (0.82 + 0.32 * surface);
+          diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * 0.52, speckle * 0.65);
+          
+          #ifdef USE_INSTANCING_COLOR
+            diffuseColor.rgb *= vColor.rgb;
+          #endif
+        }`
+      )
+      .replace(
+        "#include <roughnessmap_fragment>",
+        `#include <roughnessmap_fragment>
+        {
+          // Compression rings are rougher, sheared surfaces are slightly glossier
+          float ringRough = sin(vObjPos.y * 65.0);
+          roughnessFactor = clamp(roughnessFactor + (ringRough - 0.5) * 0.16, 0.45, 0.95);
+        }`
+      );
+  };
+  return m;
 }
 
 export function createMetalMaterial(overrides: Params = {}, variation: Partial<VariationOpts> = {}) {
