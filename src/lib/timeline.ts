@@ -28,7 +28,7 @@ export type StationDef = {
   /** which of the 6 global lighting presets this station's rig is built from */
   preset: PresetName;
   // hero pellet staging (camera space offset; scale 0 hides it)
-  hero: { off: V3; scale: number; heat: number; green: number };
+  hero: { off: V3; scale: number; heat: number; green: number; char: number };
 };
 
 const base = (i: number): V3 => [Math.sin(i * 0.85) * 18, 0, -i * SPACING];
@@ -39,21 +39,21 @@ const add = (a: V3, b: V3): V3 => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 type Row = [string, V3, V3, string, string, number, number, PresetName, StationDef["hero"]];
 
 const ROWS: Row[] = [
-  ["hero",        [0, 2, 0],   [0, 2.2, 5],    "#090806", PALETTE.amber, 2.8, 0.022, "heroProduct", { off: [0, 0, -3.4],  scale: 1,   heat: 0.02, green: 0 }],
-  ["forest",      [0, 4, 0],   [7, 2, 12],     "#111b12", "#c9e3a5",     2.2, 0.036, "forest",      { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0 }],
-  ["collection",  [0, 1.5, 0], [9, 3, 10],     "#16110a", PALETTE.amber, 2.3, 0.026, "warmBiomass", { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0 }],
-  ["screening",   [0, 2.5, 0], [1, 8, 10],     "#121315", "#e4d6b4",     2.1, 0.022, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0 }],
-  ["grinding",    [0, 2, 0],   [8, 2.5, 9],    "#15100c", PALETTE.amber, 2.6, 0.022, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0 }],
-  ["drying",      [0, 2.5, 0], [11, 3.5, 7],   "#170f08", "#e8b46b",     2.6, 0.024, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0 }],
-  ["conditioning",[0, 3, 0],   [-9, 3.5, 9],   "#15100a", "#e0b984",     2.3, 0.026, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0.4,  green: 0 }],
-  ["pelletizing", [0, 2.5, 0], [0, 2.8, 8],    "#180c08", PALETTE.ember, 3.0, 0.024, "industrial",  { off: [1.3, -0.5, -3.6], scale: 0.42, heat: 0.95, green: 0 }],
-  ["cooling",     [0, 1.5, 0], [0.5, 9, 7],    "#0d1518", PALETTE.frost, 2.0, 0.023, "industrial",  { off: [0.9, 0, -3.2],scale: 1,   heat: 0.25, green: 0 }],
-  ["qc",          [0, 2, 0],   [0, 2.4, 5],    "#0d1518", PALETTE.frost, 2.2, 0.02,  "industrial",  { off: [0, 0, -2.6],  scale: 1,   heat: 0,    green: 0 }],
-  ["packaging",   [0, 2, 0],   [5, 1.6, 8],    "#12100d", "#e0d4bd",     2.1, 0.021, "warehouse",   { off: [1.4, -0.3, -4], scale: 0.9, heat: 0,  green: 0 }],
-  ["warehouse",   [0, 2.5, 0], [0, 2.6, 15],   "#101114", "#d2dce5",     1.9, 0.024, "warehouse",   { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0 }],
-  ["logistics",   [0, 0, 0],   [2, 13, 27],    "#09111b", "#9ec3dd",     1.8, 0.014, "logistics",   { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0 }],
-  ["energy",      [0, 4, 0],   [1, 3.5, 13],   "#170b06", PALETTE.ember, 3.1, 0.022, "industrial",  { off: [0, -0.1, -3], scale: 1,   heat: 1,    green: 0 }],
-  ["circular",    [0, 2.2, 0], [0, 2.4, 10],   "#0a160d", PALETTE.moss,  2.4, 0.024, "forest",      { off: [0, 0, -3.2],  scale: 0.9, heat: 0.1,  green: 0.85 }],
+  ["hero",        [0, 2, 0],   [0, 2.2, 5],    "#090806", PALETTE.amber, 2.8, 0.022, "heroProduct", { off: [0, 0, -3.4],  scale: 1,   heat: 0.02, green: 0,    char: 0 }],
+  ["forest",      [0, 4, 0],   [7, 2, 12],     "#111b12", "#c9e3a5",     2.2, 0.036, "forest",      { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
+  ["collection",  [0, 1.5, 0], [9, 3, 10],     "#16110a", PALETTE.amber, 2.3, 0.026, "warmBiomass", { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
+  ["screening",   [0, 2.5, 0], [1, 8, 10],     "#121315", "#e4d6b4",     2.1, 0.022, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
+  ["grinding",    [0, 2, 0],   [8, 2.5, 9],    "#15100c", PALETTE.amber, 2.6, 0.022, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
+  ["drying",      [0, 2.5, 0], [11, 3.5, 7],   "#170f08", "#e8b46b",     2.6, 0.024, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
+  ["conditioning",[0, 3, 0],   [-9, 3.5, 9],   "#15100a", "#e0b984",     2.3, 0.026, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0.4,  green: 0,    char: 0 }],
+  ["pelletizing", [0, 2.5, 0], [0, 2.8, 8],    "#180c08", PALETTE.ember, 3.0, 0.024, "industrial",  { off: [1.3, -0.5, -3.6], scale: 0.42, heat: 0.95, green: 0, char: 0 }],
+  ["cooling",     [0, 1.5, 0], [0.5, 9, 7],    "#0d1518", PALETTE.frost, 2.0, 0.023, "industrial",  { off: [0.9, 0, -3.2],scale: 1,   heat: 0.25, green: 0, char: 0 }],
+  ["qc",          [0, 2, 0],   [0, 2.4, 5],    "#0d1518", PALETTE.frost, 2.2, 0.02,  "industrial",  { off: [0, 0, -2.6],  scale: 1,   heat: 0,    green: 0,    char: 0 }],
+  ["packaging",   [0, 2, 0],   [5, 1.6, 8],    "#12100d", "#e0d4bd",     2.1, 0.021, "warehouse",   { off: [1.4, -0.3, -4], scale: 0.9, heat: 0.18, green: 0, char: 0.1 }],
+  ["warehouse",   [0, 2.5, 0], [0, 2.6, 15],   "#150b06", PALETTE.ember, 2.8, 0.023, "industrial",  { off: [1.9, -0.85, -5.1], scale: 0.24, heat: 0.32, green: 0, char: 1 }],
+  ["logistics",   [0, 0, 0],   [2, 13, 27],    "#09111b", "#9ec3dd",     1.8, 0.014, "logistics",   { off: [1.15, -0.35, -4.1], scale: 0.52, heat: 0.25, green: 0, char: 1 }],
+  ["energy",      [0, 4, 0],   [1, 3.5, 13],   "#170b06", PALETTE.ember, 3.1, 0.022, "industrial",  { off: [0, -0.1, -3], scale: 1,   heat: 0.55, green: 0,    char: 1 }],
+  ["circular",    [0, 2.2, 0], [0, 2.4, 10],   "#0a160d", PALETTE.moss,  2.4, 0.024, "forest",      { off: [0, 0, -3.2],  scale: 0.9, heat: 0.1,  green: 0.35, char: 1 }],
 ];
 
 export const STATIONS: StationDef[] = ROWS.map((r, i) => {

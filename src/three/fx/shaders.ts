@@ -121,7 +121,7 @@ export const PELLET_FRAG = /* glsl */ `
   varying vec3 vP;
   varying vec3 vW;
   varying vec3 vColor;
-  uniform float uTime, uHeat, uGreen, uDissolve;
+  uniform float uTime, uHeat, uGreen, uChar, uDissolve;
   uniform vec3 uLightDir;
   ${NOISE}
   void main() {
@@ -145,6 +145,9 @@ export const PELLET_FRAG = /* glsl */ `
     wood *= 0.86 + 0.26 * sideFiber;
     wood *= 1.0 - pores * 0.18;
     wood += cap * vec3(0.08, 0.055, 0.025);
+    vec3 charWood = mix(vec3(0.12, 0.085, 0.055), vec3(0.035, 0.028, 0.022), fineGroove);
+    charWood += cap * vec3(0.035, 0.027, 0.018);
+    wood = mix(wood, charWood, uChar);
 
     vec3 V = normalize(cameraPosition - vW);
     vec3 L = normalize(uLightDir);
@@ -152,17 +155,23 @@ export const PELLET_FRAG = /* glsl */ `
     float halfLambert = pow(diff * 0.5 + 0.5, 1.7);
     float fill = clamp(dot(N, normalize(vec3(-0.7, 0.35, 0.55))) * 0.5 + 0.5, 0.0, 1.0);
     float fres = pow(1.0 - clamp(dot(N, V), 0.0, 1.0), 2.2);
-    float spec = pow(max(0.0, dot(reflect(-L, N), V)), 38.0) * 0.08 * (1.0 - pores * 0.6);
+    float spec = pow(max(0.0, dot(reflect(-L, N), V)), 38.0) * (0.08 + uChar * 0.12) * (1.0 - pores * 0.6);
 
     vec3 col = wood * (0.22 + halfLambert * vec3(1.0, 0.96, 0.88) * 1.02 + fill * 0.3);
-    col += fres * vec3(1.0, 0.78, 0.46) * 0.42;
+    col += fres * mix(vec3(1.0, 0.78, 0.46), vec3(0.9, 0.62, 0.34), uChar) * (0.42 + uChar * 0.18);
     col += spec * vec3(1.0, 0.82, 0.52);
 
     // ember heat from within
     float pulse = 0.75 + 0.25 * sin(uTime * 2.2 + vP.y * 4.0);
     vec3 ember = vec3(1.0, 0.42, 0.12) * (sideFiber * 1.4 + 0.3);
-    col = mix(col, ember, uHeat * pulse * 0.85);
+    col = mix(col, ember, uHeat * pulse * 0.65 * (1.0 - uChar * 0.45));
     col += uHeat * fres * vec3(1.0, 0.5, 0.15) * 0.8;
+
+    // torrefaction: darker carbonized body with retained dense-product sheen.
+    vec3 torrefied = col * 0.12 + vec3(0.014, 0.011, 0.009);
+    torrefied += fres * vec3(0.36, 0.23, 0.13) * 0.42;
+    torrefied += spec * vec3(1.0, 0.72, 0.42) * 1.35;
+    col = mix(col, torrefied, clamp(uChar * 1.25, 0.0, 1.0));
 
     // circular-economy green rim
     col += uGreen * fres * vec3(0.45, 0.85, 0.5) * 1.2;

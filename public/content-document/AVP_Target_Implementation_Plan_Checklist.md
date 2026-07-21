@@ -115,7 +115,7 @@ Acceptance criteria:
 
 ## Phase 3 - Visual Rebuild: Value Upgrading
 
-Status: planned
+Status: done
 
 Current temporary station:
 
@@ -183,22 +183,23 @@ Target role:
 
 Implementation checklist:
 
-- [ ] Replace warehouse aisle visuals.
-- [ ] Build torrefaction reactor or treatment chamber.
-- [ ] Show pellet color and surface changing because material changes.
-- [ ] Add oxygen-limited / sealed-treatment feeling through chamber design.
-- [ ] Add internal transformation shader state for the hero pellet.
-- [ ] Add copy-aligned visual beat:
+- [x] Replace warehouse aisle visuals.
+- [x] Build torrefaction reactor or treatment chamber.
+- [x] Show pellet color and surface changing because material changes.
+- [x] Add oxygen-limited / sealed-treatment feeling through chamber design.
+- [x] Add internal transformation shader state for the hero pellet.
+- [x] Add copy-aligned visual beat:
   `This is not simply a change in color. It is a change in the material.`
-- [ ] Update `src/three/stations/Warehouse.tsx`, or create a new station file.
-- [ ] Update `src/three/HeroPellet.tsx` shader uniforms if required.
-- [ ] Update `src/three/fx/shaders.ts` if a dedicated transformation shader is
+- [x] Update `src/three/stations/Warehouse.tsx`, or create a new station file.
+- [x] Update `src/three/HeroPellet.tsx` shader uniforms if required.
+- [x] Update `src/three/fx/shaders.ts` if a dedicated transformation shader is
   needed.
+- [x] Update `public/asset-manifest.json` with the torrefaction chamber entry.
 
 Acceptance criteria:
 
-- [ ] The viewer can see white pellet becoming black pellet.
-- [ ] The scene communicates material transformation, not smoke/dirt/burning.
+- [x] The viewer can see white pellet becoming black pellet.
+- [x] The scene communicates material transformation, not smoke/dirt/burning.
 
 ## Phase 6 - Visual Rebuild: Value Creation
 
@@ -325,7 +326,7 @@ Manual QA:
 - [ ] S01-S08: first transformation reads as wood-to-pellet.
 - [ ] S09: chapter shift to Value Upgrading is clear.
 - [ ] S10: Thermal Upgrading reads as controlled heat.
-- [ ] S11: Torrefaction reads as material transformation.
+- [x] S11: Torrefaction reads as material transformation.
 - [ ] S12: Value Creation explains higher value.
 - [ ] S13: Black Wood Pellet reads as upgraded product.
 - [ ] S14: final message closes on higher value.
@@ -336,19 +337,17 @@ Manual QA:
 ## Current Known Gaps
 
 - [ ] Late-stage visuals still need rebuild after phase 1 copy migration.
-- [ ] `Packaging.tsx`, `Warehouse.tsx`, `Logistics.tsx`, `Energy.tsx`, and
-  `Circular.tsx` still carry old visual semantics.
+- [ ] `Packaging.tsx`, `Logistics.tsx`, `Energy.tsx`, and `Circular.tsx` still
+  carry old visual semantics.
 - [x] Core docs `02-storyboard`, `03-section-architecture`, and
   `07-scroll-timeline` now describe the target story.
-- [ ] Asset manifest still needs thermal-upgrading, torrefaction and black
-  pellet entries.
+- [ ] Asset manifest still needs thermal-upgrading and black pellet entries.
 
 ## Priority Order
 
-1. Torrefaction scene.
-2. Black Wood Pellet product hero.
-3. Thermal Upgrading controlled environment.
-4. Value Upgrading transition.
-5. Final Advanced Bioenergy close.
-6. Asset manifest cleanup.
-7. Remaining docs cleanup outside the core storyboard/architecture/timeline.
+1. Black Wood Pellet product hero.
+2. Thermal Upgrading controlled environment.
+3. Value Upgrading transition.
+4. Final Advanced Bioenergy close.
+5. Asset manifest cleanup.
+6. Remaining docs cleanup outside the core storyboard/architecture/timeline.

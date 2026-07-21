@@ -5,8 +5,9 @@ import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { STATIONS, bell, smooth } from "@/lib/timeline";
 import type { Quality } from "@/lib/quality";
+import ParticleField from "../fx/ParticleField";
+import { Conveyor } from "../kit/machines";
 import { useStation } from "../useStation";
-import { JumboBag } from "../kit/machines";
 import { M } from "../kit/industrial";
 
 const I = 11;
@@ -14,149 +15,240 @@ const S = STATIONS[I];
 const O = new THREE.Object3D();
 const C = new THREE.Color();
 
-const stripMat = new THREE.MeshStandardMaterial({
-  color: "#0d0e10",
-  emissive: "#c9d4dd",
-  emissiveIntensity: 0,
+const RING_X = [-5, -3, -1, 1, 3, 5];
+
+const chamberGlass = new THREE.MeshPhysicalMaterial({
+  color: "#5b3a24",
+  transparent: true,
+  opacity: 0.22,
+  roughness: 0.22,
+  metalness: 0,
+  transmission: 0.22,
+  thickness: 0.45,
+  envMapIntensity: 0.45,
+  side: THREE.DoubleSide,
 });
 
-const STRIP_Z = [6, 0, -6, -12];
+const heaterMat = new THREE.MeshStandardMaterial({
+  color: "#2a1308",
+  emissive: "#e85d26",
+  emissiveIntensity: 0.25,
+  metalness: 0.35,
+  roughness: 0.45,
+});
 
-/** Cheap instanced FIBC silhouette for the rack rows — a simplified lathe
- *  barrel (rounded base, full belly, slouched top), not a placeholder cube.
- *  Material variation (createFabricMaterial) plus per-instance tint carries
- *  the surface detail at this distance/count. */
-function buildRackBagGeometry() {
-  const profile = [
-    new THREE.Vector2(0.03, 0),
-    new THREE.Vector2(0.42, 0.05),
-    new THREE.Vector2(0.56, 0.25),
-    new THREE.Vector2(0.6, 0.55),
-    new THREE.Vector2(0.58, 0.85),
-    new THREE.Vector2(0.46, 1.06),
-    new THREE.Vector2(0.26, 1.17),
-    new THREE.Vector2(0.03, 1.2),
-  ];
-  return new THREE.LatheGeometry(profile, 12);
-}
+const processGlowMat = new THREE.MeshBasicMaterial({
+  color: "#ff7a22",
+  transparent: true,
+  opacity: 0.12,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+});
 
-/** S11 — warehouse: one-point-perspective rack aisle, real bag silhouettes,
- *  sequenced practicals with matching light pools, closed hall volume. */
-export default function Warehouse({ quality }: { quality: Quality }) {
-  const { group, state } = useStation(I);
-  const frames = useRef<THREE.InstancedMesh>(null);
-  const bags = useRef<THREE.InstancedMesh>(null);
-  const beacon = useRef<THREE.PointLight>(null);
-  const stripLights = useRef<THREE.PointLight[]>([]);
+const palePelletMat = new THREE.MeshStandardMaterial({
+  color: "#a97638",
+  roughness: 0.78,
+  metalness: 0.02,
+  vertexColors: true,
+});
 
-  const bagGeometry = useMemo(() => buildRackBagGeometry(), []);
-
-  const BAYS = 6;
-  const FRAME_COUNT = BAYS * 2 * 2; // per side: 2 uprights per bay
-  const BAG_COUNT = BAYS * 2 * 3 * 2; // bays × sides × levels × 2 bags
+function TorrefactionPellets({ count = 96 }: { count?: number }) {
+  const inst = useRef<THREE.InstancedMesh>(null);
+  const slots = useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => {
+        const p = i / Math.max(1, count - 1);
+        return {
+          p,
+          x: -5.1 + p * 10.2 + (Math.random() - 0.5) * 0.18,
+          y: (Math.random() - 0.5) * 0.54,
+          z: (Math.random() - 0.5) * 0.54,
+          r: [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI] as [
+            number,
+            number,
+            number,
+          ],
+          s: 0.9 + Math.random() * 0.28,
+        };
+      }),
+    [count]
+  );
 
   useLayoutEffect(() => {
-    if (!frames.current || !bags.current) return;
-    let fi = 0;
-    let bi = 0;
-    for (let side = -1; side <= 1; side += 2) {
-      for (let bay = 0; bay < BAYS; bay++) {
-        const z = 8 - bay * 4.2;
-        for (const dz of [-1.9, 1.9]) {
-          O.position.set(side * 4.6, 3, z + dz);
-          O.rotation.set(0, 0, 0);
-          O.scale.set(0.22, 6, 0.22);
-          O.updateMatrix();
-          frames.current.setMatrixAt(fi++, O.matrix);
-        }
-        for (let level = 0; level < 3; level++) {
-          for (const dz of [-0.95, 0.95]) {
-            O.position.set(side * 4.6, 0.4 + level * 1.9, z + dz);
-            O.rotation.set(0, Math.random() * Math.PI * 2, 0);
-            const s = 0.92 + Math.random() * 0.16;
-            O.scale.set(s, s * (0.85 + Math.random() * 0.2), s);
-            O.updateMatrix();
-            bags.current.setMatrixAt(bi++, O.matrix);
-            const l = 0.82 + Math.random() * 0.14;
-            C.setRGB(l, l * 0.98, l * 0.94);
-            bags.current.setColorAt(bi - 1, C);
-          }
-        }
-      }
-    }
-    frames.current.instanceMatrix.needsUpdate = true;
-    bags.current.instanceMatrix.needsUpdate = true;
-    if (bags.current.instanceColor) bags.current.instanceColor.needsUpdate = true;
-  }, []);
+    if (!inst.current) return;
+    slots.forEach((slot, i) => {
+      O.position.set(slot.x, slot.y, slot.z);
+      O.rotation.set(slot.r[0], slot.r[1], slot.r[2]);
+      O.scale.setScalar(slot.s);
+      O.updateMatrix();
+      inst.current!.setMatrixAt(i, O.matrix);
 
-  useFrame((stateR) => {
+      const char = smooth((slot.p - 0.18) / 0.62);
+      const warm = new THREE.Color("#b57a37");
+      const dark = new THREE.Color("#17100b");
+      C.copy(warm).lerp(dark, char);
+      inst.current!.setColorAt(i, C);
+    });
+    inst.current.instanceMatrix.needsUpdate = true;
+    if (inst.current.instanceColor) inst.current.instanceColor.needsUpdate = true;
+  }, [slots]);
+
+  return (
+    <instancedMesh ref={inst} args={[undefined, undefined, slots.length]} material={palePelletMat}>
+      <capsuleGeometry args={[0.045, 0.14, 3, 8]} />
+    </instancedMesh>
+  );
+}
+
+/** S11 migration slot — torrefaction: a sealed thermal treatment chamber where
+ *  conventional pellets visibly shift from pale wood fuel into black biomass. */
+export default function Warehouse({ quality }: { quality: Quality }) {
+  const { group, state } = useStation(I);
+  const drum = useRef<THREE.Group>(null);
+  const coreLight = useRef<THREE.PointLight>(null);
+  const ringLights = useRef<THREE.PointLight[]>([]);
+  const q = quality.particleScale;
+
+  useFrame((stateR, delta) => {
     if (!state.current.active) return;
     const b = bell(state.current.local);
-    // practicals sequence on with arrival
-    const on = smooth((state.current.local - 0.05) / 0.3);
-    stripMat.emissiveIntensity = 1.4 * on;
-    stripLights.current.forEach((l) => {
-      if (l) l.intensity = 9 * on;
+    const heat = smooth((state.current.local - 0.16) / 0.56);
+    const pulse = 0.82 + Math.sin(stateR.clock.elapsedTime * 2.1) * 0.18;
+
+    if (drum.current) drum.current.rotation.x += delta * (0.08 + heat * 0.18);
+    heaterMat.emissiveIntensity = (0.35 + 2.1 * heat) * pulse;
+    processGlowMat.opacity = 0.08 + 0.24 * heat * b;
+
+    if (coreLight.current) coreLight.current.intensity = 36 * b * (0.35 + heat) * pulse;
+    ringLights.current.forEach((l, i) => {
+      if (l) l.intensity = (4 + i * 1.2) * b * (0.35 + heat);
     });
-    if (beacon.current) {
-      const e = stateR.clock.elapsedTime;
-      beacon.current.intensity = 14 * b * (0.5 + 0.5 * Math.sin(e * 5));
-      beacon.current.position.x = Math.sin(e * 0.7) * 3;
-    }
   });
 
   return (
     <group ref={group} position={S.pos}>
       <mesh rotation={[-Math.PI / 2, 0, 0]} material={M.concrete}>
-        <planeGeometry args={[26, 44]} />
-      </mesh>
-      {/* ceiling + far wall close the hall so it reads as an interior */}
-      <mesh position={[0, 7.4, 0]} rotation={[Math.PI / 2, 0, 0]} material={M.concrete}>
-        <planeGeometry args={[26, 44]} />
-      </mesh>
-      <mesh position={[0, 3.7, -18]} material={M.housing}>
-        <planeGeometry args={[26, 7.4]} />
+        <circleGeometry args={[28, 24]} />
       </mesh>
 
-      {/* rack shelves */}
-      {[-1, 1].flatMap((side) =>
-        [0, 1, 2].map((level) => (
-          <mesh key={`${side}${level}`} position={[side * 4.6, 0.35 + level * 1.9, -2.5]} material={M.steel}>
-            <boxGeometry args={[2.6, 0.1, 25]} />
-          </mesh>
-        ))
-      )}
-      <instancedMesh ref={frames} args={[undefined, undefined, FRAME_COUNT]} material={M.housing}>
-        <boxGeometry args={[1, 1, 1]} />
-      </instancedMesh>
-      <instancedMesh ref={bags} args={[bagGeometry, undefined, BAG_COUNT]} material={M.cloth} />
+      {/* dark treatment bay backdrop */}
+      <mesh position={[0, 4.1, -7.2]} material={M.dark}>
+        <boxGeometry args={[15.5, 8.2, 0.35]} />
+      </mesh>
+      <mesh position={[0, 0.08, -1]} material={M.housing}>
+        <boxGeometry args={[14, 0.16, 6.2]} />
+      </mesh>
 
-      {/* two hero bags close to camera */}
-      <JumboBag position={[-1.9, 0, 6.5]} rotation={[0, 0.4, 0]} />
-      <JumboBag position={[2.2, 0, 4.8]} rotation={[0, -0.2, 0]} fill={0.92} />
+      {/* feed and discharge conveyors make the process direction legible. */}
+      <Conveyor
+        position={[-6.7, 0.25, -1.1]}
+        rotation={[0, 0, 0.04]}
+        length={5.2}
+        width={0.9}
+        height={0.92}
+        speed={1.1}
+        getRun={() => bell(state.current.local)}
+      />
+      <Conveyor
+        position={[6.7, 0.25, -1.1]}
+        rotation={[0, 0, -0.04]}
+        length={5.2}
+        width={0.9}
+        height={0.92}
+        speed={0.9}
+        getRun={() => bell(state.current.local)}
+      />
 
-      {/* overhead light strips down the aisle — real housings + matching lights */}
-      {STRIP_Z.map((z, i) => (
-        <group key={z} position={[0, 6.4, z]}>
-          <mesh material={M.dark}>
-            <boxGeometry args={[0.36, 0.1, 2.8]} />
+      <group position={[0, 2.55, -1.1]}>
+        <group ref={drum} rotation={[0, 0, Math.PI / 2]}>
+          <mesh material={chamberGlass}>
+            <cylinderGeometry args={[1.2, 1.2, 11.6, 32, 1, true]} />
           </mesh>
-          <mesh position={[0, -0.06, 0]} material={stripMat}>
-            <boxGeometry args={[0.3, 0.06, 2.6]} />
+          <mesh material={processGlowMat}>
+            <cylinderGeometry args={[0.78, 0.78, 10.4, 24, 1, true]} />
           </mesh>
-          <pointLight
-            ref={(l) => {
-              if (l) stripLights.current[i] = l;
-            }}
-            position={[0, -0.3, 0]}
-            color="#c9d4dd"
-            distance={9}
-            decay={1.9}
-          />
         </group>
-      ))}
-      <pointLight position={[0, 5.5, 0]} color="#c9d4dd" intensity={10} distance={20} decay={1.8} />
-      <pointLight ref={beacon} position={[0, 1.2, 9]} color="#ff8c1a" distance={10} decay={2} />
+
+        {/* sealed end collars */}
+        {[-5.95, 5.95].map((x) => (
+          <group key={x} position={[x, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
+            <mesh material={M.steel}>
+              <torusGeometry args={[1.24, 0.13, 10, 32]} />
+            </mesh>
+            <mesh position={[0, 0, x < 0 ? -0.08 : 0.08]} material={M.dark}>
+              <cylinderGeometry args={[1.03, 1.03, 0.16, 28]} />
+            </mesh>
+          </group>
+        ))}
+
+        {/* heater bands and inspection ports */}
+        {RING_X.map((x, i) => (
+          <group key={x} position={[x, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
+            <mesh material={heaterMat}>
+              <torusGeometry args={[1.34, 0.055, 8, 34]} />
+            </mesh>
+            <pointLight
+              ref={(l) => {
+                if (l) ringLights.current[i] = l;
+              }}
+              position={[0, 0.15, 0.8]}
+              color="#e85d26"
+              distance={5.5}
+              decay={1.9}
+            />
+          </group>
+        ))}
+
+        <TorrefactionPellets count={Math.round(78 * quality.particleScale) + 36} />
+      </group>
+
+      {/* control spine: this should read as measured treatment, not burning. */}
+      <group position={[-6.4, 2.1, 1.9]} rotation={[0, 0.22, 0]}>
+        <mesh material={M.panel}>
+          <boxGeometry args={[1.5, 2.2, 0.18]} />
+        </mesh>
+        {[0.55, 0, -0.55].map((y, i) => (
+          <mesh key={y} position={[-0.36 + i * 0.36, y, 0.12]} material={i === 1 ? M.emberGlow : M.frostGlow}>
+            <circleGeometry args={[0.11, 16]} />
+          </mesh>
+        ))}
+        <mesh position={[0, -0.9, 0.12]} material={M.dark}>
+          <boxGeometry args={[1, 0.12, 0.05]} />
+        </mesh>
+      </group>
+
+      {/* warm gas inside the sealed chamber */}
+      <ParticleField
+        count={Math.round(210 * q) + 40}
+        area={[4.7, 0.45, 0.45]}
+        center={[0, 2.55, -1.1]}
+        colorA="#ffb15a"
+        colorB="#4d2310"
+        size={1.65}
+        life={3.2}
+        rise={0.05}
+        spread={0.22}
+        curl={0.85}
+        getIntensity={() => 0.45 * bell(state.current.local)}
+      />
+      <ParticleField
+        count={Math.round(130 * q) + 20}
+        area={[2.8, 0.22, 0.22]}
+        center={[1.9, 2.35, -0.95]}
+        colorA="#1b120c"
+        colorB="#0a0705"
+        size={0.8}
+        life={2.6}
+        spread={0.18}
+        gravity={-0.05}
+        shape="speck"
+        blending={THREE.NormalBlending}
+        getIntensity={() => 0.35 * smooth((state.current.local - 0.35) / 0.45)}
+      />
+
+      <pointLight ref={coreLight} position={[0, 2.7, 1.2]} color="#ff7a22" distance={16} decay={1.8} />
+      <pointLight position={[0, 5.8, -0.5]} color="#f1b06b" intensity={9} distance={18} decay={2} />
     </group>
   );
 }
+

@@ -35,6 +35,7 @@ export default function HeroPellet() {
       uTime: { value: 0 },
       uHeat: { value: 0 },
       uGreen: { value: 0 },
+      uChar: { value: 0 },
       uDissolve: { value: 0 },
       uLightDir: { value: new THREE.Vector3(0.5, 0.8, 0.6) },
     }),
@@ -55,6 +56,7 @@ export default function HeroPellet() {
     const scale = lerp(a.scale, b.scale, f);
     uniforms.uHeat.value = lerp(a.heat, b.heat, f);
     uniforms.uGreen.value = lerp(a.green, b.green, f);
+    uniforms.uChar.value = lerp(a.char, b.char, f);
     uniforms.uTime.value = state.clock.elapsedTime;
 
     // dissolve on hero exit (S00) and furnace entry (S13 end)
