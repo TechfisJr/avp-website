@@ -261,7 +261,7 @@ Acceptance criteria:
 
 ## Phase 8 - Final Advanced Bioenergy Close
 
-Status: planned
+Status: done
 
 Current temporary station:
 
@@ -273,18 +273,18 @@ Target role:
 
 Implementation checklist:
 
-- [ ] Reframe closing from circular economy to advanced bioenergy.
-- [ ] Keep loop imagery only if it supports higher value.
-- [ ] Add final story logic:
+- [x] Reframe closing from circular economy to advanced bioenergy.
+- [x] Keep loop imagery only if it supports higher value.
+- [x] Add final story logic:
   `Wood -> Pelletization -> Wood Pellet + Thermal Upgrading -> Black Wood Pellet`.
-- [ ] Replace green circular emphasis with premium product/value emphasis.
-- [ ] Update `src/three/stations/Circular.tsx`, or create a new final station.
-- [ ] Update CTA copy if needed in `src/components/Overlay.tsx`.
+- [x] Replace green circular emphasis with premium product/value emphasis.
+- [x] Update `src/three/stations/Circular.tsx`, or create a new final station.
+- [x] Update CTA copy if needed in `src/components/Overlay.tsx`.
 
 Acceptance criteria:
 
-- [ ] Final screen resolves as `From Wood. To Pellet. To Higher Value.`
-- [ ] Closing message matches the target document:
+- [x] Final screen resolves as `From Wood. To Pellet. To Higher Value.`
+- [x] Closing message matches the target document:
   `We don't just transform biomass. We create more value from it.`
 
 ## Phase 9 - Technical Cleanup
@@ -330,16 +330,16 @@ Manual QA:
 - [x] S11: Torrefaction reads as material transformation.
 - [x] S12: Value Creation explains higher value.
 - [x] S13: Black Wood Pellet reads as upgraded product.
-- [ ] S14: final message closes on higher value.
+- [x] S14: final message closes on higher value.
 - [ ] No scene copy contradicts its visual.
 - [ ] No old `coal replacement / logistics / circular economy` message remains
   as the final narrative.
 
 ## Current Known Gaps
 
-- [ ] Late-stage visuals still need rebuild after phase 1 copy migration.
-- [ ] `Circular.tsx` still carries old
-  visual semantics.
+- [x] Late-stage visuals have been rebuilt after phase 1 copy migration.
+- [x] `QualityControl.tsx`, `Packaging.tsx`, `Warehouse.tsx`, `Logistics.tsx`,
+  `Energy.tsx`, and `Circular.tsx` now carry target visual semantics.
 - [x] Core docs `02-storyboard`, `03-section-architecture`, and
   `07-scroll-timeline` now describe the target story.
 - [x] Asset manifest has thermal-upgrading, torrefaction, and Black Wood Pellet
@@ -347,7 +347,7 @@ Manual QA:
 
 ## Priority Order
 
-1. Final Advanced Bioenergy close.
-2. Remaining asset manifest cleanup.
-3. Remaining docs cleanup outside the core storyboard/architecture/timeline.
-4. Optional component/station rename cleanup after visuals are stable.
+1. Remaining asset manifest cleanup.
+2. Remaining docs cleanup outside the core storyboard/architecture/timeline.
+3. Optional component/station rename cleanup after visuals are stable.
+4. Final full-page QA sweep across desktop and mobile.

@@ -137,10 +137,10 @@ export const COPY: SectionCopy[] = [
   {
     id: "circular",
     eyebrow: "Advanced bioenergy",
-    headline: ["We create", "more value from it."],
-    body: "From natural resources to pelletization, then through technology into a higher-value energy product.",
-    data: "Wood → pellet → higher value",
-    tags: ["An Việt Phát Group", "Global 24/7 Supply"],
+    headline: ["From wood.", "To pellet.", "To higher value."],
+    body: "We don't just transform biomass. We create more value from it.",
+    data: "Wood → pelletization → black wood pellet",
+    tags: ["Advanced Bioenergy", "Higher-Value Product"],
     align: "center",
   },
 ];

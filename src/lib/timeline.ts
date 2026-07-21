@@ -53,7 +53,7 @@ const ROWS: Row[] = [
   ["warehouse",   [0, 2.5, 0], [0, 2.6, 15],   "#150b06", PALETTE.ember, 2.8, 0.023, "industrial",  { off: [1.9, -0.85, -5.1], scale: 0.24, heat: 0.32, green: 0, char: 1 }],
   ["logistics",   [0, 1.8, 0], [3.8, 3.2, 9],  "#120906", PALETTE.ember, 2.6, 0.02,  "industrial",  { off: [1.15, -0.35, -4.1], scale: 0, heat: 0.25, green: 0, char: 1 }],
   ["energy",      [0, 3, 0],   [1.2, 2.8, 10], "#120906", PALETTE.ember, 2.8, 0.02,  "industrial",  { off: [1.25, -0.55, -4.15], scale: 0, heat: 0.22, green: 0,    char: 1 }],
-  ["circular",    [0, 2.2, 0], [0, 2.4, 10],   "#0a160d", PALETTE.moss,  2.4, 0.024, "forest",      { off: [0.4, -0.2, -3.8],  scale: 0.58, heat: 0.08,  green: 0.2, char: 1 }],
+  ["circular",    [0, 2.4, 0], [2.8, 2.6, 9],  "#120906", PALETTE.ember, 2.7, 0.021, "industrial",  { off: [0.4, -0.2, -3.8],  scale: 0, heat: 0.12, green: 0, char: 1 }],
 ];
 
 export const STATIONS: StationDef[] = ROWS.map((r, i) => {
