@@ -1,0 +1,325 @@
+:root {
+  --ink: #0b0a08;
+  --bone: #ede6da;
+  --amber: #e8a33d;
+  --ember: #e85d26;
+  --bark: #8c5a2b;
+  --moss: #7ba05b;
+  --frost: #7fb4c7;
+  --rail: rgba(237, 230, 218, 0.28);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-text), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(232, 163, 61, 0.5) transparent;
+}
+
+html.lenis {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  background: var(--ink);
+  overflow-x: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- layers ---------- */
+
+.scroll-track {
+  position: relative;
+  width: 100%;
+  pointer-events: none;
+}
+
+.canvas-root {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.grain {
+  position: fixed;
+  inset: -50px;
+  z-index: 30;
+  pointer-events: none;
+  background-image: url("/icons/grain.svg");
+  background-size: 300px;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ---------- vignette ---------- */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: radial-gradient(ellipse 130% 100% at 50% 45%, transparent 55%, rgba(2, 2, 1, 0.55) 100%);
+}
+
+/* ---------- sections ---------- */
+
+.section {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(1.5rem, 6vw, 7rem);
+  opacity: 0;
+  visibility: hidden;
+}
+.section.align-left { justify-content: flex-start; }
+.section.align-right { justify-content: flex-end; }
+.section.align-center { justify-content: center; text-align: center; }
+
+.section-inner {
+  max-width: 34rem;
+  will-change: transform, opacity;
+}
+.section.align-center .section-inner { max-width: 46rem; }
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 1.4rem;
+}
+.section.align-center .eyebrow { justify-content: center; }
+.eyebrow .tick {
+  display: inline-block;
+  width: 2.2rem;
+  height: 1px;
+  background: var(--amber);
+  transform-origin: left center;
+}
+
+.headline {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 380;
+  font-size: clamp(2.2rem, 5.4vw, 4.6rem);
+  line-height: 1.04;
+  letter-spacing: 0.005em;
+  color: var(--bone);
+}
+.headline .line {
+  display: block;
+  overflow: hidden;
+}
+.headline .line > span {
+  display: block;
+  will-change: transform;
+}
+
+.body-copy {
+  margin-top: 1.6rem;
+  font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+  line-height: 1.65;
+  font-weight: 300;
+  color: rgba(237, 230, 218, 0.82);
+  max-width: 30rem;
+}
+.section.align-center .body-copy { margin-inline: auto; }
+
+.datapoint {
+  margin-top: 1.6rem;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--frost);
+  border-top: 1px solid rgba(127, 180, 199, 0.35);
+  padding-top: 0.8rem;
+}
+.datapoint::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  align-self: center;
+}
+
+/* ---------- HUD ---------- */
+
+.hud {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.hud .brand {
+  position: absolute;
+  top: 2rem;
+  left: clamp(1.5rem, 4vw, 3.5rem);
+  pointer-events: auto;
+}
+.hud .brand img { display: block; height: 24px; width: auto; }
+
+.hud .cta {
+  position: absolute;
+  top: 1.85rem;
+  right: clamp(1.5rem, 4vw, 3.5rem);
+  pointer-events: auto;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bone);
+  text-decoration: none;
+  border: 1px solid rgba(237, 230, 218, 0.3);
+  padding: 0.75rem 1.3rem;
+  border-radius: 99px;
+  transition: border-color 0.3s, background 0.3s, color 0.3s;
+  backdrop-filter: blur(6px);
+}
+.hud .cta:hover {
+  border-color: var(--amber);
+  background: var(--amber);
+  color: var(--ink);
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(237, 230, 218, 0.55);
+  transition: opacity 0.6s;
+}
+
+/* ---------- progress rail ---------- */
+
+.rail {
+  position: absolute;
+  left: clamp(1.2rem, 3vw, 2.6rem);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  align-items: flex-start;
+}
+
+.rail .tick {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  height: 8px;
+}
+.rail .tick i {
+  display: block;
+  width: 14px;
+  height: 1px;
+  background: var(--rail);
+  transition: width 0.4s, background 0.4s;
+}
+.rail .tick.active i {
+  width: 28px;
+  background: var(--amber);
+}
+.rail .tick b {
+  font-weight: 400;
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--amber);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.4s, transform 0.4s;
+  white-space: nowrap;
+}
+.rail .tick.active b {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ---------- QC scan ring ---------- */
+.scan-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(46vmin, 340px);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+/* ---------- fallback ---------- */
+.nowebgl {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 4rem 1.5rem;
+}
+.nowebgl article { max-width: 42rem; }
+.nowebgl h1 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  margin-bottom: 2rem;
+}
+.nowebgl section { margin-bottom: 2.2rem; }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 820px) {
+  .rail .tick b { display: none; }
+  .section {
+    align-items: flex-end;
+    padding-bottom: 14vh;
+  }
+  .section.align-left,
+  .section.align-right {
+    justify-content: center;
+    text-align: center;
+  }
+  .section.align-left .eyebrow,
+  .section.align-right .eyebrow { justify-content: center; }
+  .body-copy { margin-inline: auto; }
+  .hud .cta { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain { display: none; }
+}

@@ -1,0 +1,264 @@
+"use client";
+
+import { useMemo, useRef } from "react";
+import * as THREE from "three";
+import { useFrame, type ThreeElements } from "@react-three/fiber";
+import { M } from "./industrial";
+
+type GroupProps = ThreeElements["group"];
+import { BELT_VERT, BELT_FRAG } from "../fx/shaders";
+
+/** Parameterized conveyor module: rails, legs, rollers, scrolling belt. */
+export function Conveyor({
+  length = 8,
+  width = 1.4,
+  height = 1,
+  speed = 1.2,
+  getRun,
+  ...props
+}: {
+  length?: number;
+  width?: number;
+  height?: number;
+  speed?: number;
+  getRun?: () => number;
+} & GroupProps) {
+  const mat = useRef<THREE.ShaderMaterial>(null);
+  const uniforms = useMemo(
+    () => ({ uTime: { value: 0 }, uSpeed: { value: speed } }),
+    [speed]
+  );
+  useFrame((state) => {
+    if (mat.current) {
+      const run = getRun ? getRun() : 1;
+      mat.current.uniforms.uTime.value = state.clock.elapsedTime * run;
+    }
+  });
+  const legs = Math.max(2, Math.round(length / 3));
+  return (
+    <group {...props}>
+      {/* belt */}
+      <mesh position={[0, height, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[length, width]} />
+        <shaderMaterial ref={mat} vertexShader={BELT_VERT} fragmentShader={BELT_FRAG} uniforms={uniforms} />
+      </mesh>
+      {/* side rails */}
+      {[-1, 1].map((s) => (
+        <mesh key={s} position={[0, height - 0.09, (s * (width + 0.14)) / 2]} material={M.steel}>
+          <boxGeometry args={[length, 0.16, 0.1]} />
+        </mesh>
+      ))}
+      {/* rollers */}
+      {Array.from({ length: Math.floor(length / 1.2) }, (_, i) => (
+        <mesh
+          key={i}
+          position={[-length / 2 + 0.8 + i * 1.2, height - 0.16, 0]}
+          rotation={[Math.PI / 2, 0, 0]}
+          material={M.dark}
+        >
+          <cylinderGeometry args={[0.09, 0.09, width, 8]} />
+        </mesh>
+      ))}
+      {/* legs */}
+      {Array.from({ length: legs }, (_, i) => {
+        const x = -length / 2 + 0.6 + (i * (length - 1.2)) / Math.max(1, legs - 1);
+        return (
+          <mesh key={i} position={[x, height / 2 - 0.1, 0]} material={M.housing}>
+            <boxGeometry args={[0.14, height, 0.14]} />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}
+
+const BAG_NECK_Y = 1.32;
+const BAG_LOOP_R = 0.24;
+
+/** Woven-poly FIBC bulk bag — barrel body (rounded base, full belly, cinched
+ *  neck) with real strap loops and a printed weight-label patch. The neck
+ *  and loops stay their true shape as `fill` changes: only the belly group
+ *  scales, and the loops ride down with it, so a half-full bag reads as
+ *  slack cloth, not a squashed torus. */
+export function JumboBag({
+  fill = 1,
+  getFill,
+  ...props
+}: { fill?: number; getFill?: () => number } & GroupProps) {
+  const bodyGroup = useRef<THREE.Group>(null);
+  const patch = useRef<THREE.Mesh>(null);
+  const loops = useRef<(THREE.Mesh | null)[]>([]);
+
+  const bodyGeo = useMemo(() => {
+    const profile = [
+      new THREE.Vector2(0.02, 0),
+      new THREE.Vector2(0.36, 0.02),
+      new THREE.Vector2(0.5, 0.13),
+      new THREE.Vector2(0.56, 0.42),
+      new THREE.Vector2(0.57, 0.72),
+      new THREE.Vector2(0.53, 0.98),
+      new THREE.Vector2(0.4, 1.16),
+      new THREE.Vector2(BAG_LOOP_R + 0.02, BAG_NECK_Y - 0.06),
+      new THREE.Vector2(BAG_LOOP_R, BAG_NECK_Y),
+    ];
+    const g = new THREE.LatheGeometry(profile, 22);
+    const p = g.attributes.position as THREE.BufferAttribute;
+    const v = new THREE.Vector3();
+    for (let i = 0; i < p.count; i++) {
+      v.fromBufferAttribute(p, i);
+      const theta = Math.atan2(v.z, v.x);
+      const weave = 1 + 0.018 * Math.sin(theta * 14) + 0.012 * Math.sin(v.y * 20 + theta * 6);
+      const sag = 0.02 * Math.sin(theta * 3 + v.y * 1.4);
+      p.setXYZ(i, v.x * weave + sag, v.y, v.z * weave + sag);
+    }
+    g.computeVertexNormals();
+    return g;
+  }, []);
+
+  const loopGeo = useMemo(() => {
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0.05, 0.14, 0),
+      new THREE.Vector3(0.05, 0.24, 0),
+      new THREE.Vector3(-0.05, 0.24, 0),
+      new THREE.Vector3(-0.05, 0.14, 0),
+      new THREE.Vector3(0, 0, 0),
+    ]);
+    return new THREE.TubeGeometry(curve, 24, 0.028, 6, true);
+  }, []);
+
+  const applyFill = (f: number) => {
+    const bodyFill = 0.3 + 0.7 * f;
+    const neckY = BAG_NECK_Y * bodyFill;
+    if (bodyGroup.current) bodyGroup.current.scale.y = bodyFill;
+    if (patch.current) patch.current.position.set(0, neckY * 0.42, 0.565 * Math.min(1, bodyFill + 0.3));
+    loops.current.forEach((m, i) => {
+      if (!m) return;
+      const a = (i / 4) * Math.PI * 2 + Math.PI / 4;
+      m.position.set(Math.cos(a) * BAG_LOOP_R, neckY, Math.sin(a) * BAG_LOOP_R);
+    });
+  };
+
+  useFrame(() => {
+    if (getFill) applyFill(getFill());
+  });
+
+  const initialFill = 0.3 + 0.7 * fill;
+  const initialNeckY = BAG_NECK_Y * initialFill;
+
+  return (
+    <group {...props}>
+      <group ref={bodyGroup} scale={[1, initialFill, 1]}>
+        <mesh geometry={bodyGeo} material={M.cloth} />
+      </group>
+      {/* printed weight-label patch */}
+      <mesh ref={patch} position={[0, initialNeckY * 0.42, 0.565 * Math.min(1, initialFill + 0.3)]}>
+        <planeGeometry args={[0.42, 0.3]} />
+        <meshStandardMaterial color="#efe7d4" roughness={0.85} metalness={0} />
+      </mesh>
+      {[0, 1, 2, 3].map((i) => {
+        const a = (i / 4) * Math.PI * 2 + Math.PI / 4;
+        return (
+          <mesh
+            key={i}
+            ref={(m) => {
+              loops.current[i] = m;
+            }}
+            geometry={loopGeo}
+            material={M.dark}
+            position={[Math.cos(a) * BAG_LOOP_R, initialNeckY, Math.sin(a) * BAG_LOOP_R]}
+            rotation={[0, -a, 0]}
+          />
+        );
+      })}
+    </group>
+  );
+}
+
+/** Stylized flatbed truck silhouette with emissive running lights. */
+export function Truck({
+  lightsOn = true,
+  ...props
+}: { lightsOn?: boolean } & GroupProps) {
+  return (
+    <group {...props}>
+      <mesh position={[2.1, 1.15, 0]} material={M.housing}>
+        <boxGeometry args={[1.6, 1.5, 2]} />
+      </mesh>
+      <mesh position={[-0.9, 0.75, 0]} material={M.dark}>
+        <boxGeometry args={[4.6, 0.3, 2.1]} />
+      </mesh>
+      <mesh position={[-0.9, 1.25, 0]} material={M.steel}>
+        <boxGeometry args={[4.4, 0.7, 1.9]} />
+      </mesh>
+      {[-2.6, -1.2, 1.7].flatMap((x) =>
+        [-1, 1].map((s) => (
+          <mesh key={`${x}${s}`} position={[x, 0.42, s * 0.95]} rotation={[Math.PI / 2, 0, 0]} material={M.dark}>
+            <cylinderGeometry args={[0.42, 0.42, 0.3, 14]} />
+          </mesh>
+        ))
+      )}
+      {lightsOn && (
+        <mesh position={[2.92, 0.95, 0]}>
+          <boxGeometry args={[0.06, 0.18, 1.6]} />
+          <meshStandardMaterial emissive="#ffd9a0" emissiveIntensity={3} color="#000" />
+        </mesh>
+      )}
+    </group>
+  );
+}
+
+/** Inclined vibrating screen deck on spring mounts. */
+export function ScreenDeck({
+  getVibe,
+  w = 4,
+  d = 2.4,
+  ...props
+}: { getVibe?: () => number; w?: number; d?: number } & GroupProps) {
+  const deck = useRef<THREE.Group>(null);
+  useFrame((state) => {
+    if (!deck.current) return;
+    const amp = (getVibe ? getVibe() : 1) * 0.03;
+    deck.current.position.y = 1.35 + Math.sin(state.clock.elapsedTime * 34) * amp;
+  });
+  return (
+    <group {...props}>
+      <group ref={deck} rotation={[0, 0, -0.14]}>
+        <mesh material={M.steel}>
+          <boxGeometry args={[w, 0.12, d]} />
+        </mesh>
+        {Array.from({ length: 9 }, (_, i) => (
+          <mesh key={i} position={[-w / 2 + ((i + 0.5) * w) / 9, 0.07, 0]} material={M.dark}>
+            <boxGeometry args={[0.05, 0.03, d * 0.94]} />
+          </mesh>
+        ))}
+        {[-1, 1].map((s) => (
+          <mesh key={s} position={[0, 0.28, (s * d) / 2] } material={M.housing}>
+            <boxGeometry args={[w, 0.45, 0.08]} />
+          </mesh>
+        ))}
+      </group>
+      {[-1, 1].flatMap((x) =>
+        [-1, 1].map((z) => (
+          <mesh key={`${x}${z}`} position={[(x * w) / 2.4, 0.6, (z * d) / 2.6]} material={M.dark}>
+            <cylinderGeometry args={[0.09, 0.13, 1.2, 8]} />
+          </mesh>
+        ))
+      )}
+    </group>
+  );
+}
+
+/** Simple intake hopper. */
+export function Hopper(props: GroupProps) {
+  return (
+    <group {...props}>
+      <mesh material={M.housing}>
+        <cylinderGeometry args={[1.2, 0.35, 1.5, 4, 1, true]} />
+      </mesh>
+      <mesh position={[0, 0.8, 0]} material={M.steel}>
+        <boxGeometry args={[1.9, 0.12, 1.9]} />
+      </mesh>
+    </group>
+  );
+}
