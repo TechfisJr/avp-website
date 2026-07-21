@@ -101,6 +101,16 @@ body {
 .section.align-right { justify-content: flex-end; }
 .section.align-center { justify-content: center; text-align: center; }
 
+@media (min-width: 821px) {
+  .section.align-left {
+    padding-left: clamp(7.5rem, 11vw, 13rem);
+  }
+  .section.align-right {
+    padding-right: clamp(7.5rem, 11vw, 13rem);
+  }
+}
+
+
 .section-inner {
   max-width: 34rem;
   will-change: transform, opacity;

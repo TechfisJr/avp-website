@@ -158,16 +158,16 @@ export default function Grinding({ quality }: { quality: Quality }) {
       </mesh>
       {/* base skid and safety rail */}
       <mesh position={[0, 0.18, 0]} material={M.steel}>
-        <boxGeometry args={[4.4, 0.18, 3.2]} />
+        <boxGeometry args={[5.4, 0.18, 5.6]} />
       </mesh>
       {[-1, 1].map((z) => (
-        <mesh key={z} position={[0, 1.1, z * 1.95]} material={M.safetyYellow}>
+        <mesh key={z} position={[0, 1.1, z * 2.7]} material={M.safetyYellow}>
           <boxGeometry args={[5.2, 0.08, 0.08]} />
         </mesh>
       ))}
       {[-1, 1].flatMap((z) =>
         [-2.55, 0, 2.55].map((x) => (
-          <mesh key={`${x}${z}`} position={[x, 0.63, z * 1.95]} material={M.dark}>
+          <mesh key={`${x}${z}`} position={[x, 0.63, z * 2.7]} material={M.dark}>
             <cylinderGeometry args={[0.04, 0.04, 1, 8]} />
           </mesh>
         ))

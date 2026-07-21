@@ -190,7 +190,7 @@ export default function Circular({ quality }: { quality: Quality }) {
         <circleGeometry args={[16, 48]} />
       </mesh>
 
-      <group position={[-2.35, -0.6, -0.55]} scale={0.82}>
+      <group position={[-2.45, -1.05, -0.55]} scale={0.72}>
         <mesh position={[0, 0.1, 0]} material={M.housing}>
           <boxGeometry args={[10.5, 0.2, 5.0]} />
         </mesh>
@@ -231,7 +231,7 @@ export default function Circular({ quality }: { quality: Quality }) {
           </group>
         </group>
 
-        <group ref={halo} position={[2.9, 2.25, -0.65]} rotation={[Math.PI / 2, 0, 0]}>
+        <group ref={halo} position={[2.9, 1.75, -0.65]} rotation={[Math.PI / 2, 0, 0]}>
           {[0, 1, 2].map((i) => (
             <mesh key={i} rotation={[0, 0, (i * Math.PI) / 3]} material={i === 0 ? premiumMat : valueRingMat}>
               <torusGeometry args={[1.55 + i * 0.38, 0.026, 8, 80]} />
