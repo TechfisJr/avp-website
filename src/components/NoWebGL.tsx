@@ -3,11 +3,14 @@
 import { COPY } from "@/lib/copy";
 
 export default function NoWebGL() {
+  const hero = COPY[0];
+
   return (
     <div className="nowebgl">
       <article>
         <img src="/icons/wordmark.svg" alt="AVP Biomass" height={24} />
-        <h1>One pellet. A complete energy cycle.</h1>
+        <h1>{hero.headline.join(" ")}</h1>
+        {hero.body && <p className="body-copy">{hero.body}</p>}
         {COPY.slice(1).map((s) => (
           <section key={s.id}>
             <p className="eyebrow">

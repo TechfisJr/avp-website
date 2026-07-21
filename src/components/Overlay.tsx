@@ -114,8 +114,8 @@ export default function Overlay() {
         <img ref={scanRing} className="scan-ring" src="/icons/scan-ring.svg" alt="" />
       </div>
       <div className="hud" aria-hidden="true">
-        <a className="brand" href="#top" aria-label="AVP Biomass">
-          <img src="/icons/wordmark.svg" alt="" />
+        <a className="brand" href="#top" aria-label="An Việt Phát Group">
+          <img src="/icons/avp-logo-full.png" alt="An Việt Phát" className="w-auto object-contain" />
         </a>
         <a className="cta" href="mailto:sales@avpbiomass.example">
           Request specification

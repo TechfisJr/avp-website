@@ -1,86 +1,122 @@
 # 02 — Storyboard
 
-One continuous shot. `t` = global scroll progress 0→1 across 14 stations.
-Camera dwells at each station (~60% of its window) and travels (~40%).
+One continuous shot. `t` = global scroll progress 0→1 across 15 stations.
+Phase 1 keeps the existing world path, but the narrative now follows the target
+AVP Wood Pellet story: wood becomes pellet, then technology upgrades it into a
+higher-value energy product.
 
 ---
 
-### S00 · HERO — “One Pellet” (t 0.00–0.07)
-Black void. A single wood pellet floats center-frame, slowly rotating,
-lit by one warm key light. Dust motes drift. Title sets in.
-**Camera:** slow push-in from 6m → 3.2m, slight orbital drift.
-**Transition out:** pellet’s surface dissolves into wood-grain particles that
-stream backwards — the camera follows them *into the forest*.
+### S00 · HERO — “From Wood to Higher Value” (t 0.00-0.07)
 
-### S01 · FOREST (t 0.07–0.145)
-Moonlit pine stand: dozens of instanced trunks, layered fog, god-light shafts,
-drifting spores. The pellet’s particles re-assemble as a standing tree hint.
+Black void. A single wood pellet floats center-frame as the title establishes
+the full promise: from wood, to pellet, to higher value.
+**Camera:** slow push-in from 6m → 3.2m, slight orbital drift.
+**Transition out:** pellet matter breaks into wood-grain particles and pulls
+the viewer back to origin.
+
+### S01 · SUSTAINABLE FOREST (t 0.07-0.145)
+
+Moonlit forest, layered fog and drifting spores. This is the natural starting
+point: renewable energy begins with responsibly sourced biomass.
 **Camera:** low dolly between trunks, looking slightly up.
 
-### S02 · COLLECTION (t 0.145–0.215)
-Forest edge. A log pile (instanced cylinders, bark material) and a flatbed
-truck being loaded. Sawdust motes in headlight beams.
-**Camera:** sweep around the pile, ends facing the truck.
+### S02 · RAW WOOD (t 0.145-0.215)
 
-### S03 · SCREENING (t 0.215–0.285)
-First industrial interior. A vibrating screen deck; wood chips rain onto it,
-fines fall through in a particle curtain.
-**Camera:** overhead tilt-down, then level with the falling chips.
+Forest edge and raw wood resources. Logs, offcuts, chips, shavings and residues
+enter the production journey.
+**Camera:** sweep around the pile, ending toward the mill direction.
 
-### S04 · GRINDING (t 0.285–0.355)
-Hammer-mill drum spins up as the camera arrives. Chips enter, a violent
-sawdust burst exits. Sparks tick off the housing.
-**Camera:** push toward the intake, slight shake at peak RPM (scrub-safe).
+### S03 · WOOD CHIPS (t 0.215-0.285)
 
-### S05 · DRYING (t 0.355–0.425)
-A long rotary dryer cylinder, slowly rotating, amber heat glow at the inlet.
-Steam columns rise and drift; moisture readout counts down 55% → 10%.
+Wood is reduced into consistent chips. The current screening deck serves as the
+phase-1 visual slot; phase 2 should make chipping more explicit.
+**Camera:** overhead tilt-down, then level with falling material.
+
+### S04 · WOOD PARTICLES (t 0.285-0.355)
+
+Hammer-mill refinement turns chips into smaller and more uniform particles.
+This is the material consistency beat.
+**Camera:** push toward the intake, slight scrub-safe mechanical shake.
+
+### S05 · DRY BIOMASS (t 0.355-0.425)
+
+A rotary dryer controls moisture before densification. Heat is precise and
+preparatory, not the final energy use.
 **Camera:** tracking shot along the drum’s length.
 
-### S06 · CONDITIONING (t 0.425–0.49)
-Conditioner vessel; steam jets inject from nozzles; fiber particles swirl in
-a controlled vortex.
+### S06 · PREPARATION (t 0.425-0.49)
+
+Conditioned biomass is prepared for stable pelletization. Steam and motion
+signal control before pressure.
 **Camera:** slow orbit around the vessel.
 
-### S07 · PELLETIZING (t 0.49–0.565) — *the centerpiece*
-The pellet mill: a rotating ring die with radial holes; rollers press;
-pellet strands extrude outward and break into pellets that fall as a
-glowing-warm instanced stream. The HERO PELLET is “born” here and returns to
-center frame.
-**Camera:** inside-the-die reveal → pull back as pellets rain.
+### S07 · PELLETIZING (t 0.49-0.565)
 
-### S08 · COOLING (t 0.565–0.63)
-Counterflow cooler: a bed of thousands of instanced pellets; heat-shimmer
-shader fades; color temperature slides amber → teal. Steam thins out.
-**Camera:** top-down over the pellet bed, settling to level.
+Pressure creates form. Fiber is compressed through a rotating die, and the
+first transformation becomes visible as pellets are born.
+**Camera:** inside-the-die reveal → pull back as pellets emerge.
 
-### S09 · SCREENING & QC (t 0.63–0.70)
-Pellets travel a vibrating grading screen; fines drop away; a HUD ring
-scans the hero pellet — diameter 6mm, moisture ≤10%, ENplus A1.
-**Camera:** macro on the hero pellet inside the scan ring.
+### S08 · WOOD PELLET (t 0.565-0.63)
 
-### S10 · PACKAGING (t 0.70–0.765)
-A jumbo bag fills from a spout — a pellet waterfall (instanced) with dust
-puffs. Bag scale ticks to 1,000 kg.
-**Camera:** low angle at the spout, then reveal the filled bag row.
+The production journey reaches its first finished product: compact, consistent
+and transportable renewable fuel.
+**Camera:** top-down over the pellet bed, settling to level for product
+readability.
 
-### S11 · WAREHOUSE (t 0.765–0.825)
-Rows of jumbo bags in rack aisles, cool practical lights, forklift beacon
-sweeping. Calm after the machinery.
-**Camera:** slow aisle dolly, one-point perspective.
+### S09 · VALUE UPGRADING (t 0.63-0.70)
 
-### S12 · LOGISTICS (t 0.825–0.89)
-The warehouse floor falls away into a dark ocean. A cargo ship glides;
-great-circle route arcs draw across a curved horizon; a truck crosses a quay.
-**Camera:** crane up from quay to a near-orbital wide.
+The story shifts beyond conventional wood pellets. The product is no longer the
+ending; it becomes the starting point for a new technology chapter.
+**Camera:** macro product inspection that hands the pellet into the upgrading
+sequence.
 
-### S13 · ENERGY (t 0.89–0.945)
-An industrial boiler house. Pellets stream into the furnace; ember particles
-rise; turbine hum; a soft orange core breathes. Steam turns to clean plume.
-**Camera:** approach the furnace eye — the hero pellet enters the glow.
+### S10 · THERMAL UPGRADING (t 0.70-0.765)
 
-### S14 · CIRCULAR (t 0.945–1.00)
-The ember particles cool into green leaf-motes that spiral into a ring —
-CO₂ → forest → biomass → pellet — orbiting the hero pellet silhouette.
-The ring’s green light grows until the forest palette returns. CTA sets in.
-**Camera:** pull back to the S00 framing — the loop visually closes.
+Conventional wood pellets enter a controlled thermal environment. Phase 1 still
+uses the old packaging visual slot; phase 2 must rebuild this as a thermal
+chamber, kiln, or reactor entrance.
+**Camera:** low controlled-entry angle, moving toward heat and instrumentation.
+
+### S11 · TORREFACTION (t 0.765-0.825)
+
+Controlled thermal treatment changes the internal characteristics of biomass.
+The key message: this is not simply a change in color; it is a change in the
+material.
+**Camera:** slow chamber pass or reactor-side tracking shot.
+
+### S12 · VALUE CREATION (t 0.825-0.89)
+
+The value logic becomes explicit: white wood pellet, technology-driven
+torrefaction, black wood pellet. Product becomes higher-value energy material.
+**Camera:** wide explanatory composition with value-flow arcs or comparison
+beats.
+
+### S13 · BLACK WOOD PELLET (t 0.89-0.945)
+
+The upgraded product is revealed. Black Wood Pellet should read as biomass
+upgraded by manufacturing plus technology, not as a burnt pellet.
+**Camera:** product-hero approach, with thermal glow as proof of process rather
+than active combustion.
+
+### S14 · ADVANCED BIOENERGY (t 0.945-1.00)
+
+Final brand close: from natural resources to pelletization, then through
+technology into a higher-value energy product.
+**Camera:** pull back to a hero framing where the upgraded product and value
+message resolve together.
+
+---
+
+## Phase 2 visual rebuild notes
+
+The following stations currently have target copy but legacy visuals:
+
+| Station | Target role | Phase 2 need |
+|---|---|---|
+| S10 packaging | Thermal Upgrading | Replace bag-filling scene with controlled thermal environment |
+| S11 warehouse | Torrefaction | Replace storage aisle with reactor/treatment chamber |
+| S12 logistics | Value Creation | Replace shipping emphasis with technology-to-value logic |
+| S13 energy | Black Wood Pellet | Restage furnace into upgraded product hero |
+| S14 circular | Advanced Bioenergy | Reframe final loop as higher-value bioenergy close |
+

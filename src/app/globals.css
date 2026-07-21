@@ -190,7 +190,13 @@ body {
   left: clamp(1.5rem, 4vw, 3.5rem);
   pointer-events: auto;
 }
-.hud .brand img { display: block; height: 24px; width: auto; }
+.hud .brand img {
+  display: block;
+  height: clamp(44px, 5.5vw, 64px);
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+}
 
 .hud .cta {
   position: absolute;

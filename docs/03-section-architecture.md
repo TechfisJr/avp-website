@@ -1,41 +1,62 @@
 # 03 — Section Architecture
 
-The DOM is a tall scroll track; the 3D world is a fixed canvas behind it.
-Each station owns one full-viewport overlay block whose copy reveals while the
-camera dwells at that station.
+The DOM remains a tall scroll track and the 3D world remains a fixed canvas
+behind it. Phase 1 keeps the existing 15 station ids so the site stays stable,
+but the content architecture now follows the target AVP Wood Pellet narrative:
+
+```text
+FROM WOOD
+↓
+TO PELLET
+↓
+TO HIGHER VALUE
+```
+
+## Phase 1 section matrix
 
 | # | id | Eyebrow | Headline | Data point |
 |---|----|---------|----------|-----------|
-| 00 | hero | AVP BIOMASS | One pellet. A complete energy cycle. | — |
-| 01 | forest | ORIGIN | The forest gives what it grows back. | 100% residue & certified fiber |
-| 02 | collection | RAW MATERIAL | Nothing felled for fuel. Everything used. | Sawmill residues · thinnings |
-| 03 | screening | SCREENING | Only clean fiber moves forward. | Contaminant removal ≥ 99% |
-| 04 | grinding | GRINDING | Force, measured to the millimeter. | Hammer mill · < 4 mm output |
-| 05 | drying | DRYING | Fire needs dry wood. We make it. | Moisture 55% → 10% |
-| 06 | conditioning | CONDITIONING | Steam awakens the wood’s own glue. | Lignin activation · no binders |
-| 07 | pelletizing | PELLETIZING | Pressure becomes product. | 300 bar through a rotating die |
-| 08 | cooling | COOLING | Heat leaves. Hardness stays. | 90°C → ambient in counterflow |
-| 09 | qc | QUALITY | Every batch interrogated. | ENplus A1 · Ø6 mm · ≤10% H₂O |
-| 10 | packaging | PACKAGING | Sealed at the source. | 1,000 kg jumbo bags |
-| 11 | warehouse | STORAGE | Energy, resting. | 40,000 t covered capacity |
-| 12 | logistics | LOGISTICS | From our quay to your boiler. | FOB/CIF · Asia & EU lanes |
-| 13 | energy | ENERGY | Coal’s replacement, already burning. | −90% net CO₂ vs. coal |
-| 14 | circular | CIRCULAR | The ash returns. The forest continues. | Carbon-neutral combustion loop |
+| 00 | hero | AVP BIOMASS | From wood. To pellet. To higher value. | — |
+| 01 | forest | SUSTAINABLE FOREST | It begins with nature. | Forest → renewable biomass |
+| 02 | collection | RAW WOOD | The raw material. | Acacia · wood resources · residues |
+| 03 | screening | WOOD CHIPS | Reducing size. Preparing material. | Raw wood → chipping → wood chips |
+| 04 | grinding | WOOD PARTICLES | Refined for consistency. | Wood chips → grinding → particles |
+| 05 | drying | DRY BIOMASS | Moisture under control. | Wet biomass → drying → dry biomass |
+| 06 | conditioning | PREPARATION | Precision begins before pelletization. | Prepared biomass · ready for densification |
+| 07 | pelletizing | PELLETIZING | Pressure creates form. | Compression → densification → pellet |
+| 08 | cooling | WOOD PELLET | Renewable energy. Densified. | The result of the first transformation |
+| 09 | qc | VALUE UPGRADING | More than a transformation. | Product → technology → higher value |
+| 10 | packaging | THERMAL UPGRADING | Upgrading what biomass can become. | Wood pellet → controlled heat |
+| 11 | warehouse | TORREFACTION | The technology behind the transformation. | Heat changes structure |
+| 12 | logistics | VALUE CREATION | The pellet is not merely darkened. | White pellet → technology → black pellet |
+| 13 | energy | BLACK WOOD PELLET | Biomass. Upgraded. | The result of the second transformation |
+| 14 | circular | ADVANCED BIOENERGY | We create more value from it. | Wood → pellet → higher value |
+
+## Chapter grouping
+
+| Chapter | Stations | Narrative role |
+|---|---|---|
+| Origin | S01-S02 | Sustainable forest and selected raw wood resources |
+| Material preparation | S03-S06 | Chipping, refining, drying and conditioning |
+| First transformation | S07-S08 | Pelletization and finished wood pellet milestone |
+| Value upgrading | S09-S12 | Technology-driven shift from product to higher value |
+| Advanced product | S13-S14 | Black Wood Pellet reveal and advanced bioenergy close |
 
 ## Layout system
-- **Scroll track:** `height: (15 × 160)vh` (hero + 14). Lenis smooths; GSAP
-  ScrollTrigger scrubs a single normalized `progress`.
-- **Overlay blocks:** absolutely positioned per station window, alternating
-  left/right thirds so type never covers the scene’s focal object. Mobile:
-  always bottom-third, center-aligned.
-- **Persistent HUD:** progress rail (left edge, desktop) with 14 ticks +
-  current station label; wordmark top-left; CTA (“Request specification”)
-  top-right; scroll cue bottom-center on hero only.
-- **Footer:** the circular section doubles as the contact CTA — no separate
-  footer page weight.
+
+- **Scroll track:** `height: (15 × 160)vh`; Lenis smooths and GSAP
+  ScrollTrigger scrubs one normalized `progress`.
+- **Overlay blocks:** one full-viewport section per station, alternating
+  left/right thirds. Mobile remains bottom-third, center-aligned.
+- **Persistent HUD:** progress rail, wordmark, CTA, scroll cue and QC scan ring
+  still use the existing overlay component.
+- **Phase 2 note:** late-stage station ids still use old component names
+  (`Packaging`, `Warehouse`, `Logistics`, `Energy`, `Circular`) until their
+  visuals are rebuilt.
 
 ## Component tree
-```
+
+```text
 app/page.tsx
 └─ <Experience>                    (client)
    ├─ <ScrollRoot>                 Lenis + ScrollTrigger → progress store
@@ -44,8 +65,15 @@ app/page.tsx
    │     ├─ <CameraRig/>           camera path + lookAt from progress
    │     ├─ <Atmosphere/>          fog + palette lerp + key lights
    │     ├─ <HeroPellet/>          protagonist w/ phase shader
-   │     └─ <stations/*>           14 scene groups along the path
+   │     └─ <stations/*>           15 scene groups along the path
    └─ <Overlay>
       ├─ <Hud/>  <ProgressRail/>
       └─ <Section × 15>            copy + reveal animations
 ```
+
+## Cleanup rule
+
+Do not rename station ids until visual rebuilds are stable. During phase 2,
+the copy can describe the target chapter while the component name remains the
+legacy implementation slot.
+

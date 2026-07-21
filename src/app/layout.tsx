@@ -14,14 +14,18 @@ const grotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "AVP Biomass — One Pellet. A Complete Energy Cycle.",
+  title: "Trang chủ - An Việt Phát Group | AVP Biomass",
   description:
-    "A cinematic journey through the wood pellet value chain: from certified forest residues through grinding, drying and pelletizing to global logistics and carbon-neutral industrial energy.",
-  icons: { icon: "/icons/pellet-mark.svg" },
+    "A cinematic journey from responsibly sourced biomass through pelletization, value upgrading, torrefaction and black wood pellet production.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/icons/avp-logo-full.png",
+  },
   openGraph: {
-    title: "AVP Biomass — One Pellet. A Complete Energy Cycle.",
+    title: "Trang chủ - An Việt Phát Group | AVP Biomass",
     description:
-      "Follow a single wood pellet from the forest floor to industrial fire — and back into the carbon cycle.",
+      "From natural wood resources to pelletization, thermal upgrading and higher-value advanced bioenergy.",
     type: "website",
   },
 };
