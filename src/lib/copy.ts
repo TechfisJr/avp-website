@@ -95,7 +95,7 @@ export const COPY: SectionCopy[] = [
     headline: ["More than", "a transformation."],
     body: "The journey continues beyond conventional wood pellets into a new layer of value.",
     data: "Product → technology → higher value",
-    tags: ["ISO 9001", "SGS / Intertek Tested"],
+    tags: ["Technology Upgrade", "Higher-Value Path"],
     align: "left",
   },
   {
@@ -104,7 +104,7 @@ export const COPY: SectionCopy[] = [
     headline: ["Upgrading what", "biomass can become."],
     body: "Conventional wood pellets enter a carefully controlled thermal environment.",
     data: "Wood pellet → controlled heat",
-    tags: ["Jumbo Bag 800kg", "Bulk Vessel Export"],
+    tags: ["Controlled Heat", "Thermal Treatment"],
     align: "right",
   },
   {

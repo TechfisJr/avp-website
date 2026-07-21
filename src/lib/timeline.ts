@@ -48,7 +48,7 @@ const ROWS: Row[] = [
   ["conditioning",[0, 3, 0],   [-9, 3.5, 9],   "#15100a", "#e0b984",     2.3, 0.026, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0.4,  green: 0,    char: 0 }],
   ["pelletizing", [0, 2.5, 0], [0, 2.8, 8],    "#180c08", PALETTE.ember, 3.0, 0.024, "industrial",  { off: [1.3, -0.5, -3.6], scale: 0.42, heat: 0.95, green: 0, char: 0 }],
   ["cooling",     [0, 1.5, 0], [0.5, 9, 7],    "#0d1518", PALETTE.frost, 2.0, 0.023, "industrial",  { off: [0.9, 0, -3.2],scale: 1,   heat: 0.25, green: 0, char: 0 }],
-  ["qc",          [0, 2, 0],   [0, 2.4, 5],    "#0d1518", PALETTE.frost, 2.2, 0.02,  "industrial",  { off: [0, 0, -2.6],  scale: 1,   heat: 0,    green: 0,    char: 0 }],
+  ["qc",          [0, 2, 0],   [0, 2.4, 5],    "#0d1518", PALETTE.frost, 2.2, 0.02,  "industrial",  { off: [1.35, -0.35, -3.55], scale: 0.42, heat: 0.08, green: 0, char: 0 }],
   ["packaging",   [0, 2.2, 0], [4.5, 2.1, 8],  "#160b06", PALETTE.ember, 2.6, 0.022, "industrial",  { off: [-1.35, -0.45, -4.35], scale: 0.34, heat: 0.28, green: 0, char: 0.08 }],
   ["warehouse",   [0, 2.5, 0], [0, 2.6, 15],   "#150b06", PALETTE.ember, 2.8, 0.023, "industrial",  { off: [1.9, -0.85, -5.1], scale: 0.24, heat: 0.32, green: 0, char: 1 }],
   ["logistics",   [0, 0, 0],   [2, 13, 27],    "#09111b", "#9ec3dd",     1.8, 0.014, "logistics",   { off: [1.15, -0.35, -4.1], scale: 0.52, heat: 0.25, green: 0, char: 1 }],

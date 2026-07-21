@@ -115,7 +115,7 @@ Acceptance criteria:
 
 ## Phase 3 - Visual Rebuild: Value Upgrading
 
-Status: planned
+Status: done
 
 Current temporary station:
 
@@ -127,18 +127,18 @@ Target role:
 
 Implementation checklist:
 
-- [ ] Restage QC/product macro as a technology decision point.
-- [ ] Add visual language for `Product -> Technology -> Higher Value`.
-- [ ] Make hero pellet feel inspected, selected, then handed into upgrading.
-- [ ] Reduce normal QC certification emphasis.
-- [ ] Add transition particles from pale pellet tone toward warmer thermal tone.
-- [ ] Update `src/three/stations/QualityControl.tsx`.
-- [ ] Update hero pellet state in `src/lib/timeline.ts` if needed.
+- [x] Restage QC/product macro as a technology decision point.
+- [x] Add visual language for `Product -> Technology -> Higher Value`.
+- [x] Make hero pellet feel inspected, selected, then handed into upgrading.
+- [x] Reduce normal QC certification emphasis.
+- [x] Add transition particles from pale pellet tone toward warmer thermal tone.
+- [x] Update `src/three/stations/QualityControl.tsx`.
+- [x] Update hero pellet state in `src/lib/timeline.ts` if needed.
 
 Acceptance criteria:
 
-- [ ] Viewer understands the first product is complete.
-- [ ] The next chapter feels like a deliberate technology upgrade.
+- [x] Viewer understands the first product is complete.
+- [x] The next chapter feels like a deliberate technology upgrade.
 
 ## Phase 4 - Visual Rebuild: Thermal Upgrading
 
@@ -325,7 +325,7 @@ Manual QA:
 - [ ] Desktop hero: headline readable, pellet not covering text.
 - [ ] Mobile hero: headline wraps cleanly.
 - [ ] S01-S08: first transformation reads as wood-to-pellet.
-- [ ] S09: chapter shift to Value Upgrading is clear.
+- [x] S09: chapter shift to Value Upgrading is clear.
 - [x] S10: Thermal Upgrading reads as controlled heat.
 - [x] S11: Torrefaction reads as material transformation.
 - [ ] S12: Value Creation explains higher value.
@@ -338,7 +338,7 @@ Manual QA:
 ## Current Known Gaps
 
 - [ ] Late-stage visuals still need rebuild after phase 1 copy migration.
-- [ ] `QualityControl.tsx`, `Logistics.tsx`, and `Circular.tsx` still carry old
+- [ ] `Logistics.tsx` and `Circular.tsx` still carry old
   visual semantics.
 - [x] Core docs `02-storyboard`, `03-section-architecture`, and
   `07-scroll-timeline` now describe the target story.
@@ -347,8 +347,8 @@ Manual QA:
 
 ## Priority Order
 
-1. Value Upgrading transition.
-2. Value Creation bridge.
-3. Final Advanced Bioenergy close.
-4. Remaining asset manifest cleanup.
-5. Remaining docs cleanup outside the core storyboard/architecture/timeline.
+1. Value Creation bridge.
+2. Final Advanced Bioenergy close.
+3. Remaining asset manifest cleanup.
+4. Remaining docs cleanup outside the core storyboard/architecture/timeline.
+5. Optional component/station rename cleanup after visuals are stable.
