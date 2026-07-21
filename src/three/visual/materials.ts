@@ -190,19 +190,44 @@ export function createLogEndMaterial(overrides: Params = {}) {
         `#include <color_fragment>
         {
           float d = length(vObjPos.xz);
-          float wobble = pbrHash(vec3(floor(d * 5.0), 0.0, 0.0)) * 0.35;
-          float ring = 0.5 + 0.5 * sin(d * 30.0 + wobble * 6.0);
-          float ringSoft = smoothstep(0.3, 0.85, ring);
-          vec3 ringCol = mix(vec3(0.32, 0.2, 0.1), vec3(0.64, 0.47, 0.27), ringSoft);
-          float pith = 1.0 - smoothstep(0.0, 0.1, d);
-          ringCol = mix(ringCol, vec3(0.16, 0.09, 0.04), pith);
-          float rim = smoothstep(0.4, 0.5, d);
-          ringCol = mix(ringCol, vec3(0.2, 0.13, 0.07), rim);
-          float fleck = step(0.94, pbrHash(vObjPos * 40.0));
-          ringCol = mix(ringCol, vec3(0.08, 0.05, 0.03), fleck * 0.6);
+          float angle = atan(vObjPos.z, vObjPos.x);
+          
+          // Organic wavy ring deformation
+          float wave = sin(angle * 6.0) * 0.035 + sin(angle * 13.0) * 0.015;
+          wave += pbrHash(vObjPos * 6.0) * 0.02;
+          float wavyD = d + wave;
+          
+          // Growth rings
+          float ring = 0.5 + 0.5 * sin(wavyD * 48.0);
+          float ringSoft = smoothstep(0.25, 0.75, ring);
+          
+          // Warm acacia wood tones
+          vec3 woodLight = vec3(0.72, 0.54, 0.35);
+          vec3 woodDark = vec3(0.42, 0.28, 0.15);
+          vec3 ringCol = mix(woodDark, woodLight, ringSoft);
+          
+          // Dark pith center (organic shape)
+          float pithD = d + sin(angle * 4.0) * 0.02;
+          float pith = 1.0 - smoothstep(0.04, 0.14, pithD);
+          ringCol = mix(ringCol, vec3(0.24, 0.14, 0.08), pith);
+          
+          // Bark rim transition
+          float rim = smoothstep(0.92, 0.98, d);
+          ringCol = mix(ringCol, vec3(0.22, 0.15, 0.11), rim);
+          
+          // Radial drying cracks (Checks)
+          float crackNoise = pbrHash(vec3(floor(angle * 22.0), 0.0, 0.0));
+          float isCrack = step(0.94, crackNoise) * step(0.2, d);
+          float crackLine = step(0.97, cos(angle * 22.0 + crackNoise * 5.0));
+          ringCol = mix(ringCol, vec3(0.12, 0.08, 0.05), isCrack * crackLine * 0.9);
+          
+          // Fine wood grain noise
+          float grain = pbrHash(vObjPos * 80.0);
+          ringCol = mix(ringCol, ringCol * 0.9, grain * 0.15);
+          
           diffuseColor.rgb = ringCol;
           #ifdef USE_INSTANCING_COLOR
-            diffuseColor.rgb *= mix(vec3(1.0), vColor.rgb, 0.6);
+            diffuseColor.rgb *= mix(vec3(1.0), vColor.rgb, 0.65);
           #endif
         }`
       );

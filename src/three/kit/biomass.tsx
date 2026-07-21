@@ -38,6 +38,23 @@ export function Logs({
     return g;
   }, []);
 
+  const capGeometry = useMemo(() => {
+    const g = new THREE.CylinderGeometry(1, 1, 0.055, 24, 1);
+    const p = g.attributes.position as THREE.BufferAttribute;
+    const v = new THREE.Vector3();
+    for (let i = 0; i < p.count; i++) {
+      v.fromBufferAttribute(p, i);
+      const d = Math.sqrt(v.x * v.x + v.z * v.z);
+      if (d > 0.1) {
+        const theta = Math.atan2(v.z, v.x);
+        const ridges = 1 + 0.04 * Math.sin(theta * 8) + 0.025 * Math.sin(theta * 17);
+        p.setXYZ(i, v.x * ridges, v.y, v.z * ridges);
+      }
+    }
+    g.computeVertexNormals();
+    return g;
+  }, []);
+
   const slots = useMemo(() => {
     const out: { pos: THREE.Vector3; rot: number; scatter: THREE.Vector3; len: number; r: number }[] = [];
     let n = 0;
@@ -101,12 +118,8 @@ export function Logs({
   return (
     <group {...props}>
       <instancedMesh ref={inst} args={[barkGeometry, undefined, slots.length]} material={M.bark} />
-      <instancedMesh ref={capA} args={[undefined, undefined, slots.length]} material={logEndMat}>
-        <cylinderGeometry args={[1, 1, 0.055, 24]} />
-      </instancedMesh>
-      <instancedMesh ref={capB} args={[undefined, undefined, slots.length]} material={logEndMat}>
-        <cylinderGeometry args={[1, 1, 0.055, 24]} />
-      </instancedMesh>
+      <instancedMesh ref={capA} args={[capGeometry, undefined, slots.length]} material={logEndMat} />
+      <instancedMesh ref={capB} args={[capGeometry, undefined, slots.length]} material={logEndMat} />
     </group>
   );
 }

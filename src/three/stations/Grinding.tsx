@@ -35,6 +35,64 @@ export default function Grinding({ quality }: { quality: Quality }) {
       <mesh position={[0, 1.6, 0]} material={M.housing}>
         <boxGeometry args={[3.4, 3, 2.6]} />
       </mesh>
+      
+      {/* Hydraulic Pipes & Conduits */}
+      {[
+        { p: [-1.72, 1.8, -0.6], r: [0, 0, 0], args: [0.04, 0.04, 1.6] },
+        { p: [-1.72, 1.0, -0.6], r: [Math.PI / 2, 0, 0], args: [0.04, 0.04, 0.8] },
+        { p: [1.72, 2.2, 0.4], r: [0, 0, 0], args: [0.03, 0.03, 1.2] },
+      ].map((pipe, idx) => (
+        <mesh key={`pipe-${idx}`} position={pipe.p as [number, number, number]} rotation={pipe.r as [number, number, number]} material={M.steel}>
+          <cylinderGeometry args={pipe.args as [number, number, number, number?]} />
+        </mesh>
+      ))}
+
+      {/* Side Mounted Control Panel */}
+      <group position={[-1.73, 2.0, 0.5]}>
+        <mesh material={M.housing}>
+          <boxGeometry args={[0.08, 0.7, 0.5]} />
+        </mesh>
+        {/* Screen */}
+        <mesh position={[-0.042, 0.12, 0]} material={M.dark}>
+          <boxGeometry args={[0.01, 0.22, 0.38]} />
+        </mesh>
+        {/* Glowing Indicator Buttons */}
+        {[-0.12, 0, 0.12].map((z, idx) => (
+          <mesh key={idx} position={[-0.042, -0.12, z]}>
+            <boxGeometry args={[0.015, 0.06, 0.06]} />
+            <meshStandardMaterial emissive={idx === 0 ? "#7ba05b" : idx === 1 ? "#e85d26" : "#e8a33d"} emissiveIntensity={3} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* Diagnostic Pressure Dial */}
+      <group position={[1.35, 2.45, 1.32]} rotation={[0, 0.3, 0]}>
+        <mesh material={M.steel} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.16, 0.16, 0.05, 12]} />
+        </mesh>
+        <mesh position={[0, 0, 0.03]} rotation={[Math.PI / 2, 0, 0]} material={M.dark}>
+          <cylinderGeometry args={[0.13, 0.13, 0.01, 12]} />
+          {/* Yellow gauge indicator needle */}
+          <mesh position={[0, 0.05, 0]} material={M.safetyYellow}>
+            <boxGeometry args={[0.015, 0.1, 0.01]} />
+          </mesh>
+        </mesh>
+      </group>
+
+      {/* Structural support skid braces */}
+      {[-1, 1].map((s) => (
+        <mesh key={`support-skid-${s}`} position={[s * 1.8, 0.55, -0.9]} rotation={[0, 0, s * 0.3]} material={M.dark}>
+          <boxGeometry args={[0.12, 0.8, 0.12]} />
+        </mesh>
+      ))}
+
+      {/* Back Ventilation Cooling Slats */}
+      {Array.from({ length: 5 }, (_, idx) => (
+        <mesh key={`vent-slat-${idx}`} position={[0, 2.3 - idx * 0.14, -1.31]} material={M.dark}>
+          <boxGeometry args={[1.5, 0.04, 0.02]} />
+        </mesh>
+      ))}
+
       <mesh position={[0, 1.65, 1.35]} material={M.panel}>
         <boxGeometry args={[3.05, 2.45, 0.08]} />
       </mesh>

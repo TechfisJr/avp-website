@@ -122,7 +122,7 @@ export const COPY: SectionCopy[] = [
     headline: ["The pellet is not", "merely darkened."],
     body: "Technology transforms an established biomass product into a higher-value energy material.",
     data: "White pellet → technology → black pellet",
-    tags: ["Coal Substitute", "CO2 Reduction"],
+    tags: ["Material Upgrade", "Higher-Value Energy"],
     align: "right",
   },
   {

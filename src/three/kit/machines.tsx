@@ -175,6 +175,9 @@ export function JumboBag({
   );
 }
 
+import { createLogEndMaterial } from "../visual/materials";
+const logEndMat = createLogEndMaterial();
+
 /** Stylized flatbed truck silhouette with emissive running lights. */
 export function Truck({
   lightsOn = true,
@@ -182,28 +185,101 @@ export function Truck({
 }: { lightsOn?: boolean } & GroupProps) {
   return (
     <group {...props}>
+      {/* Cabin Body */}
       <mesh position={[2.1, 1.15, 0]} material={M.housing}>
         <boxGeometry args={[1.6, 1.5, 2]} />
       </mesh>
+      
+      {/* Windshield */}
+      <mesh position={[2.91, 1.35, 0]} material={M.dark}>
+        <boxGeometry args={[0.02, 0.7, 1.76]} />
+      </mesh>
+
+      {/* Side Windows */}
+      {[-1, 1].map((s) => (
+        <mesh key={`window-${s}`} position={[2.1, 1.35, s * 1.01]} material={M.dark}>
+          <boxGeometry args={[0.72, 0.52, 0.02]} />
+        </mesh>
+      ))}
+
+      {/* Front Grill */}
+      <mesh position={[2.91, 0.82, 0]} material={M.dark}>
+        <boxGeometry args={[0.02, 0.36, 1.3]} />
+      </mesh>
+
+      {/* Front Bumper */}
+      <mesh position={[2.93, 0.54, 0]} material={M.steel}>
+        <boxGeometry args={[0.12, 0.22, 2.16]} />
+      </mesh>
+
+      {/* Chassis Frame */}
       <mesh position={[-0.9, 0.75, 0]} material={M.dark}>
         <boxGeometry args={[4.6, 0.3, 2.1]} />
       </mesh>
+
+      {/* Flatbed Deck */}
       <mesh position={[-0.9, 1.25, 0]} material={M.steel}>
         <boxGeometry args={[4.4, 0.7, 1.9]} />
       </mesh>
+
+      {/* Vertical Exhaust Stack */}
+      <mesh position={[1.16, 1.56, -0.84]} material={M.steel}>
+        <cylinderGeometry args={[0.06, 0.06, 1.5, 8]} />
+      </mesh>
+
+      {/* Wheels with Hubcaps */}
       {[-2.6, -1.2, 1.7].flatMap((x) =>
         [-1, 1].map((s) => (
-          <mesh key={`${x}${s}`} position={[x, 0.42, s * 0.95]} rotation={[Math.PI / 2, 0, 0]} material={M.dark}>
-            <cylinderGeometry args={[0.42, 0.42, 0.3, 14]} />
-          </mesh>
+          <group key={`wheel-${x}-${s}`} position={[x, 0.42, s * 0.95]}>
+            {/* Tire */}
+            <mesh rotation={[Math.PI / 2, 0, 0]} material={M.dark}>
+              <cylinderGeometry args={[0.42, 0.42, 0.3, 14]} />
+            </mesh>
+            {/* Hubcap rim */}
+            <mesh position={[0, 0, s * 0.16]} rotation={[Math.PI / 2, 0, 0]} material={M.steel}>
+              <cylinderGeometry args={[0.18, 0.18, 0.02, 10]} />
+            </mesh>
+          </group>
         ))
       )}
-      {lightsOn && (
-        <mesh position={[2.92, 0.95, 0]}>
-          <boxGeometry args={[0.06, 0.18, 1.6]} />
-          <meshStandardMaterial emissive="#ffd9a0" emissiveIntensity={3} color="#000" />
+
+      {/* Headlights */}
+      {lightsOn && [-1, 1].map((s) => (
+        <mesh key={`headlight-${s}`} position={[2.92, 0.82, s * 0.75]} rotation={[0, 0, Math.PI / 2]} material={M.steel}>
+          <cylinderGeometry args={[0.12, 0.12, 0.02, 10]} />
+          <mesh position={[0, 0.015, 0]}>
+            <cylinderGeometry args={[0.1, 0.1, 0.01, 10]} />
+            <meshStandardMaterial emissive="#ffd9a0" emissiveIntensity={4} color="#fff" />
+          </mesh>
         </mesh>
-      )}
+      ))}
+
+      {/* Stack of logs on flatbed cargo area */}
+      {[
+        // Bottom layer cargo logs
+        { p: [-0.9, 1.76, -0.42], r: 0.24, l: 4.1 },
+        { p: [-0.9, 1.76, 0.42], r: 0.22, l: 4.1 },
+        // Middle layer cargo logs
+        { p: [-0.9, 2.14, -0.16], r: 0.23, l: 4.0 },
+        { p: [-0.9, 2.14, 0.32], r: 0.21, l: 4.0 },
+        // Top cargo log
+        { p: [-0.9, 2.48, 0.08], r: 0.22, l: 3.9 },
+      ].map((log, i) => (
+        <group key={`cargo-${i}`} position={log.p as [number, number, number]}>
+          {/* Log Bark */}
+          <mesh rotation={[0, 0, Math.PI / 2]} material={M.bark}>
+            <cylinderGeometry args={[log.r, log.r * 0.98, log.l, 12, 1, true]} />
+          </mesh>
+          {/* End Cap A */}
+          <mesh position={[log.l * 0.5, 0, 0]} rotation={[0, 0, Math.PI / 2]} material={logEndMat}>
+            <cylinderGeometry args={[log.r * 0.98, log.r * 0.98, 0.01, 12]} />
+          </mesh>
+          {/* End Cap B */}
+          <mesh position={[-log.l * 0.5, 0, 0]} rotation={[0, 0, -Math.PI / 2]} material={logEndMat}>
+            <cylinderGeometry args={[log.r * 0.98, log.r * 0.98, 0.01, 12]} />
+          </mesh>
+        </group>
+      ))}
     </group>
   );
 }

@@ -203,7 +203,7 @@ Acceptance criteria:
 
 ## Phase 6 - Visual Rebuild: Value Creation
 
-Status: planned
+Status: done
 
 Current temporary station:
 
@@ -215,18 +215,18 @@ Target role:
 
 Implementation checklist:
 
-- [ ] Decide whether to remove logistics visuals or keep them as background
+- [x] Decide whether to remove logistics visuals or keep them as background
   scale only.
-- [ ] Replace route arcs with value-flow arcs:
+- [x] Replace route arcs with value-flow arcs:
   `White Wood Pellet -> Torrefaction -> Black Wood Pellet`.
-- [ ] Add comparative visual: pale pellet, treatment core, black pellet.
-- [ ] Show value creation as a process result, not as a shipping promise.
-- [ ] Update `src/three/stations/Logistics.tsx`, or create a new station file.
+- [x] Add comparative visual: pale pellet, treatment core, black pellet.
+- [x] Show value creation as a process result, not as a shipping promise.
+- [x] Update `src/three/stations/Logistics.tsx`, or create a new station file.
 
 Acceptance criteria:
 
-- [ ] The viewer understands the upgraded pellet has a new value layer.
-- [ ] The station bridges Torrefaction and Black Wood Pellet cleanly.
+- [x] The viewer understands the upgraded pellet has a new value layer.
+- [x] The station bridges Torrefaction and Black Wood Pellet cleanly.
 
 ## Phase 7 - Visual Rebuild: Black Wood Pellet
 
@@ -328,7 +328,7 @@ Manual QA:
 - [x] S09: chapter shift to Value Upgrading is clear.
 - [x] S10: Thermal Upgrading reads as controlled heat.
 - [x] S11: Torrefaction reads as material transformation.
-- [ ] S12: Value Creation explains higher value.
+- [x] S12: Value Creation explains higher value.
 - [x] S13: Black Wood Pellet reads as upgraded product.
 - [ ] S14: final message closes on higher value.
 - [ ] No scene copy contradicts its visual.
@@ -338,7 +338,7 @@ Manual QA:
 ## Current Known Gaps
 
 - [ ] Late-stage visuals still need rebuild after phase 1 copy migration.
-- [ ] `Logistics.tsx` and `Circular.tsx` still carry old
+- [ ] `Circular.tsx` still carries old
   visual semantics.
 - [x] Core docs `02-storyboard`, `03-section-architecture`, and
   `07-scroll-timeline` now describe the target story.
@@ -347,8 +347,7 @@ Manual QA:
 
 ## Priority Order
 
-1. Value Creation bridge.
-2. Final Advanced Bioenergy close.
-3. Remaining asset manifest cleanup.
-4. Remaining docs cleanup outside the core storyboard/architecture/timeline.
-5. Optional component/station rename cleanup after visuals are stable.
+1. Final Advanced Bioenergy close.
+2. Remaining asset manifest cleanup.
+3. Remaining docs cleanup outside the core storyboard/architecture/timeline.
+4. Optional component/station rename cleanup after visuals are stable.

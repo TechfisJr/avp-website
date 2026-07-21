@@ -51,7 +51,7 @@ const ROWS: Row[] = [
   ["qc",          [0, 2, 0],   [0, 2.4, 5],    "#0d1518", PALETTE.frost, 2.2, 0.02,  "industrial",  { off: [1.35, -0.35, -3.55], scale: 0.42, heat: 0.08, green: 0, char: 0 }],
   ["packaging",   [0, 2.2, 0], [4.5, 2.1, 8],  "#160b06", PALETTE.ember, 2.6, 0.022, "industrial",  { off: [-1.35, -0.45, -4.35], scale: 0.34, heat: 0.28, green: 0, char: 0.08 }],
   ["warehouse",   [0, 2.5, 0], [0, 2.6, 15],   "#150b06", PALETTE.ember, 2.8, 0.023, "industrial",  { off: [1.9, -0.85, -5.1], scale: 0.24, heat: 0.32, green: 0, char: 1 }],
-  ["logistics",   [0, 0, 0],   [2, 13, 27],    "#09111b", "#9ec3dd",     1.8, 0.014, "logistics",   { off: [1.15, -0.35, -4.1], scale: 0.52, heat: 0.25, green: 0, char: 1 }],
+  ["logistics",   [0, 1.8, 0], [3.8, 3.2, 9],  "#120906", PALETTE.ember, 2.6, 0.02,  "industrial",  { off: [1.15, -0.35, -4.1], scale: 0, heat: 0.25, green: 0, char: 1 }],
   ["energy",      [0, 3, 0],   [1.2, 2.8, 10], "#120906", PALETTE.ember, 2.8, 0.02,  "industrial",  { off: [1.25, -0.55, -4.15], scale: 0, heat: 0.22, green: 0,    char: 1 }],
   ["circular",    [0, 2.2, 0], [0, 2.4, 10],   "#0a160d", PALETTE.moss,  2.4, 0.024, "forest",      { off: [0.4, -0.2, -3.8],  scale: 0.58, heat: 0.08,  green: 0.2, char: 1 }],
 ];

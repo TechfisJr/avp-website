@@ -3,7 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { COPY } from "@/lib/copy";
 import { scroll } from "@/lib/scrollStore";
-import { N, overlayAlpha, overlayReveal, stationIndex } from "@/lib/timeline";
+import { N, W, overlayAlpha, overlayReveal, stationIndex } from "@/lib/timeline";
+import RfqModal from "./RfqModal";
+import FloatingWidget from "./FloatingWidget";
+import SpecComparison from "./SpecComparison";
 
 type SectionRefs = {
   root: HTMLElement | null;
@@ -19,6 +22,7 @@ export default function Overlay() {
   const scrollCue = useRef<HTMLDivElement>(null);
   const scanRing = useRef<HTMLImageElement>(null);
   const [active, setActive] = useState(0);
+  const [isRfqOpen, setIsRfqOpen] = useState(false);
 
   useEffect(() => {
     let raf = 0;
@@ -67,6 +71,15 @@ export default function Overlay() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  const scrollToStation = (i: number) => {
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const targetScroll = (i + 0.3) * W * scrollHeight;
+    window.scrollTo({
+      top: targetScroll,
+      behavior: "smooth"
+    });
+  };
+
   return (
     <>
       <div className="overlay" aria-hidden="true">
@@ -82,7 +95,7 @@ export default function Overlay() {
               ref={(node) => {
                 sections.current[i].inner = node;
               }}
-              className="section-inner"
+              className={`section-inner ${i === 9 || i === 13 ? "wide-panel" : ""}`}
             >
               <p className="eyebrow">
                 <span
@@ -107,33 +120,64 @@ export default function Overlay() {
                 ))}
               </h1>
               {section.body && <p className="body-copy">{section.body}</p>}
+              
+              {section.tags && (
+                <div className="card-tags">
+                  {section.tags.map((tag) => (
+                    <span key={tag} className="tag-badge">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {(i === 9 || i === 13) && <SpecComparison />}
+
               {section.data && <p className="datapoint">{section.data}</p>}
             </div>
           </section>
         ))}
         <img ref={scanRing} className="scan-ring" src="/icons/scan-ring.svg" alt="" />
       </div>
+      
+      <div className="hud-header-bar" />
+      
       <div className="hud" aria-hidden="true">
         <a className="brand" href="#top" aria-label="An Việt Phát Group">
           <img src="/icons/avp-logo-full.png" alt="An Việt Phát" className="w-auto object-contain" />
         </a>
-        <a className="cta" href="mailto:sales@avpbiomass.example">
+        
+        <button 
+          className="cta" 
+          onClick={() => setIsRfqOpen(true)}
+          style={{ background: "transparent", cursor: "pointer" }}
+        >
           Request specification
-        </a>
+        </button>
+        
         <nav className="rail" aria-label="Progress">
           {COPY.map((section, i) => (
-            <div key={section.id} className={`tick ${i === active ? "active" : ""}`}>
+            <div 
+              key={section.id} 
+              className={`tick ${i === active ? "active" : ""}`}
+              onClick={() => scrollToStation(i)}
+            >
               <i />
               <b>{i === active ? section.eyebrow : `${String(i).padStart(2, "0")}`}</b>
+              <span className="rail-tooltip">{section.eyebrow}</span>
             </div>
           ))}
         </nav>
+        
         <div ref={scrollCue} className="scroll-cue">
           <img src="/icons/scroll-cue.svg" alt="" width={28} height={42} />
           <span>Scroll</span>
         </div>
         <span className="sr-only">{active + 1} / {N}</span>
       </div>
+
+      <FloatingWidget onOpenRfq={() => setIsRfqOpen(true)} />
+      <RfqModal isOpen={isRfqOpen} onClose={() => setIsRfqOpen(false)} />
     </>
   );
 }
