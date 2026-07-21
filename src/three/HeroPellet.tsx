@@ -13,9 +13,8 @@ const MODEL_URL = "/models/hero-pellet.glb";
 
 /**
  * The protagonist. Anchored in camera space so it stays perfectly framed;
- * staging (offset/scale/heat/green) interpolates between per-station configs
- * from timeline.ts. Dissolves into particles at the hero exit and again as it
- * enters the furnace.
+ * staging (offset/scale/heat/green/char) interpolates between per-station
+ * configs from timeline.ts. Dissolves into particles at the hero exit.
  */
 export default function HeroPellet() {
   const mesh = useRef<THREE.Mesh>(null);
@@ -59,11 +58,10 @@ export default function HeroPellet() {
     uniforms.uChar.value = lerp(a.char, b.char, f);
     uniforms.uTime.value = state.clock.elapsedTime;
 
-    // dissolve on hero exit (S00) and furnace entry (S13 end)
+    // dissolve on hero exit (S00). Later target-product chapters keep the
+    // pellet readable instead of burning it away.
     let dissolve = 0;
     if (i === 0) dissolve = smooth((local - 0.68) / 0.28) * 0.98;
-    if (i === 13) dissolve = smooth((local - 0.78) / 0.2) * 0.98;
-    if (i === 14) dissolve = Math.max(0, 0.98 - smooth(local / 0.25));
     uniforms.uDissolve.value = dissolve;
 
     const visible = scale > 0.02;

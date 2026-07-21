@@ -142,7 +142,7 @@ Acceptance criteria:
 
 ## Phase 4 - Visual Rebuild: Thermal Upgrading
 
-Status: planned
+Status: done
 
 Current temporary station:
 
@@ -242,21 +242,22 @@ Target role:
 
 Implementation checklist:
 
-- [ ] Restage furnace scene into Black Wood Pellet product hero.
-- [ ] Add black pellet material state: darker body, denser surface, premium
+- [x] Restage furnace scene into Black Wood Pellet product hero.
+- [x] Add black pellet material state: darker body, denser surface, premium
   highlight, lower raw-wood warmth.
-- [ ] Keep thermal glow as proof of upgrading, not active burning.
-- [ ] Show product as result of manufacturing plus technology.
-- [ ] Add optional comparison ghost of conventional pellet.
-- [ ] Update `src/three/stations/Energy.tsx`, or create a new station file.
-- [ ] Update `src/three/HeroPellet.tsx` for black pellet material state.
-- [ ] Update `src/lib/timeline.ts` hero heat/green states into a clearer
+- [x] Keep thermal glow as proof of upgrading, not active burning.
+- [x] Show product as result of manufacturing plus technology.
+- [x] Add optional comparison ghost of conventional pellet.
+- [x] Update `src/three/stations/Energy.tsx`, or create a new station file.
+- [x] Update `src/three/HeroPellet.tsx` for black pellet material state.
+- [x] Update `src/lib/timeline.ts` hero heat/green states into a clearer
   upgrade-state progression.
+- [x] Update `public/asset-manifest.json` with the Black Wood Pellet product hero.
 
 Acceptance criteria:
 
-- [ ] Black Wood Pellet reads as the target product.
-- [ ] It does not look like a burnt version of the original pellet.
+- [x] Black Wood Pellet reads as the target product.
+- [x] It does not look like a burnt version of the original pellet.
 
 ## Phase 8 - Final Advanced Bioenergy Close
 
@@ -328,7 +329,7 @@ Manual QA:
 - [ ] S10: Thermal Upgrading reads as controlled heat.
 - [x] S11: Torrefaction reads as material transformation.
 - [ ] S12: Value Creation explains higher value.
-- [ ] S13: Black Wood Pellet reads as upgraded product.
+- [x] S13: Black Wood Pellet reads as upgraded product.
 - [ ] S14: final message closes on higher value.
 - [ ] No scene copy contradicts its visual.
 - [ ] No old `coal replacement / logistics / circular economy` message remains
@@ -337,17 +338,16 @@ Manual QA:
 ## Current Known Gaps
 
 - [ ] Late-stage visuals still need rebuild after phase 1 copy migration.
-- [ ] `Packaging.tsx`, `Logistics.tsx`, `Energy.tsx`, and `Circular.tsx` still
-  carry old visual semantics.
+- [ ] `Packaging.tsx`, `Logistics.tsx`, and `Circular.tsx` still carry old
+  visual semantics.
 - [x] Core docs `02-storyboard`, `03-section-architecture`, and
   `07-scroll-timeline` now describe the target story.
-- [ ] Asset manifest still needs thermal-upgrading and black pellet entries.
+- [ ] Asset manifest still needs thermal-upgrading entries.
 
 ## Priority Order
 
-1. Black Wood Pellet product hero.
-2. Thermal Upgrading controlled environment.
-3. Value Upgrading transition.
-4. Final Advanced Bioenergy close.
-5. Asset manifest cleanup.
-6. Remaining docs cleanup outside the core storyboard/architecture/timeline.
+1. Thermal Upgrading controlled environment.
+2. Value Upgrading transition.
+3. Final Advanced Bioenergy close.
+4. Asset manifest cleanup.
+5. Remaining docs cleanup outside the core storyboard/architecture/timeline.
