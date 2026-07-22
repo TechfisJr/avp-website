@@ -12,10 +12,10 @@ export const COPY: SectionCopy[] = [
   {
     id: "hero",
     eyebrow: "AVP Biomass",
-    headline: ["From wood.", "To pellet.", "To higher value."],
-    body: "A journey that begins with natural biomass and evolves through technology into advanced bioenergy.",
-    tags: ["2M Tons / Year", "Green Energy", "Global Export"],
-    align: "center",
+    headline: ["From Wood Waste", "to Clean Energy"],
+    body: "Sustainable biomass pellets, engineered for performance and a cleaner tomorrow. Renewable energy. Responsible future.",
+    tags: ["100% Renewable"],
+    align: "left",
   },
   {
     id: "forest",

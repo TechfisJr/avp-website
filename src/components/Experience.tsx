@@ -37,6 +37,12 @@ export default function Experience() {
     flags.reducedMotion = reduced;
     setWebgl(webglAvailable());
     setQuality(detectQuality());
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+    scroll.t = 0;
+    scroll.v = 0;
   }, [reduced]);
 
   useEffect(() => {

@@ -39,7 +39,7 @@ const add = (a: V3, b: V3): V3 => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 type Row = [string, V3, V3, string, string, number, number, PresetName, StationDef["hero"]];
 
 const ROWS: Row[] = [
-  ["hero",        [0, 2, 0],   [0, 2.2, 5],    "#090806", PALETTE.amber, 2.8, 0.022, "heroProduct", { off: [0, 0, -3.4],  scale: 1,   heat: 0.02, green: 0,    char: 0 }],
+  ["hero",        [0, 2, 0],   [0, 2.2, 5],    "#090806", PALETTE.amber, 3.2, 0.02,  "heroProduct", { off: [1.25, -0.05, -3.65], scale: 0.68, heat: 0.08, green: 0, char: 0 }],
   ["forest",      [0, 4, 0],   [7, 2, 12],     "#111b12", "#c9e3a5",     2.2, 0.036, "forest",      { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
   ["collection",  [0, 1.5, 0], [9, 3, 10],     "#16110a", PALETTE.amber, 2.3, 0.026, "warmBiomass", { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
   ["screening",   [0, 2.5, 0], [1, 8, 10],     "#121315", "#e4d6b4",     2.1, 0.022, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
@@ -126,6 +126,7 @@ export function dwellCoord(t: number): number {
 export function overlayAlpha(t: number, i: number): number {
   const local = (t - i * W) / W; // unclamped
   if (local < -0.1 || local > 1.05) return 0;
+  if (i === 0) return clamp01(1 - smooth((local - 0.72) / 0.2));
   const inA = smooth((local - 0.12) / 0.22);
   const last = i === N - 1;
   const outA = last ? 1 : 1 - smooth((local - 0.72) / 0.2);
@@ -135,5 +136,6 @@ export function overlayAlpha(t: number, i: number): number {
 /** reveal progress 0..1 (drives line masks; separate from alpha for stagger) */
 export function overlayReveal(t: number, i: number): number {
   const local = (t - i * W) / W;
+  if (i === 0) return 1;
   return smooth((local - 0.1) / 0.3);
 }

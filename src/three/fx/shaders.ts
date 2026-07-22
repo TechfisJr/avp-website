@@ -138,12 +138,12 @@ export const PELLET_FRAG = /* glsl */ `
     float cutRing = 0.5 + 0.5 * sin(length(vP.xz) * 95.0 + fbm(vP * 18.0) * 5.0);
     float pores = step(0.78, fbm(vec3(vP.x * 36.0, vP.y * 18.0, vP.z * 36.0)));
 
-    vec3 sideWood = mix(vec3(0.54, 0.36, 0.2), vec3(0.31, 0.2, 0.11), fineGroove);
-    vec3 capWood = mix(vec3(0.62, 0.45, 0.27), vec3(0.37, 0.25, 0.13), cutRing);
+    vec3 sideWood = mix(vec3(0.46, 0.29, 0.14), vec3(0.23, 0.145, 0.075), fineGroove);
+    vec3 capWood = mix(vec3(0.52, 0.36, 0.18), vec3(0.28, 0.18, 0.085), cutRing);
     vec3 wood = mix(sideWood, capWood, cap);
-    wood = mix(wood, vColor, 0.58);
-    wood *= 0.86 + 0.26 * sideFiber;
-    wood *= 1.0 - pores * 0.18;
+    wood = mix(wood, vColor, 0.34);
+    wood *= 0.76 + 0.34 * sideFiber;
+    wood *= 1.0 - pores * 0.26;
     wood += cap * vec3(0.08, 0.055, 0.025);
     vec3 charWood = mix(vec3(0.12, 0.085, 0.055), vec3(0.035, 0.028, 0.022), fineGroove);
     charWood += cap * vec3(0.035, 0.027, 0.018);
@@ -157,8 +157,8 @@ export const PELLET_FRAG = /* glsl */ `
     float fres = pow(1.0 - clamp(dot(N, V), 0.0, 1.0), 2.2);
     float spec = pow(max(0.0, dot(reflect(-L, N), V)), 38.0) * (0.08 + uChar * 0.12) * (1.0 - pores * 0.6);
 
-    vec3 col = wood * (0.22 + halfLambert * vec3(1.0, 0.96, 0.88) * 1.02 + fill * 0.3);
-    col += fres * mix(vec3(1.0, 0.78, 0.46), vec3(0.9, 0.62, 0.34), uChar) * (0.42 + uChar * 0.18);
+    vec3 col = wood * (0.18 + halfLambert * vec3(1.0, 0.91, 0.78) * 0.95 + fill * 0.22);
+    col += fres * mix(vec3(1.0, 0.68, 0.32), vec3(0.9, 0.62, 0.34), uChar) * (0.34 + uChar * 0.18);
     col += spec * vec3(1.0, 0.82, 0.52);
 
     // ember heat from within
