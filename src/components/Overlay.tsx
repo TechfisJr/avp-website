@@ -90,14 +90,12 @@ export default function Overlay() {
               sections.current[i].root = node;
             }}
             className={`section align-${section.align}`}
-            style={i === 0 ? { opacity: 1, visibility: "visible" } : undefined}
           >
             <div
               ref={(node) => {
                 sections.current[i].inner = node;
               }}
               className={`section-inner ${i === 9 || i === 13 ? "wide-panel" : ""}`}
-              style={i === 0 ? { transform: "translate3d(0, 0, 0)" } : undefined}
             >
               <p className="eyebrow">
                 <span
@@ -105,7 +103,6 @@ export default function Overlay() {
                     sections.current[i].tick = node;
                   }}
                   className="tick"
-                  style={i === 0 ? { transform: "scaleX(1)" } : undefined}
                 />
                 {section.eyebrow}
               </p>
@@ -116,7 +113,6 @@ export default function Overlay() {
                       ref={(node) => {
                         if (node) sections.current[i].lines[lineIndex] = node;
                       }}
-                      style={i === 0 ? { transform: "translate3d(0, 0, 0)" } : undefined}
                     >
                       {i === 0 && line === "to Clean Energy" ? (
                         <>

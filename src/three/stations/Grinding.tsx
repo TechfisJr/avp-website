@@ -3,11 +3,11 @@
 import { useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
-import { STATIONS, bell } from "@/lib/timeline";
+import { STATIONS, bell, smooth } from "@/lib/timeline";
 import type { Quality } from "@/lib/quality";
 import ParticleField from "../fx/ParticleField";
 import { useStation } from "../useStation";
-import { Hopper } from "../kit/machines";
+import { Hopper, SmallChipCart } from "../kit/machines";
 import { Chips } from "../kit/biomass";
 import { M } from "../kit/industrial";
 
@@ -18,11 +18,19 @@ const S = STATIONS[I];
 export default function Grinding({ quality }: { quality: Quality }) {
   const { group, state } = useStation(I);
   const drum = useRef<THREE.Group>(null);
+  const chipCart = useRef<THREE.Group>(null);
   const q = quality.particleScale;
 
   useFrame((_, delta) => {
-    if (!drum.current || !state.current.active) return;
-    drum.current.rotation.x += delta * 14 * bell(state.current.local);
+    if (!state.current.active) return;
+    if (drum.current) {
+      drum.current.rotation.x += delta * 14 * bell(state.current.local);
+    }
+    if (chipCart.current) {
+      const arrive = smooth(state.current.local / 0.32);
+      chipCart.current.position.set(-5.2 + arrive * 2.2, 0, 2.9 - arrive * 0.45);
+      chipCart.current.rotation.set(0, 0.28, 0);
+    }
   });
 
   return (
@@ -35,6 +43,9 @@ export default function Grinding({ quality }: { quality: Quality }) {
       <mesh position={[0, 1.6, 0]} material={M.housing}>
         <boxGeometry args={[3.4, 3, 2.6]} />
       </mesh>
+      <group ref={chipCart}>
+        <SmallChipCart scale={0.72} rotation={[0, 0.28, 0]} chipLoad={1} getDump={() => smooth((state.current.local - 0.48) / 0.24)} />
+      </group>
       
       {/* Hydraulic Pipes & Conduits */}
       {[

@@ -27,10 +27,16 @@ export default function Collection({ quality }: { quality: Quality }) {
       <Logs
         count={quality.tier === 0 ? 18 : 26}
         position={[-1.5, 0, -1]}
-        getAssemble={() => smooth((state.current.local - 0.1) / 0.45)}
+        getAssemble={() => 1}
       />
       <Shavings count={quality.tier === 0 ? 4 : 9} position={[0.5, 0, 2.5]} />
-      <Truck position={[6.5, 0, 3]} rotation={[0, -0.9, 0]} />
+      <Truck
+        position={[3.65, 0, 2.55]}
+        rotation={[0, -0.68, 0]}
+        scale={0.74}
+        cargoLoad={0}
+        getCargoLoad={() => smooth((state.current.local - 0.28) / 0.38)}
+      />
 
       {/* motivated headlight practical raking across the pile */}
       <pointLight position={[8.3, 1.3, 0.7]} color="#ffd9a0" intensity={20} distance={15} decay={1.7} />

@@ -4,6 +4,7 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame, type ThreeElements } from "@react-three/fiber";
 import { M } from "./industrial";
+import { Chips } from "./biomass";
 
 type GroupProps = ThreeElements["group"];
 import { BELT_VERT, BELT_FRAG } from "../fx/shaders";
@@ -178,11 +179,48 @@ export function JumboBag({
 import { createLogEndMaterial } from "../visual/materials";
 const logEndMat = createLogEndMaterial();
 
+const cargoLogs = [
+  { p: [-0.9, 1.76, -0.42] as [number, number, number], r: 0.24, l: 4.1 },
+  { p: [-0.9, 1.76, 0.42] as [number, number, number], r: 0.22, l: 4.1 },
+  { p: [-0.9, 2.14, -0.16] as [number, number, number], r: 0.23, l: 4.0 },
+  { p: [-0.9, 2.14, 0.32] as [number, number, number], r: 0.21, l: 4.0 },
+  { p: [-0.9, 2.48, 0.08] as [number, number, number], r: 0.22, l: 3.9 },
+];
+
+const ease01 = (x: number) => {
+  const c = Math.min(1, Math.max(0, x));
+  return c * c * (3 - 2 * c);
+};
+
 /** Stylized flatbed truck silhouette with emissive running lights. */
 export function Truck({
   lightsOn = true,
+  cargoLoad = 1,
+  getCargoLoad,
   ...props
-}: { lightsOn?: boolean } & GroupProps) {
+}: { lightsOn?: boolean; cargoLoad?: number; getCargoLoad?: () => number } & GroupProps) {
+  const cargo = useRef<(THREE.Group | null)[]>([]);
+
+  useFrame(() => {
+    const load = Math.min(1, Math.max(0, getCargoLoad ? getCargoLoad() : cargoLoad));
+    cargo.current.forEach((log, i) => {
+      if (!log) return;
+      const spec = cargoLogs[i];
+      const u = ease01((load - i * 0.1) / 0.34);
+      log.visible = u > 0.01;
+      const sx = spec.p[0] - 3.35 - i * 0.12;
+      const sy = spec.p[1] + 1.55 + i * 0.18;
+      const sz = spec.p[2] + (i % 2 === 0 ? -1.35 : 1.35);
+      log.position.set(
+        sx + (spec.p[0] - sx) * u,
+        sy + (spec.p[1] - sy) * u + Math.sin(u * Math.PI) * 0.55,
+        sz + (spec.p[2] - sz) * u
+      );
+      log.rotation.set(0, (1 - u) * (i % 2 === 0 ? -0.55 : 0.55), (1 - u) * 0.35);
+      log.scale.setScalar(0.78 + u * 0.22);
+    });
+  });
+
   return (
     <group {...props}>
       {/* Cabin Body */}
@@ -254,18 +292,16 @@ export function Truck({
         </mesh>
       ))}
 
-      {/* Stack of logs on flatbed cargo area */}
-      {[
-        // Bottom layer cargo logs
-        { p: [-0.9, 1.76, -0.42], r: 0.24, l: 4.1 },
-        { p: [-0.9, 1.76, 0.42], r: 0.22, l: 4.1 },
-        // Middle layer cargo logs
-        { p: [-0.9, 2.14, -0.16], r: 0.23, l: 4.0 },
-        { p: [-0.9, 2.14, 0.32], r: 0.21, l: 4.0 },
-        // Top cargo log
-        { p: [-0.9, 2.48, 0.08], r: 0.22, l: 3.9 },
-      ].map((log, i) => (
-        <group key={`cargo-${i}`} position={log.p as [number, number, number]}>
+      {/* Staggered cargo logs: empty bed -> loaded bed when cargoLoad rises. */}
+      {cargoLogs.map((log, i) => (
+        <group
+          key={`cargo-${i}`}
+          ref={(node) => {
+            cargo.current[i] = node;
+          }}
+          position={log.p}
+          visible={!getCargoLoad && cargoLoad > 0.01}
+        >
           {/* Log Bark */}
           <mesh rotation={[0, 0, Math.PI / 2]} material={M.bark}>
             <cylinderGeometry args={[log.r, log.r * 0.98, log.l, 12, 1, true]} />
@@ -280,6 +316,69 @@ export function Truck({
           </mesh>
         </group>
       ))}
+    </group>
+  );
+}
+
+/** Small in-plant chip cart — used after chipping, never for full logs. */
+export function SmallChipCart({
+  chipLoad = 1,
+  getChipLoad,
+  getDump,
+  ...props
+}: { chipLoad?: number; getChipLoad?: () => number; getDump?: () => number } & GroupProps) {
+  const bed = useRef<THREE.Group>(null);
+  const chips = useRef<THREE.Group>(null);
+
+  useFrame(() => {
+    const load = Math.min(1, Math.max(0, getChipLoad ? getChipLoad() : chipLoad));
+    const dump = Math.min(1, Math.max(0, getDump ? getDump() : 0));
+    if (bed.current) {
+      bed.current.rotation.z = -dump * 0.32;
+      bed.current.position.y = 0.92 + dump * 0.08;
+    }
+    if (chips.current) {
+      chips.current.visible = load > 0.03;
+      chips.current.position.set(dump * 0.28, 1.12 - dump * 0.08, 0);
+      chips.current.rotation.z = -dump * 0.32;
+      chips.current.scale.setScalar(0.78 + load * 0.22);
+    }
+  });
+
+  return (
+    <group {...props}>
+      <mesh position={[0, 0.42, 0]} material={M.dark}>
+        <boxGeometry args={[2.1, 0.18, 1.15]} />
+      </mesh>
+      <group ref={bed} position={[0, 0.92, 0]}>
+        <mesh material={M.steel}>
+          <boxGeometry args={[1.95, 0.2, 1.1]} />
+        </mesh>
+        {[-1, 1].map((z) => (
+          <mesh key={z} position={[0, 0.28, z * 0.58]} material={M.housing}>
+            <boxGeometry args={[1.95, 0.52, 0.08]} />
+          </mesh>
+        ))}
+        <mesh position={[-1.02, 0.28, 0]} material={M.housing}>
+          <boxGeometry args={[0.08, 0.52, 1.1]} />
+        </mesh>
+      </group>
+      <group ref={chips}>
+        <Chips count={34} position={[0, 1.08, 0]} area={[0.72, 0.16, 0.36]} />
+      </group>
+      {[-0.68, 0.68].flatMap((x) =>
+        [-0.58, 0.58].map((z) => (
+          <mesh key={`${x}-${z}`} position={[x, 0.28, z]} rotation={[Math.PI / 2, 0, 0]} material={M.dark}>
+            <cylinderGeometry args={[0.24, 0.24, 0.16, 14]} />
+          </mesh>
+        ))
+      )}
+      <mesh position={[0.95, 0.9, 0]} material={M.housing}>
+        <boxGeometry args={[0.55, 0.75, 0.86]} />
+      </mesh>
+      <mesh position={[1.24, 0.98, 0]} material={M.dark}>
+        <boxGeometry args={[0.04, 0.38, 0.72]} />
+      </mesh>
     </group>
   );
 }

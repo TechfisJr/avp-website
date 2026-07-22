@@ -126,7 +126,11 @@ export function dwellCoord(t: number): number {
 export function overlayAlpha(t: number, i: number): number {
   const local = (t - i * W) / W; // unclamped
   if (local < -0.1 || local > 1.05) return 0;
-  if (i === 0) return clamp01(1 - smooth((local - 0.72) / 0.2));
+  if (i === 0) {
+    const inA = smooth((local - 0.08) / 0.24);
+    const outA = 1 - smooth((local - 0.72) / 0.2);
+    return clamp01(Math.min(inA, outA));
+  }
   const inA = smooth((local - 0.12) / 0.22);
   const last = i === N - 1;
   const outA = last ? 1 : 1 - smooth((local - 0.72) / 0.2);
@@ -136,6 +140,6 @@ export function overlayAlpha(t: number, i: number): number {
 /** reveal progress 0..1 (drives line masks; separate from alpha for stagger) */
 export function overlayReveal(t: number, i: number): number {
   const local = (t - i * W) / W;
-  if (i === 0) return 1;
+  if (i === 0) return smooth((local - 0.08) / 0.28);
   return smooth((local - 0.1) / 0.3);
 }

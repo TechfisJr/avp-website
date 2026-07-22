@@ -1103,8 +1103,6 @@ body {
   padding-left: clamp(8rem, 13vw, 15rem);
   padding-right: clamp(2rem, 6vw, 7rem);
   text-align: left;
-  opacity: 1;
-  visibility: visible;
 }
 
 .section:first-child .section-inner {
