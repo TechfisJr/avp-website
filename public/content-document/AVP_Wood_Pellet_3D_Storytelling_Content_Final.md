@@ -363,8 +363,13 @@ Closing message:
 
 Alternative brand statement:
 
-# WE DON'T JUST TRANSFORM BIOMASS.  
-# WE CREATE MORE VALUE FROM IT.
+# BUILT FROM RESPONSIBLE RESOURCES.  
+# SHAPED BY TECHNOLOGY.  
+# CREATED FOR HIGHER-VALUE ADVANCED BIOENERGY.
+
+Mission-inspired support message:
+
+> AVP brings a pioneer mindset to renewable energy, connecting responsible resources, technology and global partners.
 
 ---
 
@@ -459,8 +464,9 @@ ADVANCED BIOENERGY
 
 ## Final Brand Message
 
-# WE DON'T JUST TRANSFORM BIOMASS.  
-# WE CREATE MORE VALUE FROM IT.
+# BUILT FROM RESPONSIBLE RESOURCES.  
+# SHAPED BY TECHNOLOGY.  
+# CREATED FOR HIGHER-VALUE ADVANCED BIOENERGY.
 
 ---
 

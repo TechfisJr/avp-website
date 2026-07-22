@@ -30,7 +30,7 @@ TO HIGHER VALUE
 | 11 | warehouse | TORREFACTION | The technology behind the transformation. | Heat changes structure |
 | 12 | logistics | VALUE CREATION | The pellet is not merely darkened. | White pellet → technology → black pellet |
 | 13 | energy | BLACK WOOD PELLET | Biomass. Upgraded. | The result of the second transformation |
-| 14 | circular | ADVANCED BIOENERGY | From wood. To pellet. To higher value. | Wood → pelletization → Black Wood Pellet |
+| 14 | circular | ADVANCED BIOENERGY | From wood. To pellet. To higher value. | Responsible resources → technology → global energy value |
 
 ## Chapter grouping
 

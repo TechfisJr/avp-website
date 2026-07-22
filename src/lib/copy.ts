@@ -138,9 +138,9 @@ export const COPY: SectionCopy[] = [
     id: "circular",
     eyebrow: "Advanced bioenergy",
     headline: ["From wood.", "To pellet.", "To higher value."],
-    body: "We don't just transform biomass. We create more value from it.",
-    data: "Wood → pelletization → black wood pellet",
-    tags: ["Advanced Bioenergy", "Higher-Value Product"],
+    body: "Built from responsible resources, shaped by technology, and guided by a pioneer mindset, AVP turns biomass into higher-value advanced bioenergy.",
+    data: "Responsible resources → technology → global energy value",
+    tags: ["Responsible Resources", "Renewable Energy", "Global Partners"],
     align: "center",
   },
 ];

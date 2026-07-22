@@ -277,6 +277,8 @@ Implementation checklist:
 - [x] Keep loop imagery only if it supports higher value.
 - [x] Add final story logic:
   `Wood -> Pelletization -> Wood Pellet + Thermal Upgrading -> Black Wood Pellet`.
+- [x] Add mission-inspired brand cues from AVP's public mission page:
+  responsible resources, renewable energy, global partners and pioneer mindset.
 - [x] Replace green circular emphasis with premium product/value emphasis.
 - [x] Update `src/three/stations/Circular.tsx`, or create a new final station.
 - [x] Update CTA copy if needed in `src/components/Overlay.tsx`.
@@ -285,7 +287,8 @@ Acceptance criteria:
 
 - [x] Final screen resolves as `From Wood. To Pellet. To Higher Value.`
 - [x] Closing message matches the target document:
-  `We don't just transform biomass. We create more value from it.`
+  `Built from responsible resources. Shaped by technology. Created for
+  higher-value advanced bioenergy.`
 
 ## Phase 9 - Technical Cleanup
 
