@@ -19,7 +19,10 @@ at runtime. Rationale:
 - **Hero pellet (H/C):** `CapsuleGeometry(0.5, 1.6)` + custom `ShaderMaterial`;
   triplanar wood-fiber noise (fbm), radial extrusion striations, `uPhase`
   uniform morphs albedo/roughness raw-bark → fiber → compressed → ember-hot →
-  torrefied product. One asset, reused in S00 and the transformation beats.
+  torrefied product. One asset, reused in S00 and post-pelletizing
+  transformation beats; after the opening dissolve it stays hidden until the
+  Pelletizing station so raw/fiber/conditioned biomass never reads as a
+  finished pellet.
 - **Pellet mass (H/C):** `InstancedMesh` capsules — cooler bed 3,000 (desktop)
   / 900 (mobile); streams use the shared GPU particle engine with capsule
   sprites. Per-instance hue jitter via `instanceColor`.
@@ -60,7 +63,10 @@ PBR materials + a `Frame`, `Hopper`, `Duct`, `Guard` primitive kit. Machines:
   value, Black Wood Pellet proof point and final brand-close arcs.
 - **Material flow bridges:** world-space transition objects in
   `src/three/bridges/`, mounted outside station groups and visible only during
-  camera travel windows.
+  camera travel windows. The full rollout covers all 13 target-story handoffs
+  from Sustainable Forest through Advanced Bioenergy. Pre-pelletizing bridges
+  use logs, chips, fibers and biomass ribbons; pellet cylinders appear only
+  after the pelletizing die creates them.
 
 ### Effects (all C, one shared engine)
 `fx/ParticleField` — a single BufferGeometry points system with per-use config

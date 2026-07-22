@@ -349,7 +349,7 @@ Manual QA:
 
 ## Phase 11 - Material Flow Continuity
 
-Status: phase 1 implemented; expansion deferred pending visual review
+Status: full target-story bridge rollout implemented and smoke-verified
 
 Approach:
 
@@ -357,37 +357,53 @@ Approach:
 - [x] Keep bridges outside station groups so objects can move in world space.
 - [x] Use global scroll windows instead of clamped `stationLocal()` values, so
   bridges cannot remain visible after their transition ends.
-- [x] Avoid adding `handoffExit` / `handoffEnter` fields to `timeline.ts` until
-  the visual language is approved.
+- [x] Avoid adding `handoffExit` / `handoffEnter` fields to `timeline.ts`; each
+  bridge owns its offsets until a later refactor is needed.
+- [x] Use material-state-specific transition objects: logs, chips, fibers, dry
+  biomass, conditioned biomass, hot pellets, cooled pellets and black pellets.
+- [x] Keep pellet-cylinder geometry out of every transition before
+  `Pelletizing -> Cooling`.
+- [x] Keep the camera-anchored hero pellet visible in the opening, then hidden
+  after the Forest handoff until the Pelletizing station fade-in, so
+  Preparation still reads as loose conditioned biomass.
 
-Phase 1 implemented bridges:
+Implemented bridges:
 
 - [x] `ForestToCollection`: organic log travels from source forest into Raw
   Wood.
+- [x] `CollectionToScreening`: short log drops into the cutter/screen intake.
+- [x] `ScreeningToGrinding`: chip stream rains into the grinder hopper.
+- [x] `GrindingToDrying`: fiber cloud narrows as it is pulled into drying.
+- [x] `DryingToConditioning`: dry biomass ribbon slides into Preparation.
+- [x] `ConditioningToPelletizing`: conditioned biomass squeezes into the die
+  inlet.
 - [x] `PelletizingToCooling`: hot extruded pellet cluster cools into the Wood
   Pellet milestone.
+- [x] `CoolingToValueUpgrading`: cooled pellet sample enters Value Upgrading.
+- [x] `ValueUpgradingToThermal`: approved pellet batch enters Thermal
+  Upgrading.
+- [x] `ThermalToTorrefaction`: heated pellet cluster enters Torrefaction.
 - [x] `TorrefactionToValueCreation`: Black Wood Pellet cluster carries the
   torrefaction result into Value Creation.
-
-Deferred bridges:
-
-- [ ] Raw Wood -> Wood Chips.
-- [ ] Wood Chips -> Wood Particles.
-- [ ] Wood Particles -> Dry Biomass.
-- [ ] Dry Biomass -> Preparation.
-- [ ] Preparation -> Pelletizing.
-- [ ] Wood Pellet -> Value Upgrading.
-- [ ] Value Upgrading -> Thermal Upgrading.
-- [ ] Thermal Upgrading -> Torrefaction.
-- [ ] Value Creation -> Black Wood Pellet.
-- [ ] Black Wood Pellet -> Advanced Bioenergy.
+- [x] `ValueCreationToBlackPellet`: product proof moves into Black Wood Pellet.
+- [x] `BlackPelletToAdvancedBioenergy`: black pellet proof resolves into the
+  final Advanced Bioenergy close.
 
 Acceptance criteria:
 
-- [ ] Bridges add continuity without competing with the main station visuals.
-- [ ] Bridges do not cover overlay text on desktop or mobile.
-- [ ] Only the bridge for the current travel window is visible.
-- [ ] Bridge objects disappear before the destination dwell scene takes over.
+- [x] Bridges add continuity without competing with the main station visuals.
+- [x] Bridges do not cover overlay text on desktop or mobile.
+- [x] Only the bridge for the current travel window is visible by construction.
+- [x] Bridge objects disappear before the destination dwell scene takes over by
+  construction.
+
+Verification:
+
+- [x] `npm run typecheck`
+- [x] `npm run build`
+- [x] `npm run visual:smoke`
+- [x] Production bridge spot QA across 13 transition screenshots:
+  `.next/full-bridge-smoke/`
 
 ## Current Known Gaps
 
@@ -398,14 +414,14 @@ Acceptance criteria:
   `07-scroll-timeline` now describe the target story.
 - [x] Asset manifest has value-upgrading, thermal-upgrading, torrefaction,
   value-creation, Black Wood Pellet and Advanced Bioenergy entries.
-- [x] Asset manifest includes the phase-1 Material Flow Continuity bridge
-  system and three live bridge assets.
+- [x] Asset manifest includes the full Material Flow Continuity bridge system
+  and all 13 live bridge assets.
 - [x] Content-document folder remains lean: target story, implementation
   checklist, docs index and the source PPT only.
 
 ## Priority Order
 
-1. Visual-review the three phase-1 bridge moments.
-2. Expand remaining bridges only after the phase-1 visual language is approved.
+1. Visual-review the full bridge rollout across all station transitions.
+2. Tune any bridge that competes with overlay text or main station visuals.
 3. Optional component/station rename cleanup after visuals are stable.
 4. Optional section-count decision after the 15-section version is approved.

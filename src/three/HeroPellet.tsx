@@ -52,7 +52,9 @@ export default function HeroPellet() {
     const a = STATIONS[i].hero;
     const b = STATIONS[Math.min(N - 1, i + 1)].hero;
 
-    const scale = lerp(a.scale, b.scale, f);
+    let scale = lerp(a.scale, b.scale, f);
+    if (i > 0 && i < 7) scale = 0;
+    if (i === 7) scale *= smooth(local / 0.22);
     uniforms.uHeat.value = lerp(a.heat, b.heat, f);
     uniforms.uGreen.value = lerp(a.green, b.green, f);
     uniforms.uChar.value = lerp(a.char, b.char, f);

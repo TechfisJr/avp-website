@@ -20,8 +20,18 @@ import Logistics from "./stations/Logistics";
 import Energy from "./stations/Energy";
 import Circular from "./stations/Circular";
 import ForestToCollection from "./bridges/ForestToCollection";
+import CollectionToScreening from "./bridges/CollectionToScreening";
+import ScreeningToGrinding from "./bridges/ScreeningToGrinding";
+import GrindingToDrying from "./bridges/GrindingToDrying";
+import DryingToConditioning from "./bridges/DryingToConditioning";
+import ConditioningToPelletizing from "./bridges/ConditioningToPelletizing";
 import PelletizingToCooling from "./bridges/PelletizingToCooling";
+import CoolingToValueUpgrading from "./bridges/CoolingToValueUpgrading";
+import ValueUpgradingToThermal from "./bridges/ValueUpgradingToThermal";
+import ThermalToTorrefaction from "./bridges/ThermalToTorrefaction";
 import TorrefactionToValueCreation from "./bridges/TorrefactionToValueCreation";
+import ValueCreationToBlackPellet from "./bridges/ValueCreationToBlackPellet";
+import BlackPelletToAdvancedBioenergy from "./bridges/BlackPelletToAdvancedBioenergy";
 
 export default function World({ quality }: { quality: Quality }) {
   const q = quality;
@@ -46,8 +56,18 @@ export default function World({ quality }: { quality: Quality }) {
       <Energy quality={q} />
       <Circular quality={q} />
       <ForestToCollection />
+      <CollectionToScreening />
+      <ScreeningToGrinding />
+      <GrindingToDrying />
+      <DryingToConditioning />
+      <ConditioningToPelletizing />
       <PelletizingToCooling />
+      <CoolingToValueUpgrading />
+      <ValueUpgradingToThermal />
+      <ThermalToTorrefaction />
       <TorrefactionToValueCreation />
+      <ValueCreationToBlackPellet />
+      <BlackPelletToAdvancedBioenergy />
     </>
   );
 }
