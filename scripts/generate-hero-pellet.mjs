@@ -22,7 +22,7 @@ globalThis.FileReader = class {
   }
 };
 
-const OUT = path.resolve("public/models/hero-pellet.glb");
+const OUT = path.resolve("public/models/biomass/hero-pellet.glb");
 const SEGMENTS = 56;
 const RINGS = 72;
 const CAP_RINGS = 14;

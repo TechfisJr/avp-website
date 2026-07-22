@@ -52,7 +52,7 @@ Hero model:
   request required for first release.
 
 Current implemented asset:
-- `public/models/hero-pellet.glb`
+- `public/models/biomass/hero-pellet.glb`
 - 269 KB
 - Single mesh named `HeroWoodPellet`
 - Vertex-color PBR material embedded
@@ -127,7 +127,7 @@ gltf-transform optimize hero-pellet.glb hero-pellet.optimized.glb \
 ## 7. Web Integration Recommendations
 
 React Three Fiber:
-- Load the GLB with `useGLTF("/models/hero-pellet.glb")`.
+- Load the GLB with `useGLTF("/models/biomass/hero-pellet.glb")`.
 - Reuse the GLB geometry, but apply the runtime material needed for story
   states: neutral wood, heated pellet, dissolve, circular green rim.
 - Preload the model with `useGLTF.preload`.

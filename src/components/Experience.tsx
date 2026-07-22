@@ -1,17 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
-import { scroll, flags } from "@/lib/scrollStore";
 import { TRACK_VH } from "@/lib/timeline";
 import { detectQuality, type Quality } from "@/lib/quality";
+import { flags } from "@/lib/scrollStore";
+import { setupExperienceScroll } from "@/lib/gsapExperience";
 import CanvasRoot from "@/three/CanvasRoot";
 import Overlay from "./Overlay";
 import NoWebGL from "./NoWebGL";
-
-gsap.registerPlugin(ScrollTrigger);
 
 function webglAvailable(): boolean {
   try {
@@ -25,6 +21,7 @@ function webglAvailable(): boolean {
 export default function Experience() {
   const [quality, setQuality] = useState<Quality | null>(null);
   const [webgl, setWebgl] = useState(true);
+  const [track, setTrack] = useState<HTMLDivElement | null>(null);
 
   const reduced = useMemo(
     () =>
@@ -40,32 +37,10 @@ export default function Experience() {
   }, [reduced]);
 
   useEffect(() => {
-    if (!quality || !webgl) return;
-
-    let lenis: Lenis | null = null;
-    if (!reduced) {
-      lenis = new Lenis({ lerp: 0.09, syncTouch: true });
-      lenis.on("scroll", ScrollTrigger.update);
-      gsap.ticker.add((time) => lenis!.raf(time * 1000));
-      gsap.ticker.lagSmoothing(0);
-    }
-
-    const st = ScrollTrigger.create({
-      trigger: document.body,
-      start: "top top",
-      end: "bottom bottom",
-      scrub: true,
-      onUpdate: (self) => {
-        scroll.t = self.progress;
-        scroll.v = self.getVelocity() / 4000;
-      },
-    });
-
-    return () => {
-      st.kill();
-      lenis?.destroy();
-    };
-  }, [quality, webgl, reduced]);
+    if (!quality || !webgl || !track) return;
+    const controller = setupExperienceScroll({ reducedMotion: reduced, track });
+    return controller.cleanup;
+  }, [quality, webgl, reduced, track]);
 
   if (!webgl) return <NoWebGL />;
   if (!quality) return null;
@@ -73,7 +48,7 @@ export default function Experience() {
   return (
     <>
       {/* scroll body — the only element with height; everything else is fixed */}
-      <div className="scroll-track" style={{ height: `${TRACK_VH}vh` }} />
+      <div ref={setTrack} className="scroll-track" style={{ height: `${TRACK_VH}vh` }} />
       <CanvasRoot quality={quality} />
       <div className="vignette" />
       <Overlay />

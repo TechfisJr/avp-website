@@ -9,7 +9,7 @@ import { STATIONS, N, stationIndex, stationLocal, smooth, lerp, clamp01 } from "
 import { PELLET_VERT, PELLET_FRAG } from "./fx/shaders";
 
 const off = new THREE.Vector3();
-const MODEL_URL = "/models/hero-pellet.glb";
+const MODEL_URL = "/models/biomass/hero-pellet.glb";
 
 /**
  * The protagonist. Anchored in camera space so it stays perfectly framed;

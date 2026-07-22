@@ -3,6 +3,7 @@
     "dev": "next dev",
     "build": "next build",
     "generate:hero-pellet": "node scripts/generate-hero-pellet.mjs",
+    "assets:backgrounds": "node scripts/optimize-backgrounds.mjs",
     "visual:smoke": "node scripts/visual-smoke.mjs",
     "typecheck": "tsc --noEmit --pretty false"
   },
@@ -24,6 +25,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.185.1",
     "playwright": "^1.61.1",
+    "sharp": "^0.34.5",
     "typescript": "^5.9.3"
   }
 }

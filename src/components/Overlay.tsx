@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { COPY } from "@/lib/copy";
+import { scrollToStation } from "@/lib/gsapExperience";
 import { scroll } from "@/lib/scrollStore";
-import { N, W, overlayAlpha, overlayReveal, stationIndex } from "@/lib/timeline";
+import { N, overlayAlpha, overlayReveal, stationIndex } from "@/lib/timeline";
 import RfqModal from "./RfqModal";
 import FloatingWidget from "./FloatingWidget";
 import SpecComparison from "./SpecComparison";
@@ -70,15 +71,6 @@ export default function Overlay() {
     raf = requestAnimationFrame(update);
     return () => cancelAnimationFrame(raf);
   }, []);
-
-  const scrollToStation = (i: number) => {
-    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const targetScroll = (i + 0.3) * W * scrollHeight;
-    window.scrollTo({
-      top: targetScroll,
-      behavior: "smooth"
-    });
-  };
 
   return (
     <>
