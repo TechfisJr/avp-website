@@ -5,7 +5,6 @@ import CameraRig from "./CameraRig";
 import Atmosphere from "./Atmosphere";
 import HeroPellet from "./HeroPellet";
 import Hero from "./stations/Hero";
-import Forest from "./stations/Forest";
 import Collection from "./stations/Collection";
 import Screening from "./stations/Screening";
 import Grinding from "./stations/Grinding";
@@ -19,7 +18,6 @@ import Warehouse from "./stations/Warehouse";
 import Logistics from "./stations/Logistics";
 import Energy from "./stations/Energy";
 import Circular from "./stations/Circular";
-import ForestToCollection from "./bridges/ForestToCollection";
 import CollectionToScreening from "./bridges/CollectionToScreening";
 import ScreeningToGrinding from "./bridges/ScreeningToGrinding";
 import GrindingToDrying from "./bridges/GrindingToDrying";
@@ -41,7 +39,6 @@ export default function World({ quality }: { quality: Quality }) {
       <Atmosphere />
       <HeroPellet />
       <Hero quality={q} />
-      <Forest quality={q} />
       <Collection quality={q} />
       <Screening quality={q} />
       <Grinding quality={q} />
@@ -55,7 +52,6 @@ export default function World({ quality }: { quality: Quality }) {
       <Logistics quality={q} />
       <Energy quality={q} />
       <Circular quality={q} />
-      <ForestToCollection />
       <CollectionToScreening />
       <ScreeningToGrinding />
       <GrindingToDrying />

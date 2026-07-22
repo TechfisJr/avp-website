@@ -15,23 +15,28 @@ the full promise: from wood, to pellet, to higher value.
 **Transition out:** pellet matter breaks into wood-grain particles and pulls
 the viewer back to origin.
 
-### S01 · SUSTAINABLE FOREST (t 0.07-0.145)
+### S01 · SILENT RAW-WOOD PRELUDE (t 0.07-0.145)
 
-Moonlit forest, layered fog and drifting spores. This is the natural starting
-point: renewable energy begins with responsibly sourced biomass.
-**Camera:** low dolly between trunks, looking slightly up.
+No standalone content card and no separate 3D scene. This spacer only lets the
+camera settle toward the raw-wood receiving area after the hero.
+**Camera:** quiet drift toward the same receiving scene used by S02.
+**Transition out:** no separate bridge; S02 takes over with the first process
+message.
 
 ### S02 · RAW WOOD (t 0.145-0.215)
 
-Forest edge and raw wood resources. Logs, offcuts, chips, shavings and residues
-enter the production journey.
-**Camera:** sweep around the pile, ending toward the mill direction.
+Factory receiving area. The loaded truck arrives in front of the plant, logs are
+received and staged as raw material before chipping.
+**Camera:** same 3/4 exhibition grammar; frame the truck, receiving area and
+log pile as one readable handoff.
 
 ### S03 · WOOD CHIPS (t 0.215-0.285)
 
-Wood is reduced into consistent chips. The current screening deck serves as the
-phase-1 visual slot; phase 2 should make chipping more explicit.
-**Camera:** overhead tilt-down, then level with falling material.
+Wood is reduced into consistent chips by a long industrial chipper line. A
+grapple/crane feeds logs into the bunker; the chipper reduces material; an
+inclined conveyor lifts chips and drops them into a pile.
+**Camera:** stable 3/4 factory line view; keep the full machine length,
+grapple feed and elevated chip drop readable.
 
 ### S04 · WOOD PARTICLES (t 0.285-0.355)
 
@@ -101,7 +106,7 @@ than active combustion.
 
 ### S14 · ADVANCED BIOENERGY (t 0.945-1.00)
 
-Final brand close: from natural resources to pelletization, then through
+Final brand close: from responsible wood resources to pelletization, then through
 technology into a higher-value energy product.
 **Camera:** pull back to a hero framing where the upgraded product and value
 message resolve together.

@@ -40,8 +40,8 @@ type Row = [string, V3, V3, string, string, number, number, PresetName, StationD
 
 const ROWS: Row[] = [
   ["hero",        [0, 2, 0],   [0, 2.2, 5],    "#090806", PALETTE.amber, 3.2, 0.02,  "heroProduct", { off: [1.25, -0.05, -3.65], scale: 0.68, heat: 0.08, green: 0, char: 0 }],
-  ["forest",      [0, 4, 0],   [7, 2, 12],     "#111b12", "#c9e3a5",     2.2, 0.036, "forest",      { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
-  ["collection",  [0, 1.5, 0], [9, 3, 10],     "#16110a", PALETTE.amber, 2.3, 0.026, "warmBiomass", { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
+  ["forest",      [4.33, 1.6, -30], [12.33, 4.2, -20.5], "#16110a", PALETTE.amber, 2.2, 0.024, "warmBiomass", { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
+  ["collection",  [0, 1.6, 0], [8, 2.6, 9.5],  "#16110a", PALETTE.amber, 2.4, 0.024, "warmBiomass", { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
   ["screening",   [0, 2.5, 0], [1, 8, 10],     "#121315", "#e4d6b4",     2.1, 0.022, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
   ["grinding",    [0, 2, 0],   [8, 2.5, 9],    "#15100c", PALETTE.amber, 2.6, 0.022, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
   ["drying",      [0, 2.5, 0], [11, 3.5, 7],   "#170f08", "#e8b46b",     2.6, 0.024, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],

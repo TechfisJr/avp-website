@@ -6,6 +6,7 @@ export type SectionCopy = {
   data?: string;
   tags?: string[]; // optional badge chips shown on content card
   align: "left" | "right" | "center";
+  hidden?: boolean; // timeline spacer with no visible overlay content
 };
 
 export const COPY: SectionCopy[] = [
@@ -19,20 +20,18 @@ export const COPY: SectionCopy[] = [
   },
   {
     id: "forest",
-    eyebrow: "Sustainable forest",
-    headline: ["It begins", "with nature."],
-    body: "Renewable energy begins with responsibly sourced biomass.",
-    data: "Forest → renewable biomass",
-    tags: ["FSC 100% Certified", "Plantation Wood"],
+    eyebrow: "",
+    headline: [],
     align: "left",
+    hidden: true,
   },
   {
     id: "collection",
-    eyebrow: "Raw wood",
-    headline: ["The raw", "material."],
-    body: "Selected wood resources enter the production journey.",
-    data: "Acacia · wood resources · residues",
-    tags: ["100% Acacia", "Clean Source"],
+    eyebrow: "Raw wood receiving",
+    headline: ["The raw material", "arrives."],
+    body: "Loaded wood resources arrive at the factory and are staged for chipping.",
+    data: "Loaded truck → factory receiving",
+    tags: ["100% Acacia", "Receiving Yard"],
     align: "right",
   },
   {

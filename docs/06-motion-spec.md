@@ -23,9 +23,9 @@
 | Station | 0.2 → 0.8 local scrub drives |
 |---------|------------------------------|
 | Hero | pellet rotation ×1.5, dust density ↑, title tracking-in |
-| Forest | god-ray intensity, spore density, fog near-plane opens |
-| Collection | log pile assembles (instances lerp from scatter), truck lights on |
-| Screening | deck vibration amplitude, chip-rain emission rate |
+| Responsible Wood Source | loaded log truck idles, source light/fog settles, headlights motivate the handoff |
+| Raw Wood Receiving | loaded truck arrives at the plant, logs are staged for chipping |
+| Wood Chips | crane/grapple feed, chipper drum/belt run, inclined conveyor lifts chips and drops them to pile |
 | Grinding | drum RPM 0→peak, sawdust burst emission, 0.03 rad camera shake at peak |
 | Drying | drum rotation, steam emission, moisture counter 55→10 |
 | Conditioning | vortex curl strength, steam jet length |
@@ -39,10 +39,13 @@
 | Advanced Bioenergy | value ladder reveal, Black Wood Pellet proof halo, final brand-close particles |
 
 ## Transitions between stations (the connective tissue)
-Departing particles inherit velocity toward the next station’s world position;
-arriving station’s emitters ramp in during the final 20% of the previous
-window — matter appears to travel with the camera. Fog color and key-light
-color lerp across the boundary (defined per station in `lib/timeline.ts`).
+Transitions should prefer practical equipment over free-floating matter.
+Origin handoff uses the loaded log truck: source context -> factory receiving.
+Raw Wood -> Wood Chips uses the same large log truck only up to the chipping
+line. After chips are produced, any onward transport must be a smaller in-plant
+cart, chute, conveyor or bin carrying chip-sized material, not full logs. Fog
+color and key-light color still lerp across the boundary (defined per station in
+`lib/timeline.ts`).
 
 ## Typography motion
 - Headline: split to lines; each line `clip-path inset(0 0 100% 0) → inset(0)`,

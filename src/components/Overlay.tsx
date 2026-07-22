@@ -37,6 +37,14 @@ export default function Overlay() {
       }
 
       sections.current.forEach((refs, i) => {
+        if (COPY[i]?.hidden) {
+          if (refs.root) {
+            refs.root.style.opacity = "0";
+            refs.root.style.visibility = "hidden";
+          }
+          return;
+        }
+
         const alpha = overlayAlpha(t, i);
         const reveal = overlayReveal(t, i);
         if (refs.root) {
@@ -91,12 +99,13 @@ export default function Overlay() {
             }}
             className={`section align-${section.align}`}
           >
-            <div
-              ref={(node) => {
-                sections.current[i].inner = node;
-              }}
-              className={`section-inner ${i === 9 || i === 13 ? "wide-panel" : ""}`}
-            >
+            {!section.hidden && (
+              <div
+                ref={(node) => {
+                  sections.current[i].inner = node;
+                }}
+                className={`section-inner ${i === 9 || i === 13 ? "wide-panel" : ""}`}
+              >
               <p className="eyebrow">
                 <span
                   ref={(node) => {
@@ -140,7 +149,8 @@ export default function Overlay() {
               {(i === 9 || i === 13) && <SpecComparison />}
 
               {section.data && <p className="datapoint">{section.data}</p>}
-            </div>
+              </div>
+            )}
           </section>
         ))}
         <img ref={scanRing} className="scan-ring" src="/icons/scan-ring.svg" alt="" />
@@ -164,12 +174,12 @@ export default function Overlay() {
           {COPY.map((section, i) => (
             <div 
               key={section.id} 
-              className={`tick ${i === active ? "active" : ""}`}
-              onClick={() => scrollToStation(i)}
+              className={`tick ${i === active ? "active" : ""} ${section.hidden ? "is-hidden" : ""}`}
+              onClick={section.hidden ? undefined : () => scrollToStation(i)}
             >
               <i />
-              <b>{i === active ? section.eyebrow : `${String(i).padStart(2, "0")}`}</b>
-              <span className="rail-tooltip">{section.eyebrow}</span>
+              <b>{section.hidden ? "" : i === active ? section.eyebrow : `${String(i).padStart(2, "0")}`}</b>
+              {!section.hidden && <span className="rail-tooltip">{section.eyebrow}</span>}
             </div>
           ))}
         </nav>

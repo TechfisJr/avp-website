@@ -1,32 +1,31 @@
 # AVP Wood Pellet 3D Website — Storytelling Content
 
-## 01 — SUSTAINABLE FOREST
+## 01 — SILENT RAW-WOOD PRELUDE
 
-### IT BEGINS WITH NATURE
-
-> Renewable energy begins with responsibly sourced biomass.
+No visible content card. This timeline slot is retained only for camera pacing
+between the hero and Raw Wood Receiving.
 
 Flow:
 
 ```text
-FOREST
+HERO
 ↓
-RENEWABLE BIOMASS
+CAMERA SETTLES
 ↓
-ENERGY RESOURCE
+RAW WOOD RECEIVING
 ```
 
 Key message:
 
-> Nature provides the resource. Technology creates the value.
+> No separate sourcing chapter. Raw Wood Receiving is the first visible process message.
 
 ---
 
-## 02 — RAW WOOD
+## 02 — RAW WOOD RECEIVING
 
-### THE RAW MATERIAL
+### THE RAW MATERIAL ARRIVES
 
-> Selected wood resources enter the production journey.
+> Loaded wood resources arrive at the factory and are staged for processing.
 
 Core content:
 
@@ -34,13 +33,17 @@ Core content:
 - Wood resources
 - Wood residues, if aligned with AVP's actual sourcing model
 - Incoming raw material resources
+- Loaded log truck
+- Factory receiving area
 
 Flow:
 
 ```text
-SUSTAINABLE FOREST
+LOADED LOG TRUCK
 ↓
-RAW WOOD
+FACTORY RECEIVING
+↓
+RAW WOOD STAGING
 ```
 
 ---
@@ -54,7 +57,7 @@ RAW WOOD
 Flow:
 
 ```text
-RAW WOOD
+RAW WOOD STAGING
 ↓
 CHIPPING
 ↓
@@ -377,11 +380,11 @@ Mission-inspired support message:
 
 ```text
 01
-SUSTAINABLE FOREST
+RESPONSIBLE WOOD SOURCE
        ↓
 
 02
-RAW WOOD
+RAW WOOD RECEIVING
        ↓
 
 03
@@ -475,9 +478,11 @@ ADVANCED BIOENERGY
 The website follows one continuous and easy-to-understand production journey:
 
 ```text
-FOREST
+RESPONSIBLE SOURCE
 ↓
-RAW WOOD
+LOADED LOG TRUCK
+↓
+RAW WOOD RECEIVING
 ↓
 WOOD CHIPS
 ↓

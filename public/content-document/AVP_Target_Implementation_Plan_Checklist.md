@@ -9,9 +9,11 @@ Move the website from the current circular-energy journey toward the target
 story:
 
 ```text
-FOREST
+RESPONSIBLE SOURCE
 ↓
-RAW WOOD
+LOADED LOG TRUCK
+↓
+RAW WOOD RECEIVING
 ↓
 WOOD CHIPS
 ↓
@@ -359,20 +361,23 @@ Approach:
   bridges cannot remain visible after their transition ends.
 - [x] Avoid adding `handoffExit` / `handoffEnter` fields to `timeline.ts`; each
   bridge owns its offsets until a later refactor is needed.
-- [x] Use material-state-specific transition objects: logs, chips, fibers, dry
-  biomass, conditioned biomass, hot pellets, cooled pellets and black pellets.
+- [x] Use material-state-specific transition objects and practical carriers:
+  loaded log truck, logs, chips, in-plant chip cart, fibers, dry biomass,
+  conditioned biomass, hot pellets, cooled pellets and black pellets.
 - [x] Keep pellet-cylinder geometry out of every transition before
   `Pelletizing -> Cooling`.
 - [x] Keep the camera-anchored hero pellet visible in the opening, then hidden
-  after the Forest handoff until the Pelletizing station fade-in, so
+  after the silent origin spacer until the Pelletizing station fade-in, so
   Preparation still reads as loose conditioned biomass.
 
-Implemented bridges:
+Implemented / target bridges:
 
-- [x] `ForestToCollection`: organic log travels from source forest into Raw
-  Wood.
-- [x] `CollectionToScreening`: short log drops into the cutter/screen intake.
-- [x] `ScreeningToGrinding`: chip stream rains into the grinder hopper.
+- [x] `ForestToCollection`: removed from the active world; S01 is now a
+  silent spacer and S02 Raw Wood Receiving owns the first visible process beat.
+- [x] `CollectionToScreening`: loaded log truck travels only to the Wood Chips
+  station/chipper line.
+- [x] `ScreeningToGrinding`: small in-plant chip cart carries chip-sized
+  material toward Wood Particles; no full logs continue into grinding.
 - [x] `GrindingToDrying`: fiber cloud narrows as it is pulled into drying.
 - [x] `DryingToConditioning`: dry biomass ribbon slides into Preparation.
 - [x] `ConditioningToPelletizing`: conditioned biomass squeezes into the die
@@ -396,6 +401,8 @@ Acceptance criteria:
 - [x] Only the bridge for the current travel window is visible by construction.
 - [x] Bridge objects disappear before the destination dwell scene takes over by
   construction.
+- [x] Origin sequence no longer depends on a forest/source chapter; the first
+  practical process beat is Raw Wood Receiving.
 
 Verification:
 

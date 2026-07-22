@@ -10,8 +10,8 @@ follows the target AVP Wood Pellet narrative.
 global t     0.000                                                        1.000
              ├─S00──┬─S01──┬─S02──┬─S03──┬─S04──┬─S05──┬─S06──┬─S07──┬─S08──┬─S09──┬─S10──┬─S11──┬─S12──┬─S13──┬─S14──┤
 chapter      hero   origin origin prep   prep   prep   prep   pellet pellet value  thermal torre  value  black  advanced
-target beat  thesis forest raw    chips  part.  dry    ready  form   product shift  upgrade faction create pellet bioenergy
-camera       push   dolly  sweep  tilt   push   track  orbit  reveal topdwn macro  chamber reactor bridge product pullback
+target beat  thesis source recv.  chips  part.  dry    ready  form   product shift  upgrade faction create pellet bioenergy
+camera       push   3/4    3/4    3/4    push   track  orbit  reveal topdwn macro  chamber reactor bridge product pullback
 visual note  live   live   live   live   live   live   live   live   live   rebuilt rebuilt rebuilt rebuilt rebuilt rebuilt
 local beats  .2 arrive → .8 hold(scrub) → 1.0 depart      (every station)
 ```
@@ -24,8 +24,8 @@ filenames remain legacy migration slots.
 | Station | Target section | in | out | Overlay reveal | Overlay exit |
 |---|---|---:|---:|---|---|
 | S00 | Hero | 0.0000 | 0.0667 | 0.000-0.020 | 0.053-0.067 |
-| S01 | Sustainable Forest | 0.0667 | 0.1333 | +0.013 into window | last 0.013 |
-| S02 | Raw Wood | 0.1333 | 0.2000 | +0.013 into window | last 0.013 |
+| S01 | Responsible Wood Source | 0.0667 | 0.1333 | +0.013 into window | last 0.013 |
+| S02 | Raw Wood Receiving | 0.1333 | 0.2000 | +0.013 into window | last 0.013 |
 | S03 | Wood Chips | 0.2000 | 0.2667 | +0.013 into window | last 0.013 |
 | S04 | Wood Particles | 0.2667 | 0.3333 | +0.013 into window | last 0.013 |
 | S05 | Dry Biomass | 0.3333 | 0.4000 | +0.013 into window | last 0.013 |

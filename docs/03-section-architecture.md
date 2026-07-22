@@ -17,8 +17,8 @@ TO HIGHER VALUE
 | # | id | Eyebrow | Headline | Data point |
 |---|----|---------|----------|-----------|
 | 00 | hero | AVP BIOMASS | From wood. To pellet. To higher value. | — |
-| 01 | forest | SUSTAINABLE FOREST | It begins with nature. | Forest → renewable biomass |
-| 02 | collection | RAW WOOD | The raw material. | Acacia · wood resources · residues |
+| 01 | forest | SILENT SPACER | No visible card. Camera prelude to Raw Wood Receiving. | — |
+| 02 | collection | RAW WOOD RECEIVING | The raw material arrives. | Loaded truck → factory receiving |
 | 03 | screening | WOOD CHIPS | Reducing size. Preparing material. | Raw wood → chipping → wood chips |
 | 04 | grinding | WOOD PARTICLES | Refined for consistency. | Wood chips → grinding → particles |
 | 05 | drying | DRY BIOMASS | Moisture under control. | Wet biomass → drying → dry biomass |
@@ -36,7 +36,7 @@ TO HIGHER VALUE
 
 | Chapter | Stations | Narrative role |
 |---|---|---|
-| Origin | S01-S02 | Sustainable forest and selected raw wood resources |
+| Origin | S01-S02 | Silent prelude, then Raw Wood Receiving as the first visible process beat |
 | Material preparation | S03-S06 | Chipping, refining, drying and conditioning |
 | First transformation | S07-S08 | Pelletization and finished wood pellet milestone |
 | Value upgrading | S09-S12 | Technology-driven shift from product to higher value |
@@ -50,6 +50,9 @@ TO HIGHER VALUE
   left/right thirds. Mobile remains bottom-third, center-aligned.
 - **Persistent HUD:** progress rail, wordmark, CTA, scroll cue and QC scan ring
   still use the existing overlay component.
+- **Origin visual rule:** `forest` remains a legacy station id only as a silent
+  spacer. It renders no station scene and shows no overlay card; Raw Wood
+  Receiving is the first visible process chapter.
 - **Migration note:** late-stage station ids still use old component names
   (`Packaging`, `Warehouse`, `Logistics`, `Energy`, `Circular`) for import
   stability, but their visuals now carry the target chapters.

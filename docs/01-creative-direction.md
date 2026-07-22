@@ -7,8 +7,8 @@
 The entire site is a single, unbroken camera move. One hero wood pellet is the
 protagonist. The visitor never “navigates” — they *travel*. Scroll is the only
 input, and it drives a cinematic dolly through fourteen stations of the biomass
-value chain, from responsibly sourced wood to pelletization, thermal upgrading,
-torrefaction, Black Wood Pellet, and advanced bioenergy.
+value chain, from responsibly sourced wood arriving by truck to pelletization,
+thermal upgrading, torrefaction, Black Wood Pellet, and advanced bioenergy.
 
 There are no page transitions, no carousels, no cards. The 3D world is the
 page; typography floats above it like film titles.
@@ -16,7 +16,7 @@ page; typography floats above it like film titles.
 ## Emotional arc
 | Act | Stations | Feeling | Light |
 |-----|----------|---------|-------|
-| I — Origin | Forest, Collection | reverence, quiet | moonlit green-gold, volumetric fog |
+| I — Origin | Source truck, factory receiving | grounded, responsible, practical | controlled green-gold source light into factory amber |
 | II — Transformation | Screening → Pelletizing | precision, force | amber sodium-vapor industrial |
 | III — Product | Cooling → Value Upgrading | completion, selection | cool teal + first warm upgrade cues |
 | IV — Upgrade | Thermal Upgrading → Black Wood Pellet | precision, value, material change | ember orange + premium gold |
@@ -27,10 +27,10 @@ page; typography floats above it like film titles.
   revealed by light, not placed on backgrounds. Fog does the compositing.
 - **One material family.** Wood tones (raw bark → fiber → compressed pellet),
   dark brushed steel for machinery, emissive amber for energy.
-- **Particles are the connective tissue.** Every transition between stations is
-  carried by particles: spores → chips → sawdust → steam → pellets → sparks →
-  higher-value particles. Matter becomes product, then product becomes a
-  higher-value material.
+- **Practical equipment is the connective tissue.** Early transitions use
+  visible logistics and machinery: loaded log truck → factory receiving →
+  chipper line → small chip cart/conveyor. Particles support the process, but
+  should not replace physical transport.
 - **The pellet is always on screen** (or its matter is, mid-transformation).
 
 ## Palette
@@ -58,6 +58,6 @@ information.
 
 ## What this is not
 No stock-photo hero banners. No feature grids. No generic fade-ins. No generic
-greenwash imagery, coal-replacement promises, or logistics-first ending. The
-final message must resolve as product value: from wood, to pellet, to higher
-value.
+forest fly-through as the main opening scene, greenwash imagery,
+coal-replacement promises, or logistics-first ending. The final message must
+resolve as product value: from wood, to pellet, to higher value.

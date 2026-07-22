@@ -465,6 +465,16 @@ body {
   width: 20px;
 }
 
+.rail .tick.is-hidden {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.18;
+}
+
+.rail .tick.is-hidden i {
+  width: 8px;
+}
+
 .rail .tick .rail-tooltip {
   position: absolute;
   left: 100%;
