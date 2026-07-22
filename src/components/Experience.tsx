@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { TRACK_VH } from "@/lib/timeline";
 import { detectQuality, type Quality } from "@/lib/quality";
-import { flags } from "@/lib/scrollStore";
+import { flags, scroll } from "@/lib/scrollStore";
 import { setupExperienceScroll } from "@/lib/gsapExperience";
 import CanvasRoot from "@/three/CanvasRoot";
 import Overlay from "./Overlay";
