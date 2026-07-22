@@ -63,10 +63,10 @@ function CraneGrapple({ getLocal }: { getLocal: () => number }) {
     const clawOpen = 0.2 + (1 - grab) * 0.7 + lift * 0.35;
     if (boom.current) {
       boom.current.position.y = lift * 0.35;
-      boom.current.rotation.z = -0.74 + grab * 0.18;
+      boom.current.rotation.z = -0.26 + grab * 0.12;
     }
     if (claw.current) {
-      claw.current.position.y = -0.38 + lift * 0.22;
+      claw.current.position.y = -1.2 + lift * 0.22;
     }
     tines.current.forEach((mesh, i) => {
       const side = i < 3 ? -1 : 1;
@@ -75,21 +75,30 @@ function CraneGrapple({ getLocal }: { getLocal: () => number }) {
   });
 
   return (
-    <group position={[5.25, 0, 1.65]} rotation={[0, -0.72, 0]}>
-      <mesh position={[0, 1.05, 0]} material={M.dark}>
-        <boxGeometry args={[1.3, 1.95, 1.15]} />
+    <group position={[5.65, 0, -1.35]} rotation={[0, -0.35, 0]}>
+      <mesh position={[0, 0.95, 0]} material={M.dark}>
+        <boxGeometry args={[1.15, 1.75, 1]} />
       </mesh>
-      <mesh position={[-0.45, 1.98, 0]} rotation={[0, 0, -0.28]} material={M.dark}>
-        <boxGeometry args={[0.28, 2.45, 0.26]} />
+      <mesh position={[-0.28, 2.12, 0]} rotation={[0, 0, -0.32]} material={M.housing}>
+        <boxGeometry args={[0.26, 2.4, 0.24]} />
       </mesh>
-      <group ref={boom} position={[-1.25, 3.05, 0]} rotation={[0, 0, -0.74]}>
-        <mesh position={[-0.72, 0, 0]} material={M.dark}>
-          <boxGeometry args={[1.55, 0.22, 0.22]} />
+      <mesh position={[0.2, 2.15, 0.52]} rotation={[0, 0, -0.32]} material={M.safetyYellow}>
+        <boxGeometry args={[0.08, 1.7, 0.08]} />
+      </mesh>
+      <group ref={boom} position={[-0.8, 3.2, 0]} rotation={[0, 0, -0.26]}>
+        <mesh position={[-1.1, 0, 0]} material={M.dark}>
+          <boxGeometry args={[2.45, 0.22, 0.22]} />
         </mesh>
-        <mesh position={[-1.55, -0.58, 0]} rotation={[0, 0, 0.48]} material={M.dark}>
-          <boxGeometry args={[1.25, 0.18, 0.18]} />
+        <mesh position={[-1.1, 0.04, 0]} material={M.safetyYellow}>
+          <boxGeometry args={[2.1, 0.055, 0.27]} />
         </mesh>
-        <group ref={claw} position={[-2.08, -1.03, 0]}>
+        <mesh position={[-2.24, -0.58, 0]} material={M.steel}>
+          <cylinderGeometry args={[0.028, 0.028, 1.1, 8]} />
+        </mesh>
+        <group ref={claw} position={[-2.24, -1.2, 0]}>
+          <mesh position={[0, 0.1, 0]} material={M.steel}>
+            <boxGeometry args={[0.52, 0.12, 0.95]} />
+          </mesh>
           {[-1, 1].flatMap((side) =>
             [-0.34, 0, 0.34].map((z, i) => (
               <mesh
@@ -99,7 +108,7 @@ function CraneGrapple({ getLocal }: { getLocal: () => number }) {
                 }}
                 position={[side * 0.18, -0.18, z]}
                 rotation={[0.55, side * 0.9, 0]}
-                material={M.steel}
+                material={M.safetyYellow}
               >
                 <boxGeometry args={[0.08, 0.88 - i * 0.08, 0.06]} />
               </mesh>
@@ -113,6 +122,59 @@ function CraneGrapple({ getLocal }: { getLocal: () => number }) {
             ))}
           </group>
         </group>
+      </group>
+    </group>
+  );
+}
+
+function GrappleFeedHead({ getLocal }: { getLocal: () => number }) {
+  const head = useRef<THREE.Group>(null);
+  const tines = useRef<THREE.Mesh[]>([]);
+
+  useFrame(() => {
+    const local = getLocal();
+    const grab = smooth((local - 0.18) / 0.24);
+    const drop = smooth((local - 0.42) / 0.24);
+    const open = 0.24 + (1 - grab) * 0.48 + drop * 0.32;
+    if (head.current) {
+      head.current.position.y = 3.35 - drop * 0.34 + Math.sin(local * Math.PI * 2) * 0.025;
+      head.current.rotation.z = -0.12 + grab * 0.08;
+    }
+    tines.current.forEach((mesh, i) => {
+      const side = i < 3 ? -1 : 1;
+      mesh.rotation.y = side * open;
+    });
+  });
+
+  return (
+    <group ref={head} position={[3.2, 3.35, 0.12]} rotation={[0, -0.12, -0.12]}>
+      <mesh position={[0, 0.58, 0]} material={M.steel}>
+        <cylinderGeometry args={[0.026, 0.026, 1.16, 8]} />
+      </mesh>
+      <mesh material={M.steel}>
+        <boxGeometry args={[0.62, 0.12, 1.05]} />
+      </mesh>
+      {[-1, 1].flatMap((side) =>
+        [-0.38, 0, 0.38].map((z, i) => (
+          <mesh
+            key={`${side}-${z}`}
+            ref={(mesh) => {
+              if (mesh) tines.current[side < 0 ? i : i + 3] = mesh;
+            }}
+            position={[side * 0.22, -0.24, z]}
+            rotation={[0.6, side * 0.62, 0]}
+            material={M.safetyYellow}
+          >
+            <boxGeometry args={[0.08, 0.92 - i * 0.07, 0.065]} />
+          </mesh>
+        ))
+      )}
+      <group position={[0.03, -0.72, 0]}>
+        {[-0.42, -0.14, 0.14, 0.42].map((z, i) => (
+          <group key={z} position={[0.04 * i, -0.05 * i, z]} rotation={[0, 0.16 * i, Math.PI / 2]}>
+            <BridgeLog length={1.7 + i * 0.12} radius={0.085} />
+          </group>
+        ))}
       </group>
     </group>
   );
@@ -245,6 +307,7 @@ export default function Screening({ quality }: { quality: Quality }) {
 
       <FeedBunker getRun={run} />
       <CraneGrapple getLocal={() => state.current.local} />
+      <GrappleFeedHead getLocal={() => state.current.local} />
       <ChipperBody getRun={run} />
       <InclinedDischarge getRun={run} />
 
@@ -287,7 +350,7 @@ export default function Screening({ quality }: { quality: Quality }) {
         curl={0.18}
         shape="shard"
         blending={THREE.NormalBlending}
-        getIntensity={() => 0.8 * bell(state.current.local)}
+        getIntensity={() => 0.52 * bell(state.current.local)}
       />
 
       {/* elevated drop: chips fall from the conveyor head into a pile. */}
@@ -304,7 +367,7 @@ export default function Screening({ quality }: { quality: Quality }) {
         curl={0.34}
         shape="shard"
         blending={THREE.NormalBlending}
-        getIntensity={() => bell(state.current.local)}
+        getIntensity={() => 0.72 * bell(state.current.local)}
       />
 
       <ParticleField
