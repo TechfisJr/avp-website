@@ -386,7 +386,7 @@ body {
   --scene-sat: 1;
   --scene-contrast: 1.04;
   --scene-pos: center 46%;
-  --scene-scale-bias: 1;
+  --scene-scale-bias: 1.04;
   --scene-blur: 0px;
   /* mood tint painted over the photo (soft-light) */
   --tint: #b98a4a;
@@ -507,7 +507,7 @@ body {
   --scene-sat: 0.8;
   --scene-contrast: 1.02;
   --scene-pos: 62% 46%;
-  --scene-blur: 5px;
+  --scene-blur: 3px;
   --tint: #e9e0cb;
   --tint-alpha: 0.3;
   --glow: #fff6e6;
@@ -523,7 +523,7 @@ body {
   --scene-sat: 0.9;
   --scene-contrast: 1.14;
   --scene-pos: 48% 40%;
-  --scene-blur: 6px;
+  --scene-blur: 4px;
   --tint: #d67a34;
   --tint-alpha: 0.38;
   --glow: #f08a3c;
@@ -540,7 +540,7 @@ body {
   --scene-sat: 0.82;
   --scene-contrast: 1.2;
   --scene-pos: 50% 42%;
-  --scene-blur: 9px;
+  --scene-blur: 5px;
   --tint: #8a4a26;
   --tint-alpha: 0.44;
   --grade-dark: 0.62;
@@ -554,7 +554,7 @@ body {
   --scene-sat: 0.7;
   --scene-contrast: 1.24;
   --scene-pos: 50% 44%;
-  --scene-blur: 7px;
+  --scene-blur: 4px;
   --tint: #3a2a20;
   --tint-alpha: 0.48;
   --glow: #e08a3a;
@@ -636,8 +636,10 @@ body {
     brightness(var(--scene-bright, 0.98))
     blur(var(--scene-blur, 0px));
   transform-origin: center;
-  will-change: transform;
-  transition: filter 0.6s ease, object-position 0.6s ease;
+  /* static framing scale — animates only on chapter change, never per scroll
+     frame, so the blend layers above don't re-composite while scrolling */
+  transform: scale(var(--scene-scale-bias, 1.03));
+  transition: transform 0.9s ease, filter 0.6s ease, object-position 0.6s ease;
 }
 
 .scroll-world-video {
@@ -1018,11 +1020,11 @@ body {
 
 .scroll-world-cta {
   min-height: 2.35rem;
-  border: 1px solid rgba(237, 230, 218, 0.2);
-  color: rgba(237, 230, 218, 0.78);
-  background: rgba(8, 7, 5, 0.28);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(237, 230, 218, 0.22);
+  color: rgba(237, 230, 218, 0.82);
+  /* solid translucent instead of backdrop-filter (backdrop-filter forces a
+     full-region repaint every scroll frame → scroll jank) */
+  background: rgba(8, 7, 5, 0.55);
   font-family: inherit;
   font-size: 0.66rem;
   letter-spacing: 0.12em;
@@ -1062,6 +1064,7 @@ body {
   width: 100%;
   height: 100%;
   transform-origin: left center;
+  transform: scaleX(var(--visual-progress, 0));
   background: linear-gradient(90deg, var(--moss), var(--sw-accent), var(--amber));
 }
 
@@ -1114,7 +1117,6 @@ body {
   top: -30%;
   bottom: -30%;
   background: radial-gradient(115% 100% at 24% 48%, rgba(5, 4, 3, 0.82), rgba(5, 4, 3, 0.5) 42%, transparent 70%);
-  filter: blur(10px);
   pointer-events: none;
 }
 
@@ -1366,59 +1368,22 @@ body {
    White -> Brown -> Black torrefaction transformation.
    ========================================================================== */
 
-.sw-heap {
+/* --- Real pellet product shots ---------------------------------------------
+   Matched transparent-PNG piles (white / torrefied / black), identical
+   composition. Compositing over the dark scene with a soft drop-shadow so the
+   pile reads as a grounded product hero. The torrefaction transform crossfades
+   the three with a scroll-driven mask so the *material* changes, not the shape. */
+.sw-product {
   position: absolute;
   left: 50%;
-  top: 50%;
-  width: min(66vmin, 43rem);
-  height: min(40vmin, 25rem);
-  transform: translate(-50%, -50%);
-  border-radius: 44% 44% 47% 47% / 64% 64% 40% 40%;
-  --p-light: #fbf2df;
-  --p-mid: #e3c68d;
-  --p-dark: #b1854f;
-  background:
-    radial-gradient(74% 60% at 50% 18%, rgba(255, 255, 255, 0.34), transparent 60%),
-    repeating-linear-gradient(
-      118deg,
-      var(--p-dark) 0 1px,
-      var(--p-mid) 1px 6px,
-      var(--p-light) 6px 7.5px,
-      var(--p-mid) 7.5px 12px,
-      var(--p-dark) 12px 13px
-    ),
-    repeating-linear-gradient(118deg, transparent 0 32px, rgba(0, 0, 0, 0.16) 32px 35px),
-    var(--p-mid);
-  box-shadow:
-    inset 0 -3rem 4.5rem rgba(0, 0, 0, 0.5),
-    inset 0 2rem 3rem rgba(255, 255, 255, 0.12),
-    0 3rem 6rem rgba(0, 0, 0, 0.5);
-}
-
-/* soft contact shadow under the heap */
-.sw-heap::after {
-  content: "";
-  position: absolute;
-  left: 6%;
-  right: 6%;
-  bottom: -7%;
-  height: 16%;
-  border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.5), transparent 70%);
-  filter: blur(12px);
-  z-index: -1;
-}
-
-.heap-white { --p-light: #fbf2df; --p-mid: #e6cb95; --p-dark: #b68a54; }
-.heap-brown { --p-light: #bb7c43; --p-mid: #7c4826; --p-dark: #402515; }
-.heap-black {
-  --p-light: #574a3f;
-  --p-mid: #241f1b;
-  --p-dark: #0b0a09;
-  box-shadow:
-    inset 0 -3rem 4.5rem rgba(0, 0, 0, 0.72),
-    inset 0 1.6rem 3rem rgba(232, 138, 58, 0.2),
-    0 3rem 6rem rgba(0, 0, 0, 0.6);
+  top: 54%;
+  width: min(62vmin, 42rem);
+  height: auto;
+  transform: translate(-50%, -50%) scale(var(--bed-scale, 1));
+  object-fit: contain;
+  filter: drop-shadow(0 2.4rem 2.4rem rgba(0, 0, 0, 0.55));
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 /* --- White Pellet product hero (stage 07) --- */
@@ -1426,16 +1391,14 @@ body {
   position: fixed;
   inset: 0;
   z-index: 13;
-  display: block;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s linear;
-  background: radial-gradient(46% 50% at 50% 52%, rgba(255, 246, 230, 0.14), transparent 62%);
+  background: radial-gradient(48% 52% at 58% 54%, rgba(255, 247, 232, 0.16), transparent 64%);
 }
 
-.scroll-world-pellet-hero .sw-heap {
-  left: 60%;
-  transform: translate(-50%, -50%) scale(var(--hero-scale, 1));
+.scroll-world-pellet-hero .sw-product {
+  left: 58%;
 }
 
 /* --- Torrefaction transformation centerpiece (stages 08–10) --- */
@@ -1446,49 +1409,46 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s linear;
-  background: radial-gradient(46% 50% at 50% 52%, rgba(232, 140, 60, 0.1), transparent 62%);
+  background: radial-gradient(48% 52% at 46% 54%, rgba(232, 140, 60, 0.1), transparent 64%);
 }
 
-.scroll-world-value-transform .sw-heap {
-  transform:
-    translate(-50%, -50%)
-    scale(calc(0.94 + var(--value-progress, 0) * 0.14))
-    rotate(calc(var(--value-progress, 0) * -3deg));
+.scroll-world-value-transform .sw-product {
+  left: 46%;
 }
 
 .pellet-white { opacity: var(--white-opacity, 1); }
 .pellet-brown { opacity: var(--brown-opacity, 0); }
 
-/* Black state does not merely fade in — it is revealed from the core
-   outward via an expanding mask, so the material reads as transforming. */
+/* Black state does not merely fade in — it is revealed from the core outward
+   via an expanding mask, so the material reads as transforming, not swapping. */
 .pellet-black {
   opacity: var(--black-opacity, 0);
   -webkit-mask-image: radial-gradient(
-    circle at 50% 56%,
+    circle at 46% 54%,
     #000 0,
-    #000 calc(var(--value-progress, 0) * 150%),
-    transparent calc(var(--value-progress, 0) * 150% + 6%)
+    #000 calc(var(--value-progress, 0) * 155%),
+    transparent calc(var(--value-progress, 0) * 155% + 7%)
   );
   mask-image: radial-gradient(
-    circle at 50% 56%,
+    circle at 46% 54%,
     #000 0,
-    #000 calc(var(--value-progress, 0) * 150%),
-    transparent calc(var(--value-progress, 0) * 150% + 6%)
+    #000 calc(var(--value-progress, 0) * 155%),
+    transparent calc(var(--value-progress, 0) * 155% + 7%)
   );
 }
 
 /* heat atmosphere, strongest at mid-transformation */
 .thermal-heat {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: min(72vmin, 48rem);
-  height: min(52vmin, 34rem);
+  left: 46%;
+  top: 52%;
+  width: min(80vmin, 54rem);
+  height: min(56vmin, 36rem);
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: radial-gradient(circle, rgba(240, 150, 70, 0.24), transparent 62%);
   opacity: var(--brown-opacity, 0);
-  filter: blur(26px);
+  filter: blur(28px);
   mix-blend-mode: screen;
 }
 
@@ -1840,12 +1800,35 @@ body {
     display: none;
   }
 
-  .scroll-world-value-transform {
-    right: 1.5rem;
-    bottom: auto;
-    top: 27vh;
-    width: min(72vw, 20rem);
-    opacity: 0.74;
+  /* Portrait-native heroes: pellet pile sits in the upper-middle field, the
+     headline keeps the lower third (see mobile art direction). */
+  .scroll-world-pellet-hero .sw-product,
+  .scroll-world-value-transform .sw-product {
+    left: 50%;
+    top: 40%;
+    width: min(78vw, 24rem);
+  }
+
+  .scroll-world-value-transform .thermal-heat {
+    left: 50%;
+    top: 38%;
+    width: min(100vw, 26rem);
+    height: min(46vh, 20rem);
+  }
+
+  .pellet-black {
+    -webkit-mask-image: radial-gradient(
+      circle at 50% 46%,
+      #000 0,
+      #000 calc(var(--value-progress, 0) * 155%),
+      transparent calc(var(--value-progress, 0) * 155% + 7%)
+    );
+    mask-image: radial-gradient(
+      circle at 50% 46%,
+      #000 0,
+      #000 calc(var(--value-progress, 0) * 155%),
+      transparent calc(var(--value-progress, 0) * 155% + 7%)
+    );
   }
 
   .scroll-world-chapter-transition {
@@ -2105,9 +2088,7 @@ body {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(11, 10, 8, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(11, 10, 8, 0.82);
   border: 1px solid rgba(237, 230, 218, 0.15);
   color: var(--bone);
   display: grid;
@@ -2182,9 +2163,7 @@ body {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background: rgba(11, 10, 8, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(11, 10, 8, 0.72);
   border: 1px solid color-mix(in srgb, var(--amber) 45%, transparent);
   color: var(--amber);
   display: grid;
@@ -2204,9 +2183,7 @@ body {
 }
 
 .float-main-trigger.active {
-  background: rgba(11, 10, 8, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(11, 10, 8, 0.82);
   border: 1px solid rgba(237, 230, 218, 0.3);
   color: var(--bone);
   transform: rotate(135deg);

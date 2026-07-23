@@ -1,9 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 import {
   SCROLL_WORLD_CONNECTORS,
   SCROLL_WORLD_ENVIRONMENTS,
@@ -13,10 +10,6 @@ import {
 } from "@/lib/scrollWorld";
 import FloatingWidget from "./FloatingWidget";
 import RfqModal from "./RfqModal";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 type RuntimeSegment = {
   id: string;
@@ -52,12 +45,54 @@ type StageWindow = {
 const CROSSFADE_UNITS = 0.16;
 const VIEWPORTS_PER_UNIT = 100;
 
-// Real matched pellet product shots (transparent PNG piles → optimized WebP).
-// Same composition across all three states so the torrefaction transform
-// changes material, not shape.
-const PELLET_WHITE = "/product/white-pellet.webp";
-const PELLET_TORREFIED = "/product/torrefied-pellet.webp";
-const PELLET_BLACK = "/product/black-pellet.webp";
+type Pellet = {
+  x: number;
+  y: number;
+  len: number;
+  dia: number;
+  rot: number;
+  sl: number;
+  sh: number;
+  z: number;
+};
+
+// deterministic PRNG so the pile is identical on every render / all 3 states
+function mulberry32(seed: number) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// One shared pile of short-cylinder pellets. All material states reuse this
+// exact geometry so the torrefaction transform changes material, not shape.
+function buildPellets(count: number): Pellet[] {
+  const rnd = mulberry32(0x41565021);
+  const arr: Pellet[] = [];
+  for (let i = 0; i < count; i++) {
+    const t = Math.pow(rnd(), 0.62); // 0 = back/top, 1 = front/bottom (bottom-dense)
+    const y = 24 + t * 62;
+    const half = 9 + t * 33; // mound silhouette: narrow at top, wide at base
+    const x = 50 + (rnd() * 2 - 1) * half;
+    const baseLen = 2.5 + rnd() * 2.4;
+    const len = baseLen * (0.82 + t * 0.5); // foreground pellets larger
+    const dia = len / (2 + rnd() * 1.3); // consistent-ish diameter, varied length
+    arr.push({
+      x: +x.toFixed(2),
+      y: +y.toFixed(2),
+      len: +len.toFixed(2),
+      dia: +dia.toFixed(2),
+      rot: Math.round(rnd() * 360),
+      sl: Math.round((rnd() * 2 - 1) * 8), // per-pellet lightness variation
+      sh: Math.round((rnd() * 2 - 1) * 5), // per-pellet hue variation
+      z: 1 + Math.round(t * 90),
+    });
+  }
+  return arr.sort((a, b) => a.z - b.z);
+}
 
 function clamp01(value: number) {
   return Math.min(1, Math.max(0, value));
@@ -160,9 +195,35 @@ function makeSegments() {
   return { segments: result, stageWindows, totalUnits: cursor };
 }
 
+const PELLET_COUNT = 240;
 
-export default function ScrollWorldExperience() {
+function renderBed(variant: string, layerClass?: string, pellets: Pellet[] = []) {
+  return (
+    <div className={`sw-bed ${variant}${layerClass ? ` ${layerClass}` : ""}`}>
+      {pellets.map((p, i) => (
+        <i
+          key={i}
+          style={
+            {
+              "--x": p.x,
+              "--y": p.y,
+              "--len": p.len,
+              "--dia": p.dia,
+              "--rot": p.rot,
+              "--sl": p.sl,
+              "--sh": p.sh,
+              "--z": p.z,
+            } as CSSProperties
+          }
+        />
+      ))}
+    </div>
+  );
+}
+
+export default function ScrollWorldExperienceLegacy() {
   const { segments, stageWindows, totalUnits } = useMemo(makeSegments, []);
+  const pellets = useMemo(() => buildPellets(PELLET_COUNT), []);
   const segmentState = useRef(segments);
   const stageWindowState = useRef(stageWindows);
   const sceneEls = useRef<(HTMLDivElement | null)[]>([]);
@@ -178,8 +239,10 @@ export default function ScrollWorldExperience() {
   const trackRef = useRef<HTMLDivElement>(null);
   const firstImageSettled = useRef(false);
   const reducedMotion = useRef(false);
-  const lenisRef = useRef<Lenis | null>(null);
+  const targetProgress = useRef(0);
+  const visualProgress = useRef(0);
   const [activeStage, setActiveStage] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [loadedUrls, setLoadedUrls] = useState<Record<string, string>>({});
   const [isReady, setIsReady] = useState(false);
   const [isRfqOpen, setIsRfqOpen] = useState(false);
@@ -223,6 +286,13 @@ export default function ScrollWorldExperience() {
         });
     };
 
+    const readScrollTarget = () => {
+      const track = trackRef.current;
+      if (!track) return;
+      const maxScroll = Math.max(1, track.offsetHeight - window.innerHeight);
+      targetProgress.current = clamp01((window.scrollY - track.offsetTop) / maxScroll);
+    };
+
     const applyVisualProgress = (localY: number) => {
       const root = rootRef.current;
       const unit = localY * totalUnits;
@@ -240,16 +310,50 @@ export default function ScrollWorldExperience() {
           unit < segment.start ? segment.start - unit : unit > segment.end ? unit - segment.end : 0;
         const opacity = smooth(1 - outside / CROSSFADE_UNITS);
         const scene = sceneEls.current[index];
+        const foreground = foregroundEls.current[segment.environmentIndex];
+        const image = imageEls.current[index];
 
-        // Background scene opacity drives the crossfade. The image itself is
-        // kept STATIC during scroll (its scale/framing is a per-stage CSS var
-        // that transitions only on chapter change) — moving a full-screen image
-        // beneath the mix-blend tint/glow layers forces a full-viewport re-blend
-        // every frame, which is the main source of scroll jank. Parallax now
-        // lives on the copy + pellet layers, which sit above the blend layers.
         if (scene) {
           scene.style.opacity = opacity.toFixed(3);
           scene.style.zIndex = index === currentSegment ? "4" : String(1 + Math.round(opacity * 2));
+          scene.style.setProperty("--sw-local", local.toFixed(3));
+        }
+        if (foreground && segment.kind === "scene") {
+          foreground.style.opacity = Math.min(1, opacity * 1.15).toFixed(3);
+          foreground.style.setProperty("--env-local", local.toFixed(3));
+        }
+        if (image) {
+          const grammar = SCROLL_WORLD_ENVIRONMENTS[segment.environmentIndex]?.id;
+          const scaleMap: Record<string, number> = {
+            "forest-origin": 0.052,
+            "wood-processing": 0.035,
+            "dry-biomass": 0.058,
+            pelletization: 0.044,
+            "white-wood-pellet": 0.066,
+            "value-upgrading": 0.048,
+            "advanced-bioenergy": -0.025,
+          };
+          const xMap: Record<string, number> = {
+            "forest-origin": -1.8,
+            "wood-processing": -3.6,
+            "dry-biomass": -1.2,
+            pelletization: 3.2,
+            "white-wood-pellet": 0.4,
+            "value-upgrading": 1.3,
+            "advanced-bioenergy": 0.2,
+          };
+          const yMap: Record<string, number> = {
+            "forest-origin": 1.1,
+            "wood-processing": 0.2,
+            "dry-biomass": -0.7,
+            pelletization: 0,
+            "white-wood-pellet": -0.2,
+            "value-upgrading": -0.4,
+            "advanced-bioenergy": -2.8,
+          };
+          const connectorDrift = segment.kind === "connector" ? 1.4 : 0;
+          const scale = reducedMotion.current ? 1.02 : 1 + (scaleMap[grammar] ?? 0.04) * local;
+          image.style.transform = `translate3d(${((xMap[grammar] ?? 0) * local + connectorDrift * local).toFixed(2)}vw, ${((yMap[grammar] ?? 0) * local).toFixed(2)}vh, 0) scale(${scale.toFixed(3)})`;
         }
       });
 
@@ -293,8 +397,6 @@ export default function ScrollWorldExperience() {
                 : 0;
         copy.style.opacity = alpha.toFixed(3);
         copy.style.visibility = alpha > 0.02 ? "visible" : "hidden";
-        // Off-screen copy blocks skip the transform + flow work entirely.
-        if (alpha <= 0.02) return;
         copy.style.setProperty("--stage-progress", sceneProgress.toFixed(3));
         const yShift = ((0.5 - sceneProgress) * 2.2).toFixed(2);
         const x = scene.align === "center" ? "-50%" : "0";
@@ -353,6 +455,7 @@ export default function ScrollWorldExperience() {
         const heroAlpha = inWindow ? smooth(heroP / 0.22) * (1 - smooth((heroP - 0.78) / 0.22)) : 0;
         pelletHeroRef.current.style.opacity = heroAlpha.toFixed(3);
         pelletHeroRef.current.style.visibility = heroAlpha > 0.02 ? "visible" : "hidden";
+        pelletHeroRef.current.style.setProperty("--hero-scale", (0.96 + heroP * 0.08).toFixed(3));
       }
 
       const materialProgress = (() => {
@@ -371,75 +474,51 @@ export default function ScrollWorldExperience() {
       loadSegment(currentSegment);
       loadSegment(currentSegment + 1);
 
-      // React only owns the active chapter (infrequent) — never per-frame state.
       setActiveStage((previous) => (previous === stageIndex ? previous : stageIndex));
+      setProgress(localY);
     };
 
-    // Localized video loops (rare): seek directly to the scrubbed target; the
-    // scroll smoothing is provided by Lenis / ScrollTrigger, not a custom lerp.
-    const syncVideos = () => {
+    const onScroll = () => {
+      readScrollTarget();
+    };
+
+    let raf = 0;
+    const render = () => {
+      const smoothing = reducedMotion.current ? 1 : isMobileViewport() ? 0.18 : 0.115;
+      visualProgress.current += (targetProgress.current - visualProgress.current) * smoothing;
+      if (Math.abs(targetProgress.current - visualProgress.current) < 0.0007) {
+        visualProgress.current = targetProgress.current;
+      }
+
+      applyVisualProgress(visualProgress.current);
+
       states.forEach((segment, index) => {
         const video = videoEls.current[index];
         if (!video || video.seeking || !Number.isFinite(video.duration)) return;
         const seek = Math.min(video.duration * 0.999, video.duration * segment.target);
-        if (Math.abs(video.currentTime - seek) > 0.03) video.currentTime = seek;
+        segment.current += (segment.target - segment.current) * (isMobileViewport() ? 0.28 : 0.18);
+        const smoothedSeek = Math.min(video.duration * 0.999, video.duration * segment.current);
+        const seekEpsilon = isMobileViewport() ? 0.035 : 0.018;
+        if (Math.abs(video.currentTime - seek) > 0.12 || Math.abs(video.currentTime - smoothedSeek) > seekEpsilon) {
+          video.currentTime = smoothedSeek;
+        }
       });
+
+      raf = requestAnimationFrame(render);
     };
 
-    const onProgress = (p: number) => {
-      applyVisualProgress(p);
-      syncVideos();
-    };
-
-    // --- New scroll architecture: Lenis (input smoothing) + GSAP ScrollTrigger
-    // driving a single onUpdate. No custom RAF lerp, no per-frame React state. ---
-    const reduce = reducedMotion.current;
-    let tickerFn: ((time: number) => void) | null = null;
-
-    if (!reduce) {
-      const lenis = new Lenis({ lerp: 0.1, smoothWheel: true, wheelMultiplier: 1 });
-      lenisRef.current = lenis;
-      lenis.on("scroll", ScrollTrigger.update);
-      tickerFn = (time: number) => lenis.raf(time * 1000);
-      gsap.ticker.add(tickerFn);
-      gsap.ticker.lagSmoothing(0);
-    }
-
-    const trigger = ScrollTrigger.create({
-      trigger: trackRef.current,
-      start: "top top",
-      end: "bottom bottom",
-      onUpdate: (self) => onProgress(self.progress),
-      onRefresh: (self) => onProgress(self.progress),
-    });
-
-    // preload only current + neighbouring segment media
-    const preload = () => {
-      const p = trigger.progress;
-      const unit = p * totalUnits;
-      let idx = 0;
-      states.forEach((s, i) => {
-        if (unit >= s.start) idx = i;
-      });
-      loadSegment(idx - 1);
-      loadSegment(idx);
-      loadSegment(idx + 1);
-    };
-    const preloadInterval = window.setInterval(preload, 400);
-
+    const markReady = window.setTimeout(() => setIsReady(true), 900);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", readScrollTarget);
+    readScrollTarget();
     applyVisualProgress(0);
-    const markReady = window.setTimeout(() => setIsReady(true), 700);
-    const refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 300);
-    window.addEventListener("load", () => ScrollTrigger.refresh());
+    raf = requestAnimationFrame(render);
 
     return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", readScrollTarget);
       window.clearTimeout(markReady);
-      window.clearTimeout(refreshTimer);
-      window.clearInterval(preloadInterval);
-      trigger.kill();
-      if (tickerFn) gsap.ticker.remove(tickerFn);
-      lenisRef.current?.destroy();
-      lenisRef.current = null;
+      cancelAnimationFrame(raf);
       objectUrls.forEach((url) => URL.revokeObjectURL(url));
     };
   }, [totalUnits]);
@@ -452,12 +531,10 @@ export default function ScrollWorldExperience() {
     if (!stage || !track) return;
     const maxScroll = Math.max(1, track.offsetHeight - window.innerHeight);
     const target = track.offsetTop + ((stage.start + (stage.end - stage.start) * 0.5) / totalUnits) * maxScroll;
-    const lenis = lenisRef.current;
-    if (lenis) {
-      lenis.scrollTo(target, { duration: 1.1 });
-    } else {
-      window.scrollTo({ top: target, behavior: reducedMotion.current ? "auto" : "smooth" });
-    }
+    window.scrollTo({
+      top: target,
+      behavior: reducedMotion.current ? "auto" : "smooth",
+    });
   };
 
   const jumpToEnvironment = (environmentId: string) => {
@@ -556,13 +633,13 @@ export default function ScrollWorldExperience() {
             ))}
           </div>
           <div ref={pelletHeroRef} className="scroll-world-pellet-hero" aria-hidden="true">
-            <img className="sw-product" src={PELLET_WHITE} alt="" decoding="async" loading="lazy" />
+            {renderBed("bed-white", undefined, pellets)}
           </div>
           <div ref={valueRef} className="scroll-world-value-transform" aria-hidden="true">
             <span className="thermal-heat" />
-            <img className="sw-product pellet-white" src={PELLET_WHITE} alt="" decoding="async" loading="lazy" />
-            <img className="sw-product pellet-brown" src={PELLET_TORREFIED} alt="" decoding="async" loading="lazy" />
-            <img className="sw-product pellet-black" src={PELLET_BLACK} alt="" decoding="async" loading="lazy" />
+            {renderBed("bed-white", "pellet-white", pellets)}
+            {renderBed("bed-intermediate", "pellet-brown", pellets)}
+            {renderBed("bed-black", "pellet-black", pellets)}
           </div>
           <div className="scroll-world-tint" />
           <div className="scroll-world-glow" />
@@ -606,7 +683,7 @@ export default function ScrollWorldExperience() {
         </header>
 
         <div className="scroll-world-progress" aria-hidden="true">
-          <span />
+          <span style={{ transform: `scaleX(${progress})` }} />
         </div>
 
         <main className="scroll-world-copy-layer">

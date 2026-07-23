@@ -11,12 +11,20 @@
 | Grinding / wood particles | Available but weak | `factory-interior-02.webp`, procedural grinder/fibers | CSS foreground and flow animation; needs close refining media |
 | Drying process | Available but weak | `factory-interior-04.webp`, procedural dryer screenshot | Reused with dryer/heat foreground; generate better dryer/cyclone clip |
 | Pelletization close-up | Available but weak | `factory-interior-03.webp`, procedural pelletizing screenshot | Reused with press/pellet foreground; needs close compression clip |
-| White wood pellet macro | Missing | `hero-pellet.glb`, pellet screenshots | CSS pellet-bed fallback; generate macro hero |
+| White wood pellet macro | **Production asset available** | `public/product/white-pellet.webp` (from `01.png`) | Real transparent-PNG pile → WebP, composited as the White Pellet hero (stage 07) with drop-shadow over the soft-focus scene. |
 | Thermal upgrading equipment | Missing | Procedural chamber screenshots | CSS reactor/heat fallback; generate proper controlled thermal facility |
-| Torrefaction transformation | Missing | Procedural gradient pellets only | Scroll-controlled HTML material transition; generate dedicated clip/stills |
-| Black wood pellet hero | Missing | Procedural black pellet screenshots | CSS black pellet fallback; generate macro hero |
+| Torrefaction transformation | **Production asset available** | `white-pellet.webp` + `torrefied-pellet.webp` + `black-pellet.webp` (`01/02/03.png`) | Three matched real pellet shots, identical composition; scroll-driven crossfade + expanding radial mask (White→Brown→Black), reversible. |
+| Black wood pellet hero | **Production asset available** | `public/product/black-pellet.webp` (from `03.png`) | Real black/torrefied pile → WebP, composited as the Black Pellet hero (stage 10). |
 | Bioenergy / logistics final scene | Missing | Factory aerial, legacy ship screenshot | CSS port/vessel fallback; generate final ecosystem scene |
 | Native 9:16 mobile media | Needs mobile version | Desktop 16:9 photos only | Responsive crop/foreground fallback; generate portrait clips later |
+
+> **Reference vs production asset.** Real-world pellet reference photos were
+> supplied and catalogued in `docs/pellet-reference-audit.md` (organised under
+> `public/references/pellets/`). They are **visual references only** — used to
+> derive geometry/colour for the procedural pellet material, NOT shipped as final
+> assets. The three pellet rows above are therefore "reference available" but a
+> licensed/owned/generated production photo or clip is still the ideal final
+> deliverable. The former "giant striped oval" pellet has been fully removed.
 
 ## Generation Prompts
 
