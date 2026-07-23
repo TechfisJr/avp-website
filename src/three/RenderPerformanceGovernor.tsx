@@ -24,7 +24,7 @@ export default function RenderPerformanceGovernor({ quality }: { quality: Qualit
 
   useFrame((state) => {
     const local = stationLocal(scroll.t, stationIndex(scroll.t));
-    const cameraTravel = local > 0.54;
+    const cameraTravel = local > 0.44;
     const fastScroll = Math.abs(scroll.v) > 0.018;
     const target = cameraTravel || fastScroll ? motionDprFor(quality) : quality.dpr;
 

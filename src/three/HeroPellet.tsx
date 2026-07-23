@@ -118,7 +118,7 @@ export default function HeroPellet() {
     const local = stationLocal(t, i);
 
     // blend hero staging between this station and the next during travel
-    const f = smooth(clamp01((local - 0.6) / 0.4));
+    const f = smooth(clamp01((local - 0.46) / 0.54));
     const a = STATIONS[i].hero;
     const b = STATIONS[Math.min(N - 1, i + 1)].hero;
 

@@ -52,7 +52,7 @@ export default function FlowBridge({
   to,
   exitOffset,
   enterOffset,
-  departAt = 0.6,
+  departAt = 0.48,
   arriveUntil = 0.25,
   arcHeight = 0,
   holdAtEndUntil = 0,

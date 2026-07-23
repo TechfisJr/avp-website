@@ -38,7 +38,7 @@ export default function Overlay() {
       const local = (t - nextActive * W) / W;
       document.body.classList.toggle(
         "scene-is-moving",
-        Math.abs(scroll.v) > 0.018 || local > 0.54
+        Math.abs(scroll.v) > 0.018 || local > 0.44
       );
 
       if (nextActive !== lastActive) {

@@ -47,6 +47,12 @@ export default function Experience() {
   }, [reduced]);
 
   useEffect(() => {
+    if (!webgl) {
+      window.dispatchEvent(new Event("avp:experience-ready"));
+    }
+  }, [webgl]);
+
+  useEffect(() => {
     if (!quality || !webgl) return;
 
     let lenis: Lenis | null = null;

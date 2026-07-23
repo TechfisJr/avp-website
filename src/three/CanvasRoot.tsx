@@ -6,6 +6,7 @@ import { Canvas } from "@react-three/fiber";
 import type { Quality } from "@/lib/quality";
 import World from "./World";
 import RenderPerformanceGovernor from "./RenderPerformanceGovernor";
+import ExperienceReadySignal from "./ExperienceReadySignal";
 import BackgroundGradient from "./visual/BackgroundGradient";
 import SceneEnvironment from "./visual/SceneEnvironment";
 import PostFX from "./visual/PostFX";
@@ -34,6 +35,7 @@ export default function CanvasRoot({ quality }: { quality: Quality }) {
           <World quality={quality} />
           <RenderPerformanceGovernor quality={quality} />
           <PostFX quality={quality} />
+          <ExperienceReadySignal />
         </Suspense>
       </Canvas>
     </div>

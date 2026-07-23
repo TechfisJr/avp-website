@@ -8,7 +8,7 @@ import type { PresetName } from "@/three/visual/presets";
 // ---------------------------------------------------------------------------
 
 export const N = 15;
-export const SECTION_VH = 160; // scroll length per station
+export const SECTION_VH = 120; // scroll length per station
 export const TRACK_VH = N * SECTION_VH;
 
 const SPACING = 30;
@@ -119,16 +119,17 @@ export const bell = (local: number) =>
 
 /**
  * Dwell mapping: within each window the camera holds (with a slight creep)
- * for 60% and travels to the next station over the last 40%.
+ * for 46% and travels to the next station over the last 54%.
  * Returns fractional station coordinate s ∈ [0, N-1].
  */
 export function dwellCoord(t: number): number {
   const i = stationIndex(t);
   const local = stationLocal(t, i);
-  const creep = 0.1 * (local / 0.6);
-  if (local < 0.6) return Math.min(N - 1, i + creep);
-  const travel = smooth((local - 0.6) / 0.4);
-  return Math.min(N - 1, i + 0.1 + travel * 0.9);
+  const hold = 0.46;
+  const creep = 0.08 * (local / hold);
+  if (local < hold) return Math.min(N - 1, i + creep);
+  const travel = smooth((local - hold) / (1 - hold));
+  return Math.min(N - 1, i + 0.08 + travel * 0.92);
 }
 
 /** overlay visibility 0..1 for station i at global t (reveal → hold → exit) */
@@ -137,17 +138,17 @@ export function overlayAlpha(t: number, i: number): number {
   if (local < -0.1 || local > 1.05) return 0;
   if (i === 0) {
     const inA = smooth((local - 0.08) / 0.24);
-    const outA = 1 - smooth((local - 0.72) / 0.2);
+    const outA = 1 - smooth((local - 0.66) / 0.2);
     return clamp01(Math.min(inA, outA));
   }
   if (i === 1 || i === 2) {
     const inA = smooth((local - 0.02) / 0.14);
-    const outA = 1 - smooth((local - 0.74) / 0.2);
+    const outA = 1 - smooth((local - 0.64) / 0.2);
     return clamp01(Math.min(inA, outA));
   }
-  const inA = smooth((local - 0.12) / 0.22);
+  const inA = smooth((local - 0.08) / 0.18);
   const last = i === N - 1;
-  const outA = last ? 1 : 1 - smooth((local - 0.72) / 0.2);
+  const outA = last ? 1 : 1 - smooth((local - 0.62) / 0.2);
   return clamp01(Math.min(inA, outA));
 }
 
@@ -156,5 +157,5 @@ export function overlayReveal(t: number, i: number): number {
   const local = (t - i * W) / W;
   if (i === 0) return smooth((local - 0.08) / 0.28);
   if (i === 1 || i === 2) return smooth((local - 0.02) / 0.18);
-  return smooth((local - 0.1) / 0.3);
+  return smooth((local - 0.07) / 0.24);
 }
