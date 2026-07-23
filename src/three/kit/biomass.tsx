@@ -174,6 +174,67 @@ export function Chips({
   );
 }
 
+/** Incoming wood residue — uneven veneer offcuts, bark strips, short chips and
+ * processing scraps. This is the upstream feedstock, distinct from clean logs. */
+export function WoodResiduePile({
+  count = 120,
+  area = [3.2, 1.1, 1.6] as [number, number, number],
+  ...props
+}: { count?: number; area?: [number, number, number] } & GroupProps) {
+  const instanceCount: number = count ?? 120;
+  const inst = useRef<THREE.InstancedMesh>(null);
+  const shardGeometry = useMemo(() => {
+    const g = new THREE.BoxGeometry(1, 0.1, 0.22, 2, 1, 1);
+    const p = g.attributes.position as THREE.BufferAttribute;
+    const v = new THREE.Vector3();
+    for (let i = 0; i < p.count; i++) {
+      v.fromBufferAttribute(p, i);
+      p.setXYZ(
+        i,
+        v.x + (Math.random() - 0.5) * 0.2,
+        v.y + (Math.random() - 0.5) * 0.05,
+        v.z + (Math.random() - 0.5) * 0.16
+      );
+    }
+    g.computeVertexNormals();
+    return g;
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!inst.current) return;
+    for (let i = 0; i < instanceCount; i++) {
+      const layer = Math.random();
+      const x = (Math.random() - 0.5) * 2 * area[0];
+      const z = (Math.random() - 0.5) * 2 * area[2];
+      const mound = Math.max(0, 1 - Math.sqrt((x / area[0]) ** 2 + (z / area[2]) ** 2));
+      O.position.set(x, 0.04 + mound * area[1] * (0.2 + Math.random() * 0.85), z);
+      O.rotation.set(
+        (Math.random() - 0.5) * 0.5,
+        Math.random() * Math.PI,
+        (Math.random() - 0.5) * 0.8
+      );
+      const length = 0.45 + Math.random() * (layer > 0.72 ? 2.1 : 1.1);
+      const thick = 0.035 + Math.random() * 0.09;
+      O.scale.set(length, thick, 0.22 + Math.random() * 0.34);
+      O.updateMatrix();
+      inst.current.setMatrixAt(i, O.matrix);
+      C.setHSL(0.075 + Math.random() * 0.035, 0.34 + Math.random() * 0.18, 0.28 + Math.random() * 0.24);
+      inst.current.setColorAt(i, C);
+    }
+    inst.current.instanceMatrix.needsUpdate = true;
+    if (inst.current.instanceColor) inst.current.instanceColor.needsUpdate = true;
+  }, [instanceCount, area]);
+
+  return (
+    <group {...props}>
+      <mesh position={[0, 0.18, 0]} scale={[area[0] * 0.55, Math.max(0.16, area[1] * 0.36), area[2] * 0.46]} material={M.chip}>
+        <coneGeometry args={[1, 1, 22]} />
+      </mesh>
+      <instancedMesh ref={inst} args={[shardGeometry, undefined, instanceCount]} material={M.chip} />
+    </group>
+  );
+}
+
 /** Dense pellet bed — the money shot in cooling/QC. */
 export function PelletBed({
   count = 1500,

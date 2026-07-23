@@ -26,7 +26,7 @@ export default function ForestToCollection() {
       onFrame={handleFrame}
     >
       <group ref={truck} scale={0.82}>
-        <Truck cargoLoad={1} />
+        <Truck cargoLoad={1} cargoType="residue" />
       </group>
       <pointLight color="#ffd9a0" intensity={8} distance={10} decay={2} />
     </FlowBridge>

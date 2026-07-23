@@ -17,7 +17,7 @@ type SectionRefs = {
 };
 
 export default function Overlay() {
-  const { locale, setLocale, t } = useTranslation();
+  const { locale, t } = useTranslation();
   const COPY = getCopy(locale);
 
   const sections = useRef<SectionRefs[]>(
@@ -102,6 +102,20 @@ export default function Overlay() {
     });
   };
 
+  const renderHeadlineLine = (line: string, sectionIndex: number) => {
+    if (sectionIndex !== 0) return line;
+
+    const firstSpace = line.indexOf(" ");
+    if (firstSpace < 0) return line;
+
+    return (
+      <>
+        {line.slice(0, firstSpace + 1)}
+        <em>{line.slice(firstSpace + 1)}</em>
+      </>
+    );
+  };
+
   return (
     <>
       <div className="overlay" aria-hidden="true">
@@ -137,13 +151,7 @@ export default function Overlay() {
                         if (node) sections.current[i].lines[lineIndex] = node;
                       }}
                     >
-                      {i === 0 && line.toLowerCase().includes("clean energy") ? (
-                        <>
-                          to <em>Clean Energy</em>
-                        </>
-                      ) : (
-                        line
-                      )}
+                      {renderHeadlineLine(line, i)}
                     </span>
                   </span>
                 ))}
@@ -153,7 +161,15 @@ export default function Overlay() {
               {section.tags && (
                 <div className="card-tags">
                   {section.tags.map((tag) => (
-                    <span key={tag} className="tag-badge">
+                    <span
+                      key={tag}
+                      className="tag-badge"
+                      data-detail={
+                        i === 0
+                          ? t("LOW ASH - HIGH ENERGY", "TRO THẤP - NĂNG LƯỢNG CAO")
+                          : undefined
+                      }
+                    >
                       {tag}
                     </span>
                   ))}

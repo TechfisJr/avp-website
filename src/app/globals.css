@@ -1373,7 +1373,7 @@ body.scene-is-moving .grain {
 }
 
 .section:first-child .tag-badge::after {
-  content: "LOW ASH - HIGH ENERGY";
+  content: attr(data-detail);
   color: rgba(237, 230, 218, 0.86);
   margin-left: 0.55rem;
   letter-spacing: 0.22em;

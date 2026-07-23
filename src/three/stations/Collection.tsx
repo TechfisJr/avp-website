@@ -8,7 +8,7 @@ import { STATIONS, W, bell, smooth } from "@/lib/timeline";
 import type { Quality } from "@/lib/quality";
 import ParticleField from "../fx/ParticleField";
 import { useStation } from "../useStation";
-import { Logs, Shavings } from "../kit/biomass";
+import { Shavings, WoodResiduePile } from "../kit/biomass";
 import { Truck } from "../kit/machines";
 import { isVisibleInTree } from "../kit/visibility";
 import { createConcreteMaterial } from "../visual/materials";
@@ -24,7 +24,7 @@ const truckHeadingY = Math.atan2(
 
 const groundMat = createConcreteMaterial({ color: "#151109", roughness: 1 });
 
-/** S02 — factory receiving: loaded wood arrives and stages before chipping. */
+/** S02 — factory receiving: wood residues arrive and stage before chipping. */
 export default function Collection({ quality }: { quality: Quality }) {
   const { group, state } = useStation(I);
   const truck = useRef<THREE.Group>(null);
@@ -49,15 +49,15 @@ export default function Collection({ quality }: { quality: Quality }) {
         <circleGeometry args={[30, 24]} />
       </mesh>
 
-      <Logs
-        count={quality.tier === 0 ? 14 : 20}
+      <WoodResiduePile
+        count={quality.tier === 0 ? 90 : 160}
         position={[-4.15, 0, -1.75]}
-        scale={0.72}
-        getAssemble={() => 1}
+        scale={[0.95, 0.88, 0.82]}
+        area={[3.2, 1.1, 1.5]}
       />
       <Shavings count={quality.tier === 0 ? 4 : 8} position={[-2.2, 0, 1.85]} />
       <group ref={truck} scale={0.74}>
-        <Truck cargoLoad={1} />
+        <Truck cargoLoad={1} cargoType="residue" />
         <pointLight position={[3.15, 1.05, 0]} color="#ffd9a0" intensity={6} distance={10} decay={2} />
       </group>
 

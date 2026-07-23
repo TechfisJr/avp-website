@@ -83,7 +83,7 @@ export default function FloatingWidget({ onOpenRfq }: FloatingWidgetProps) {
         <button 
           onClick={() => setLocale(locale === "en" ? "vi" : "en")}
           className="float-btn float-lang" 
-          aria-label={locale === "en" ? "Switch to Vietnamese" : "Switch to English"}
+          aria-label={locale === "en" ? "Switch to Vietnamese" : "Chuyển sang tiếng Anh"}
           title={locale === "en" ? "Tiếng Việt" : "English"}
         >
           <span className="float-lang-text">{locale === "en" ? "VI" : "EN"}</span>

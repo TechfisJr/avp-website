@@ -28,7 +28,7 @@ export default function CollectionToScreening() {
       onFrame={handleFrame}
     >
       <group ref={truck} scale={0.74}>
-        <Truck cargoLoad={1} />
+        <Truck cargoLoad={1} cargoType="residue" />
       </group>
       <pointLight color="#ffd9a0" intensity={9} distance={11} decay={2} />
     </FlowBridge>

@@ -12,7 +12,6 @@ import { Conveyor } from "../kit/machines";
 import { Chips } from "../kit/biomass";
 import { M } from "../kit/industrial";
 import { isVisibleInTree } from "../kit/visibility";
-import { BridgeLog } from "../bridges/BridgePrimitives";
 
 const I = 3;
 const S = STATIONS[I];
@@ -32,6 +31,19 @@ const cabGlass = new THREE.MeshStandardMaterial({
   roughness: 0.22,
   metalness: 0.05,
 });
+
+function ScrapStrip({ length = 1.8, width = 0.14 }: { length?: number; width?: number }) {
+  return (
+    <group>
+      <mesh material={M.chip}>
+        <boxGeometry args={[length, width, width * 0.55]} />
+      </mesh>
+      <mesh position={[length * 0.18, width * 0.18, 0]} rotation={[0, 0, 0.1]} material={M.woodEnd}>
+        <boxGeometry args={[length * 0.38, width * 0.42, width * 0.3]} />
+      </mesh>
+    </group>
+  );
+}
 
 function FeedBunker({ getRun }: { getRun: () => number }) {
   return (
@@ -53,7 +65,7 @@ function FeedBunker({ getRun }: { getRun: () => number }) {
       <group position={[0.15, 2.3, 0.02]} rotation={[0, 0.05, 0]}>
         {[-0.72, -0.26, 0.2, 0.68].map((z, i) => (
           <group key={z} position={[-0.4 + i * 0.18, i * 0.1, z]} rotation={[0.02 * i, 0.1 - i * 0.04, 0.02]}>
-            <BridgeLog length={3.25 + i * 0.16} radius={0.16 + i * 0.015} />
+            <ScrapStrip length={3.25 + i * 0.16} width={0.22 + i * 0.018} />
           </group>
         ))}
       </group>
@@ -128,7 +140,7 @@ function CraneGrapple({ getLocal }: { getLocal: () => number }) {
           <group position={[0, -0.38, 0]}>
             {[-0.45, -0.15, 0.15, 0.45].map((z, i) => (
               <group key={z} position={[0.02 * i, -0.08 * i, z]} rotation={[0, 0.15 * i, Math.PI / 2]}>
-                <BridgeLog length={1.65 + i * 0.18} radius={0.09} />
+                <ScrapStrip length={1.65 + i * 0.18} width={0.14} />
               </group>
             ))}
           </group>
@@ -184,7 +196,7 @@ function GrappleFeedHead({ getLocal }: { getLocal: () => number }) {
       <group position={[0.03, -0.72, 0]}>
         {[-0.42, -0.14, 0.14, 0.42].map((z, i) => (
           <group key={z} position={[0.04 * i, -0.05 * i, z]} rotation={[0, 0.16 * i, Math.PI / 2]}>
-            <BridgeLog length={1.7 + i * 0.12} radius={0.085} />
+            <ScrapStrip length={1.7 + i * 0.12} width={0.13} />
           </group>
         ))}
       </group>
@@ -298,7 +310,7 @@ function RealisticFeedTable() {
       <group position={[1.5, 2.05, 0.03]} rotation={[0, 0.02, 0]}>
         {[-0.54, -0.18, 0.18, 0.54].map((z, i) => (
           <group key={z} position={[-0.35 + i * 0.46, i * 0.05, z]} rotation={[0.04 * i, -0.02, 0.02 * i]}>
-            <BridgeLog length={3.6 - i * 0.22} radius={0.16 + i * 0.012} />
+            <ScrapStrip length={3.6 - i * 0.22} width={0.2 + i * 0.012} />
           </group>
         ))}
       </group>
@@ -543,7 +555,7 @@ function SideExcavatorLoader({ getLocal }: { getLocal: () => number }) {
             <group position={[-0.1, -0.44, 0]}>
               {[-0.36, -0.1, 0.16, 0.42].map((z, i) => (
                 <group key={z} position={[0.04 * i, -0.04 * i, z]} rotation={[0, 0.18 * i, 0.08 * i]}>
-                  <BridgeLog length={1.5 + i * 0.16} radius={0.08} />
+                  <ScrapStrip length={1.5 + i * 0.16} width={0.13} />
                 </group>
               ))}
             </group>

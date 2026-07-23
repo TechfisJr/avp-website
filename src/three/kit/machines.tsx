@@ -4,7 +4,7 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame, type ThreeElements } from "@react-three/fiber";
 import { M } from "./industrial";
-import { Chips } from "./biomass";
+import { Chips, WoodResiduePile } from "./biomass";
 import { isVisibleInTree } from "./visibility";
 
 type GroupProps = ThreeElements["group"];
@@ -202,14 +202,28 @@ export function Truck({
   lightsOn = true,
   cargoLoad = 1,
   getCargoLoad,
+  cargoType = "logs",
   ...props
-}: { lightsOn?: boolean; cargoLoad?: number; getCargoLoad?: () => number } & GroupProps) {
+}: {
+  lightsOn?: boolean;
+  cargoLoad?: number;
+  getCargoLoad?: () => number;
+  cargoType?: "logs" | "residue";
+} & GroupProps) {
   const cargo = useRef<(THREE.Group | null)[]>([]);
+  const residueCargo = useRef<THREE.Group>(null);
 
   useFrame(() => {
     if (!getCargoLoad) return;
-    if (!isVisibleInTree(cargo.current[0])) return;
+    const visibilityAnchor = cargoType === "logs" ? cargo.current[0] : residueCargo.current;
+    if (!isVisibleInTree(visibilityAnchor)) return;
     const load = Math.min(1, Math.max(0, getCargoLoad ? getCargoLoad() : cargoLoad));
+    if (residueCargo.current) {
+      const u = ease01(load);
+      residueCargo.current.visible = u > 0.03;
+      residueCargo.current.position.y = 1.08 + Math.sin(u * Math.PI) * 0.12;
+      residueCargo.current.scale.set(0.72 + u * 0.18, 0.55 + u * 0.25, 0.66 + u * 0.18);
+    }
     cargo.current.forEach((log, i) => {
       if (!log) return;
       const spec = cargoLogs[i];
@@ -300,7 +314,7 @@ export function Truck({
       ))}
 
       {/* Staggered cargo logs: empty bed -> loaded bed when cargoLoad rises. */}
-      {cargoLogs.map((log, i) => (
+      {cargoType === "logs" && cargoLogs.map((log, i) => (
         <group
           key={`cargo-${i}`}
           ref={(node) => {
@@ -323,6 +337,20 @@ export function Truck({
           </mesh>
         </group>
       ))}
+
+      {cargoType === "residue" && (
+        <group
+          ref={residueCargo}
+          position={[-0.95, 1.1, 0]}
+          scale={[0.9, 0.8, 0.84]}
+          visible={!getCargoLoad && cargoLoad > 0.01}
+        >
+          <WoodResiduePile count={58} area={[1.8, 0.42, 0.75]} />
+          <mesh position={[0.05, -0.03, 0]} material={M.dark}>
+            <boxGeometry args={[4.1, 0.08, 1.74]} />
+          </mesh>
+        </group>
+      )}
     </group>
   );
 }

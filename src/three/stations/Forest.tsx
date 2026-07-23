@@ -6,7 +6,7 @@ import type { Quality } from "@/lib/quality";
 import ParticleField from "../fx/ParticleField";
 import { useStation } from "../useStation";
 import { Truck } from "../kit/machines";
-import { Logs, Shavings } from "../kit/biomass";
+import { Shavings, WoodResiduePile } from "../kit/biomass";
 import { M } from "../kit/industrial";
 import { createConcreteMaterial } from "../visual/materials";
 
@@ -22,9 +22,8 @@ const laneMat = new THREE.MeshStandardMaterial({
   metalness: 0.05,
 });
 
-/** S01 — responsible source handoff: the journey starts with a loaded log
- * truck, not a forest fly-through. This keeps the source message practical and
- * prepares the next beat: driving into the factory receiving area. */
+/** S01 — responsible source handoff: the journey starts with incoming wood
+ * residues and processing offcuts. */
 export default function Forest({ quality }: { quality: Quality }) {
   const { group, state } = useStation(I);
 
@@ -51,14 +50,19 @@ export default function Forest({ quality }: { quality: Quality }) {
       </mesh>
 
       <group position={[1.45, 0, 1.05]} rotation={[0, -0.82, 0]} scale={0.86}>
-        <Truck cargoLoad={1} />
+        <Truck cargoLoad={1} cargoType="residue" />
       </group>
 
-      <Logs count={quality.tier === 0 ? 8 : 12} position={[-5.25, 0, -1.1]} rotation={[0, 0.18, 0]} getAssemble={() => 1} />
+      <WoodResiduePile
+        count={quality.tier === 0 ? 72 : 130}
+        position={[-5.25, 0, -1.1]}
+        rotation={[0, 0.18, 0]}
+        scale={[1.16, 1, 1.08]}
+        area={[3.4, 1.25, 1.65]}
+      />
       <Shavings count={quality.tier === 0 ? 3 : 6} position={[-4.3, 0, 1.7]} />
 
-      {/* plant/source gate marker, deliberately abstract so it does not become
-          a new forest scene. */}
+      {/* plant/source gate marker, deliberately abstract so it stays a receiving yard. */}
       <group position={[3.8, 0, -2.2]}>
         <mesh position={[0, 1.35, 0]} material={M.housing}>
           <boxGeometry args={[2.7, 2.7, 0.22]} />

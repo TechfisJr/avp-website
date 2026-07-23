@@ -16,7 +16,7 @@ const grotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "Home - An Viet Phat Group | AVP Biomass",
   description:
-    "A cinematic journey from responsibly sourced biomass through pelletization, value upgrading, torrefaction and black wood pellet production.",
+    "A cinematic journey through AVP's biomass pellet workflow, from responsible wood residues through chipping, grinding, drying, recovery, pelletizing and finished product handling.",
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Home - An Viet Phat Group | AVP Biomass",
     description:
-      "From natural wood resources to pelletization, thermal upgrading and higher-value advanced bioenergy.",
+      "From responsible wood residues to chipping, grinding, drying, recovery, pelletizing and finished biomass product handling.",
     type: "website",
   },
   alternates: {
