@@ -105,7 +105,7 @@ export default function ParticleField({
   });
 
   return (
-    <points ref={points} geometry={geometry} frustumCulled={false}>
+    <points ref={points} geometry={geometry} frustumCulled>
       <shaderMaterial
         ref={mat}
         vertexShader={PARTICLE_VERT}

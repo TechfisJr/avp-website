@@ -7,9 +7,9 @@ import { scroll } from "@/lib/scrollStore";
 import { stationIndex, stationLocal } from "@/lib/timeline";
 
 function motionDprFor(quality: Quality) {
-  if (quality.tier === 0) return Math.min(quality.dpr, 0.86);
-  if (quality.tier === 1) return Math.min(quality.dpr, 0.92);
-  return Math.min(quality.dpr, 1.0);
+  if (quality.tier === 0) return Math.min(quality.dpr, 0.78);
+  if (quality.tier === 1) return Math.min(quality.dpr, 0.84);
+  return Math.min(quality.dpr, 0.92);
 }
 
 export default function RenderPerformanceGovernor({ quality }: { quality: Quality }) {
@@ -25,14 +25,14 @@ export default function RenderPerformanceGovernor({ quality }: { quality: Qualit
   useFrame((state) => {
     const local = stationLocal(scroll.t, stationIndex(scroll.t));
     const cameraTravel = local > 0.44;
-    const fastScroll = Math.abs(scroll.v) > 0.018;
+    const fastScroll = Math.abs(scroll.v) > 0.012;
     const target = cameraTravel || fastScroll ? motionDprFor(quality) : quality.dpr;
 
     if (Math.abs(activeDpr.current - target) < 0.015) return;
 
     const now = state.clock.elapsedTime;
     const lowering = target < activeDpr.current;
-    if (!lowering && now - lastSwitch.current < 0.42) return;
+    if (!lowering && now - lastSwitch.current < 0.62) return;
 
     activeDpr.current = target;
     lastSwitch.current = now;

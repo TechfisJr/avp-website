@@ -41,9 +41,9 @@ export function detectQuality(): Quality {
 const TIERS: Record<number, Quality> = {
   2: {
     tier: 2,
-    dpr: 1.25,
-    particleScale: 0.5,
-    pelletCount: 900,
+    dpr: 1.12,
+    particleScale: 0.42,
+    pelletCount: 760,
     shadows: false,
     drift: true,
     shimmer: true,
@@ -53,9 +53,9 @@ const TIERS: Record<number, Quality> = {
   },
   1: {
     tier: 1,
-    dpr: 1.1,
-    particleScale: 0.32,
-    pelletCount: 620,
+    dpr: 1,
+    particleScale: 0.26,
+    pelletCount: 520,
     shadows: false,
     drift: true,
     shimmer: true,
@@ -65,9 +65,9 @@ const TIERS: Record<number, Quality> = {
   },
   0: {
     tier: 0,
-    dpr: 1,
-    particleScale: 0.12,
-    pelletCount: 260,
+    dpr: 0.9,
+    particleScale: 0.1,
+    pelletCount: 220,
     shadows: false,
     drift: false,
     shimmer: false,

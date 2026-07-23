@@ -18,8 +18,10 @@ export default function CanvasRoot({ quality }: { quality: Quality }) {
         dpr={[1, quality.dpr]}
         camera={{ fov: 42, near: 0.1, far: 160, position: [0, 2.2, 5] }}
         gl={{
-          antialias: quality.tier > 0,
+          antialias: quality.tier === 2,
           powerPreference: "high-performance",
+          alpha: false,
+          stencil: false,
         }}
         shadows={quality.shadows}
         frameloop="always"

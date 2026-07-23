@@ -1,14 +1,24 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 function detectBootLocale() {
-  if (typeof window === "undefined") return "en";
-  const stored = window.localStorage.getItem("avp-locale");
-  if (stored === "vi" || stored === "en") return stored;
+  try {
+    const stored = window.localStorage.getItem("avp-locale");
+    if (stored === "vi" || stored === "en") return stored;
+  } catch {
+    // Storage may be blocked in private/strict browser modes.
+  }
   return navigator.language?.toLowerCase().startsWith("vi") ? "vi" : "en";
 }
 
 export default function LoadingScreen({ exiting = false }: { exiting?: boolean }) {
-  const locale = detectBootLocale();
+  const [locale, setLocale] = useState<"en" | "vi">("en");
+
+  useEffect(() => {
+    setLocale(detectBootLocale());
+  }, []);
+
   const copy =
     locale === "vi"
       ? {

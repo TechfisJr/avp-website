@@ -56,10 +56,17 @@ export default function Experience() {
     if (!quality || !webgl) return;
 
     let lenis: Lenis | null = null;
+    let lenisRaf: ((time: number) => void) | null = null;
     if (!reduced) {
-      lenis = new Lenis({ lerp: 0.09, syncTouch: true });
+      lenis = new Lenis({
+        lerp: 0.12,
+        syncTouch: true,
+        wheelMultiplier: 0.86,
+        touchMultiplier: 0.9,
+      });
       lenis.on("scroll", ScrollTrigger.update);
-      gsap.ticker.add((time) => lenis!.raf(time * 1000));
+      lenisRaf = (time) => lenis?.raf(time * 1000);
+      gsap.ticker.add(lenisRaf);
       gsap.ticker.lagSmoothing(0);
     }
 
@@ -76,6 +83,7 @@ export default function Experience() {
 
     return () => {
       st.kill();
+      if (lenisRaf) gsap.ticker.remove(lenisRaf);
       lenis?.destroy();
     };
   }, [quality, webgl, reduced]);
