@@ -8,13 +8,37 @@ import { useStation } from "../useStation";
 
 const I = 0;
 const S = STATIONS[I];
-const heroGlowMat = new THREE.MeshBasicMaterial({
-  color: "#e8a33d",
+// A flat additive disc of uniform colour draws a hard-edged circle across the
+// hero frame — the edge was clearly visible against the dark background. This
+// is the same glow with a radial falloff so it reads as light, not geometry.
+const heroGlowMat = new THREE.ShaderMaterial({
+  uniforms: {
+    uColor: { value: new THREE.Color("#e8a33d") },
+    uOpacity: { value: 0.22 },
+  },
+  vertexShader: /* glsl */ `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: /* glsl */ `
+    precision highp float;
+    varying vec2 vUv;
+    uniform vec3 uColor;
+    uniform float uOpacity;
+    void main() {
+      float d = clamp(length(vUv - 0.5) * 2.0, 0.0, 1.0);
+      float a = pow(1.0 - d, 3.0);
+      gl_FragColor = vec4(uColor, a * uOpacity);
+    }
+  `,
   transparent: true,
-  opacity: 0.08,
   blending: THREE.AdditiveBlending,
   depthWrite: false,
   side: THREE.DoubleSide,
+  fog: false,
 });
 
 /** S00 — the void. Dust motes around the floating protagonist; at the exit
@@ -25,8 +49,12 @@ export default function Hero({ quality }: { quality: Quality }) {
 
   return (
     <group ref={group} position={S.pos}>
-      <mesh position={[0, 2, -1.7]} rotation={[0, 0, 0]} material={heroGlowMat}>
-        <circleGeometry args={[3.8, 48]} />
+      <mesh
+        position={[0, 2, -1.7]}
+        material={heroGlowMat}
+        userData={{ noShadow: true }}
+      >
+        <circleGeometry args={[5.2, 64]} />
       </mesh>
       <pointLight position={[-2.4, 3.5, 2.8]} color="#e8a33d" intensity={14} distance={10} decay={1.8} />
       <pointLight position={[2.8, 2.4, -1.2]} color="#7fb4c7" intensity={4.5} distance={9} decay={1.8} />

@@ -53,10 +53,13 @@ const TIERS: Record<number, Quality> = {
     dpr: 1.5,
     particleScale: 0.55,
     pelletCount: 1500,
-    shadows: false,
+    // Shadows are the single biggest contributor to objects reading as solid,
+    // so mid-tier keeps them (at a 1024 map, see Atmosphere) and gives up SSAO
+    // and depth of field instead.
+    shadows: true,
     drift: true,
     shimmer: true,
-    envResolution: 64,
+    envResolution: 128,
     postFX: true,
     ssao: false,
   },

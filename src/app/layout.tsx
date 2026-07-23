@@ -1,27 +1,35 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Space_Grotesk } from "next/font/google";
+import { CONTENT, DEFAULT_LOCALE } from "@/lib/content";
+import { LocaleProvider } from "@/lib/i18n";
 import "./globals.css";
+import "./chrome.css"; // loaded second so the chrome can layer over the film
 
+// "vietnamese" is required for the VI copy — without it the diacritics fall
+// back to a system font mid-headline.
 const fraunces = Fraunces({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext", "vietnamese"],
   variable: "--font-display",
   axes: ["opsz", "SOFT", "WONK"],
 });
 
 const grotesk = Space_Grotesk({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext", "vietnamese"],
   variable: "--font-text",
 });
 
+const base = CONTENT[DEFAULT_LOCALE];
+
 export const metadata: Metadata = {
-  title: "AVP Biomass — One Pellet. A Complete Energy Cycle.",
-  description:
-    "A cinematic journey through the wood pellet value chain: from certified forest residues through grinding, drying and pelletizing to global logistics and carbon-neutral industrial energy.",
+  title: base.meta.title,
+  description: base.meta.description,
   icons: { icon: "/icons/pellet-mark.svg" },
   openGraph: {
-    title: "AVP Biomass — One Pellet. A Complete Energy Cycle.",
-    description:
-      "Follow a single wood pellet from the forest floor to industrial fire — and back into the carbon cycle.",
+    title: base.meta.title,
+    description: base.meta.description,
+    siteName: base.brand.legal,
+    locale: "en_US",
+    alternateLocale: ["vi_VN"],
     type: "website",
   },
 };
@@ -32,8 +40,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${grotesk.variable}`}>
-      <body>{children}</body>
+    // lang is updated client-side by <LocaleProvider> when the visitor switches
+    // language; DEFAULT_LOCALE is what the server renders.
+    <html lang={base.htmlLang} className={`${fraunces.variable} ${grotesk.variable}`}>
+      <body>
+        <LocaleProvider>{children}</LocaleProvider>
+      </body>
     </html>
   );
 }

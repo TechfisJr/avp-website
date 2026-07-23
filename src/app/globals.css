@@ -1,4 +1,5 @@
 :root {
+  /* cinematic scene palette — tuned against the 3D stations, do not retheme */
   --ink: #0b0a08;
   --bone: #ede6da;
   --amber: #e8a33d;
@@ -7,6 +8,13 @@
   --moss: #7ba05b;
   --frost: #7fb4c7;
   --rail: rgba(237, 230, 218, 0.28);
+
+  /* AVP brand palette — drives the chrome (header, footer, CTAs) */
+  --brand-forest: #1f6e43;
+  --brand-deep: #0f3d26;
+  --brand-pellet: #c68a3e;
+  --brand-paper: #f7f4ec;
+  --brand-charcoal: #1a1a1a;
 }
 
 * {
@@ -102,10 +110,30 @@ body {
 .section.align-center { justify-content: center; text-align: center; }
 
 .section-inner {
+  position: relative;
   max-width: 34rem;
   will-change: transform, opacity;
 }
 .section.align-center .section-inner { max-width: 46rem; }
+
+/* Legibility scrim. The copy sits directly over the lit 3D stations, and a
+   bright pellet or a white-hot die behind a headline destroys contrast. This
+   is a soft local darkening rather than a panel, so the scene still reads
+   through it. .section-inner is a stacking context (it's transformed), so
+   z-index -1 stays above the canvas and below the text. */
+.section-inner::before {
+  content: "";
+  position: absolute;
+  inset: -2.5rem -3.5rem;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(8, 7, 5, 0.74) 0%,
+    rgba(8, 7, 5, 0.52) 52%,
+    rgba(8, 7, 5, 0) 78%
+  );
+}
 
 .eyebrow {
   display: flex;
@@ -182,36 +210,6 @@ body {
   inset: 0;
   z-index: 20;
   pointer-events: none;
-}
-
-.hud .brand {
-  position: absolute;
-  top: 2rem;
-  left: clamp(1.5rem, 4vw, 3.5rem);
-  pointer-events: auto;
-}
-.hud .brand img { display: block; height: 24px; width: auto; }
-
-.hud .cta {
-  position: absolute;
-  top: 1.85rem;
-  right: clamp(1.5rem, 4vw, 3.5rem);
-  pointer-events: auto;
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--bone);
-  text-decoration: none;
-  border: 1px solid rgba(237, 230, 218, 0.3);
-  padding: 0.75rem 1.3rem;
-  border-radius: 99px;
-  transition: border-color 0.3s, background 0.3s, color 0.3s;
-  backdrop-filter: blur(6px);
-}
-.hud .cta:hover {
-  border-color: var(--amber);
-  background: var(--amber);
-  color: var(--ink);
 }
 
 .scroll-cue {

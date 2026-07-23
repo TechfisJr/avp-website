@@ -28,6 +28,13 @@ export type LightingPreset = {
   rimRatio: number;
   /** hemisphere ambient intensity — never lets objects fall to pure black */
   ambient: number;
+  /**
+   * Image-based lighting strength (scene.environmentIntensity) while this
+   * preset is active. This is the preset's main "how much does the world
+   * reflect in this room" dial: high in the warehouse and on the hero product,
+   * low in the forest where the canopy occludes the sky.
+   */
+  envIntensity: number;
   /** renderer exposure while this preset is active */
   exposure: number;
   toneMapping: THREE.ToneMapping;
@@ -37,9 +44,12 @@ export type LightingPreset = {
   ambientTint: string;
 };
 
-// Every preset keeps the same "never pure black" floor: ambient >= 0.3 and a
-// rim strong enough (>=0.35x key) to hold a readable silhouette edge, per the
-// subject-separation rule (subject edge 15-25% brighter/cooler than ground).
+// Every preset keeps the same "never pure black" floor, but it is now held by
+// image-based lighting plus the rim rather than by flat hemisphere ambient.
+// Ambient was previously 0.32–0.55, which lit every surface from every
+// direction at once and flattened all form — the classic plastic look. With
+// real IBL doing the ambient work (SceneEnvironment + envMapIntensity in
+// materials.ts), the hemisphere only has to catch the bottom of the range.
 export const PRESETS: Record<PresetName, LightingPreset> = {
   forest: {
     name: "forest",
@@ -47,7 +57,8 @@ export const PRESETS: Record<PresetName, LightingPreset> = {
     fillRatio: 0.35,
     rimColor: "#f7e3bd",
     rimRatio: 0.5,
-    ambient: 0.5,
+    ambient: 0.24,
+    envIntensity: 0.55,
     exposure: 1.05,
     toneMapping: THREE.ACESFilmicToneMapping,
     fogRatio: 1,
@@ -59,7 +70,8 @@ export const PRESETS: Record<PresetName, LightingPreset> = {
     fillRatio: 0.28,
     rimColor: "#f7e3bd",
     rimRatio: 0.42,
-    ambient: 0.42,
+    ambient: 0.2,
+    envIntensity: 0.75,
     exposure: 1.05,
     toneMapping: THREE.ACESFilmicToneMapping,
     fogRatio: 1,
@@ -71,7 +83,8 @@ export const PRESETS: Record<PresetName, LightingPreset> = {
     fillRatio: 0.26,
     rimColor: "#dfe8ee",
     rimRatio: 0.55,
-    ambient: 0.4,
+    ambient: 0.19,
+    envIntensity: 0.95,
     exposure: 1.0,
     toneMapping: THREE.ACESFilmicToneMapping,
     fogRatio: 1,
@@ -83,7 +96,8 @@ export const PRESETS: Record<PresetName, LightingPreset> = {
     fillRatio: 0.3,
     rimColor: "#ffffff",
     rimRatio: 0.35,
-    ambient: 0.55,
+    ambient: 0.26,
+    envIntensity: 1.1,
     exposure: 1.02,
     toneMapping: THREE.ACESFilmicToneMapping,
     fogRatio: 0.9,
@@ -95,7 +109,8 @@ export const PRESETS: Record<PresetName, LightingPreset> = {
     fillRatio: 0.3,
     rimColor: "#9ec3dd",
     rimRatio: 0.6,
-    ambient: 0.38,
+    ambient: 0.18,
+    envIntensity: 0.85,
     exposure: 1.05,
     toneMapping: THREE.ACESFilmicToneMapping,
     fogRatio: 0.7,
@@ -107,7 +122,8 @@ export const PRESETS: Record<PresetName, LightingPreset> = {
     fillRatio: 0.15,
     rimColor: "#f7e3bd",
     rimRatio: 0.45,
-    ambient: 0.32,
+    ambient: 0.15,
+    envIntensity: 1.25,
     exposure: 1.08,
     toneMapping: THREE.ACESFilmicToneMapping,
     fogRatio: 1,

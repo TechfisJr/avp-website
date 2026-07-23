@@ -3,6 +3,7 @@
 import type { Quality } from "@/lib/quality";
 import CameraRig from "./CameraRig";
 import Atmosphere from "./Atmosphere";
+import ShadowEnroller from "./visual/ShadowEnroller";
 import HeroPellet from "./HeroPellet";
 import Hero from "./stations/Hero";
 import Forest from "./stations/Forest";
@@ -25,7 +26,8 @@ export default function World({ quality }: { quality: Quality }) {
   return (
     <>
       <CameraRig quality={q} />
-      <Atmosphere />
+      <Atmosphere quality={q} />
+      <ShadowEnroller enabled={q.shadows} />
       <HeroPellet />
       <Hero quality={q} />
       <Forest quality={q} />

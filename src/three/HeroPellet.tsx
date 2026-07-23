@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import { scroll } from "@/lib/scrollStore";
 import { STATIONS, N, stationIndex, stationLocal, smooth, lerp, clamp01 } from "@/lib/timeline";
-import { PELLET_VERT, PELLET_FRAG } from "./fx/shaders";
+import { createHeroPelletMaterial } from "./visual/heroPelletMaterial";
+import { focusStore } from "./visual/focusStore";
 
 const off = new THREE.Vector3();
 const MODEL_URL = "/models/hero-pellet.glb";
@@ -30,16 +31,8 @@ export default function HeroPellet() {
     return found;
   }, [gltf.scene]);
 
-  const uniforms = useMemo(
-    () => ({
-      uTime: { value: 0 },
-      uHeat: { value: 0 },
-      uGreen: { value: 0 },
-      uDissolve: { value: 0 },
-      uLightDir: { value: new THREE.Vector3(0.5, 0.8, 0.6) },
-    }),
-    []
-  );
+  const { material, uniforms } = useMemo(() => createHeroPelletMaterial(), []);
+  useEffect(() => () => material.dispose(), [material]);
 
   useFrame((state) => {
     if (!mesh.current) return;
@@ -66,6 +59,8 @@ export default function HeroPellet() {
 
     const visible = scale > 0.02;
     mesh.current.visible = visible;
+    // The pellet claims the lens whenever it's on screen — see focusStore.
+    focusStore.heroOwnsFocus = visible;
     if (!visible) return;
 
     // camera-space anchoring
@@ -77,6 +72,7 @@ export default function HeroPellet() {
     off.applyQuaternion(state.camera.quaternion);
     mesh.current.position.copy(state.camera.position).add(off);
     mesh.current.scale.setScalar(scale);
+    focusStore.point.copy(mesh.current.position);
 
     // slow protagonist spin, gently coupled to scroll velocity
     const e = state.clock.elapsedTime;
@@ -90,14 +86,18 @@ export default function HeroPellet() {
   if (!geometry) return null;
 
   return (
-    <mesh ref={mesh} geometry={geometry} frustumCulled={false} renderOrder={5}>
-      <shaderMaterial
-        vertexShader={PELLET_VERT}
-        fragmentShader={PELLET_FRAG}
-        uniforms={uniforms}
-        side={THREE.DoubleSide}
-      />
-    </mesh>
+    <mesh
+      ref={mesh}
+      geometry={geometry}
+      material={material}
+      frustumCulled={false}
+      renderOrder={5}
+      // The pellet is anchored in camera space, so a cast shadow would land in
+      // the world at a position that has nothing to do with what you see.
+      // It still RECEIVES, which is what grounds it in each station's light.
+      receiveShadow
+      userData={{ noShadow: true }}
+    />
   );
 }
 

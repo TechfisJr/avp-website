@@ -35,6 +35,9 @@ const leafMat = new THREE.MeshStandardMaterial({
 });
 const groundMat = createForestFloorMaterial({ color: "#122016" });
 
+/** peak additive strength of a god-ray card; the reveal animation scales this */
+const RAY_BASE_OPACITY = 0.16;
+
 const RAY_VERT = /* glsl */ `
   varying vec2 vUv;
   void main() {
@@ -208,10 +211,15 @@ export default function Forest({ quality }: { quality: Quality }) {
 
   useFrame(() => {
     if (!state.current.active) return;
-    // rays reveal on arrival and settle for the dwell — not static
+    // rays reveal on arrival and settle for the dwell — not static.
+    // NOTE: this used to ASSIGN reveal (0.5–1.0) straight into uOpacity, which
+    // silently discarded the authored 0.14 base and ran additive god-rays at up
+    // to full strength. It went unnoticed while bloom was thresholded so high
+    // that nothing ever caught; with a working bloom the shafts blew out to
+    // solid white bars. Scale the base, don't replace it.
     const reveal = 0.5 + 0.5 * bell(state.current.local);
     rayMats.current.forEach((m) => {
-      if (m) m.uniforms.uOpacity.value = reveal;
+      if (m) m.uniforms.uOpacity.value = RAY_BASE_OPACITY * reveal;
     });
     // guarantees nearby trunks along the travel corridor are never left
     // silhouetted to near-black regardless of viewport crop / aspect ratio
@@ -250,7 +258,10 @@ export default function Forest({ quality }: { quality: Quality }) {
               }}
               vertexShader={RAY_VERT}
               fragmentShader={RAY_FRAG}
-              uniforms={{ uColor: { value: new THREE.Color("#d8efb7") }, uOpacity: { value: 0.14 } }}
+              uniforms={{
+                uColor: { value: new THREE.Color("#d8efb7") },
+                uOpacity: { value: RAY_BASE_OPACITY },
+              }}
               transparent
               depthWrite={false}
               blending={THREE.AdditiveBlending}

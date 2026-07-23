@@ -48,7 +48,8 @@ const ROWS: Row[] = [
   ["conditioning",[0, 3, 0],   [-9, 3.5, 9],   "#15100a", "#e0b984",     2.3, 0.026, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0.4,  green: 0 }],
   ["pelletizing", [0, 2.5, 0], [0, 2.8, 8],    "#180c08", PALETTE.ember, 3.0, 0.024, "industrial",  { off: [1.3, -0.5, -3.6], scale: 0.42, heat: 0.95, green: 0 }],
   ["cooling",     [0, 1.5, 0], [0.5, 9, 7],    "#0d1518", PALETTE.frost, 2.0, 0.023, "industrial",  { off: [0.9, 0, -3.2],scale: 1,   heat: 0.25, green: 0 }],
-  ["qc",          [0, 2, 0],   [0, 2.4, 5],    "#0d1518", PALETTE.frost, 2.2, 0.02,  "industrial",  { off: [0, 0, -2.6],  scale: 1,   heat: 0,    green: 0 }],
+  // hero pellet pushed right + back so the left-aligned spec table stays clear of it
+  ["qc",          [0, 2, 0],   [0, 2.4, 5],    "#0d1518", PALETTE.frost, 2.2, 0.02,  "industrial",  { off: [2.1, 0, -3.4], scale: 1,   heat: 0,    green: 0 }],
   ["packaging",   [0, 2, 0],   [5, 1.6, 8],    "#12100d", "#e0d4bd",     2.1, 0.021, "warehouse",   { off: [1.4, -0.3, -4], scale: 0.9, heat: 0,  green: 0 }],
   ["warehouse",   [0, 2.5, 0], [0, 2.6, 15],   "#101114", "#d2dce5",     1.9, 0.024, "warehouse",   { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0 }],
   ["logistics",   [0, 0, 0],   [2, 13, 27],    "#09111b", "#9ec3dd",     1.8, 0.014, "logistics",   { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0 }],
@@ -122,18 +123,26 @@ export function dwellCoord(t: number): number {
   return Math.min(N - 1, i + 0.1 + travel * 0.9);
 }
 
-/** overlay visibility 0..1 for station i at global t (reveal → hold → exit) */
+/**
+ * overlay visibility 0..1 for station i at global t (reveal → hold → exit).
+ *
+ * Station 0 greets on landing and station N-1 holds at the end, so neither
+ * end of the track can sit on a blank frame: at t = 0 the hero copy must
+ * already be on screen, not waiting for the first scroll input.
+ */
 export function overlayAlpha(t: number, i: number): number {
   const local = (t - i * W) / W; // unclamped
   if (local < -0.1 || local > 1.05) return 0;
-  const inA = smooth((local - 0.12) / 0.22);
+  const first = i === 0;
   const last = i === N - 1;
+  const inA = first ? 1 : smooth((local - 0.12) / 0.22);
   const outA = last ? 1 : 1 - smooth((local - 0.72) / 0.2);
   return clamp01(Math.min(inA, outA));
 }
 
 /** reveal progress 0..1 (drives line masks; separate from alpha for stagger) */
 export function overlayReveal(t: number, i: number): number {
+  if (i === 0) return 1; // hero is fully revealed the moment the page loads
   const local = (t - i * W) / W;
   return smooth((local - 0.1) / 0.3);
 }

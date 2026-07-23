@@ -98,11 +98,15 @@ function analyzePng(file) {
 }
 
 async function capture(page, viewportName, label, progress) {
+  // Map progress across the cinematic track only — the contact footer now
+  // follows it in normal flow, so document height is no longer the timeline.
   await page.evaluate((p) => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    window.scrollTo(0, max * p);
+    const track = document.getElementById("cinematic-track");
+    const top = track.getBoundingClientRect().top + window.scrollY;
+    const span = Math.max(1, track.offsetHeight - window.innerHeight);
+    window.scrollTo(0, top + span * p);
   }, progress);
-  await page.waitForTimeout(1500);
+  await page.waitForTimeout(3000);
 
   const fullPath = path.join(OUT_DIR, `${viewportName}-${label}.png`);
   const canvasPath = path.join(OUT_DIR, `${viewportName}-${label}-canvas.png`);
@@ -117,6 +121,10 @@ async function capture(page, viewportName, label, progress) {
 
 async function runViewport(browser, viewportName, viewport, shots) {
   const page = await browser.newPage({ viewport });
+  // Headless Chromium rasterises WebGL in software; this scene runs at a
+  // couple of fps here, which is slow enough that Playwright's own
+  // visibility/stability checks time out at their defaults.
+  page.setDefaultTimeout(90000);
   const consoleMessages = [];
   page.on("console", (msg) => {
     const text = msg.text();
@@ -131,9 +139,9 @@ async function runViewport(browser, viewportName, viewport, shots) {
   });
   page.on("pageerror", (err) => consoleMessages.push(`pageerror: ${err.message}`));
 
-  await page.goto(URL, { waitUntil: "networkidle", timeout: 30000 });
-  await page.waitForSelector("canvas", { timeout: 10000 });
-  await page.waitForTimeout(1800);
+  await page.goto(URL, { waitUntil: "networkidle", timeout: 90000 });
+  await page.waitForSelector("canvas", { state: "attached", timeout: 90000 });
+  await page.waitForTimeout(4000);
 
   const results = [];
   for (const shot of shots) {

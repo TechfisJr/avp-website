@@ -82,7 +82,12 @@ export default function BackgroundGradient() {
   });
 
   return (
-    <mesh ref={mesh} renderOrder={-1000} frustumCulled={false}>
+    <mesh
+      ref={mesh}
+      renderOrder={-1000}
+      frustumCulled={false}
+      userData={{ noShadow: true }}
+    >
       <sphereGeometry args={[RADIUS, 24, 16]} />
       <shaderMaterial
         vertexShader={VERT}
