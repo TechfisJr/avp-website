@@ -4,13 +4,14 @@ import { useRef, type MutableRefObject } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { scroll } from "@/lib/scrollStore";
-import { STATIONS, W, bell, smooth } from "@/lib/timeline";
+import { STATIONS, bell, isRenderWarm, smooth } from "@/lib/timeline";
 import type { Quality } from "@/lib/quality";
 import ParticleField from "../fx/ParticleField";
 import { useStation } from "../useStation";
 import { Conveyor } from "../kit/machines";
 import { Chips } from "../kit/biomass";
 import { M } from "../kit/industrial";
+import { isVisibleInTree } from "../kit/visibility";
 import { BridgeLog } from "../bridges/BridgePrimitives";
 
 const I = 3;
@@ -66,6 +67,7 @@ function CraneGrapple({ getLocal }: { getLocal: () => number }) {
   const tines = useRef<THREE.Mesh[]>([]);
 
   useFrame(() => {
+    if (!isVisibleInTree(boom.current)) return;
     const local = getLocal();
     const grab = smooth((local - 0.16) / 0.28);
     const lift = smooth((local - 0.42) / 0.24);
@@ -141,6 +143,7 @@ function GrappleFeedHead({ getLocal }: { getLocal: () => number }) {
   const tines = useRef<THREE.Mesh[]>([]);
 
   useFrame(() => {
+    if (!isVisibleInTree(head.current)) return;
     const local = getLocal();
     const grab = smooth((local - 0.18) / 0.24);
     const drop = smooth((local - 0.42) / 0.24);
@@ -193,6 +196,7 @@ function ChipperBody({ getRun }: { getRun: () => number }) {
   const drum = useRef<THREE.Group>(null);
 
   useFrame((_, delta) => {
+    if (!isVisibleInTree(drum.current)) return;
     if (drum.current) drum.current.rotation.x += delta * 18 * getRun();
   });
 
@@ -306,6 +310,7 @@ function RealisticChipperUnit({ getRun }: { getRun: () => number }) {
   const drum = useRef<THREE.Group>(null);
 
   useFrame((_, delta) => {
+    if (!isVisibleInTree(drum.current)) return;
     if (drum.current) drum.current.rotation.z += delta * 18 * getRun();
   });
 
@@ -423,6 +428,7 @@ function SideExcavatorLoader({ getLocal }: { getLocal: () => number }) {
   const grapple = useRef<THREE.Group>(null);
 
   useFrame(() => {
+    if (!isVisibleInTree(boom.current)) return;
     const local = getLocal();
     const lift = smooth((local - 0.08) / 0.28);
     const dump = smooth((local - 0.42) / 0.28);
@@ -587,7 +593,7 @@ export default function Screening({ quality }: { quality: Quality }) {
 
   useFrame(() => {
     if (group.current) {
-      const visible = scroll.t > (I - 2) * W && scroll.t < (I + 1) * W;
+      const visible = isRenderWarm(scroll.t, I);
       if (group.current.visible !== visible) group.current.visible = visible;
     }
     if (!state.current.active) return;

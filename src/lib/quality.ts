@@ -28,8 +28,11 @@ export function detectQuality(): Quality {
   const cores = navigator.hardwareConcurrency ?? 8;
   const coarse = window.matchMedia("(pointer: coarse)").matches;
   const small = Math.min(window.innerWidth, window.innerHeight) < 480;
+  const dpr = window.devicePixelRatio || 1;
+  const renderPixels = window.innerWidth * window.innerHeight * dpr * dpr;
 
-  let score = 2;
+  let score = 1;
+  if (!coarse && mem >= 12 && cores >= 8 && renderPixels <= 4_200_000) score = 2;
   if (coarse || mem <= 4 || cores <= 4) score = 1;
   if (small || mem <= 2 || cores <= 2) score = 0;
   return TIERS[score];

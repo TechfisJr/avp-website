@@ -63,22 +63,22 @@ export default function SpecComparison() {
           className={`spec-tab-btn ${activeTab === "comparison" ? "active" : ""}`}
           onClick={() => setActiveTab("comparison")}
         >
-          Technical Specifications
+          {t("Technical Specifications", "Thông số Kỹ thuật")}
         </button>
         <button 
           className={`spec-tab-btn ${activeTab === "certificates" ? "active" : ""}`}
           onClick={() => setActiveTab("certificates")}
         >
-          Quality Certificates
+          {t("Quality Certificates", "Chứng chỉ Chất lượng")}
         </button>
       </div>
 
       {activeTab === "comparison" ? (
         <div className="spec-table">
           <div className="spec-header-row">
-            <div className="spec-col-name">Parameters</div>
-            <div className="spec-col-val text-white-pellet">White Pellet</div>
-            <div className="spec-col-val text-black-pellet">Black Torrefied</div>
+            <div className="spec-col-name">{t("Parameters", "Thông số")}</div>
+            <div className="spec-col-val text-white-pellet">{t("White Pellet", "Viên Trắng")}</div>
+            <div className="spec-col-val text-black-pellet">{t("Black Torrefied", "Viên Đen")}</div>
           </div>
 
           {metrics.map((m) => {
@@ -124,7 +124,7 @@ export default function SpecComparison() {
             <div className="cert-icon">🌿</div>
             <div className="cert-info">
               <span className="cert-title">FSC CoC Certified</span>
-              <span className="cert-desc">100% responsibly sourced plantation Acacia wood.</span>
+              <span className="cert-desc">{t("100% responsibly sourced plantation Acacia wood.", "100% gỗ keo đồn điền có nguồn gốc có trách nhiệm.")}</span>
             </div>
           </div>
 
@@ -132,7 +132,7 @@ export default function SpecComparison() {
             <div className="cert-icon">⚡</div>
             <div className="cert-info">
               <span className="cert-title">SBP Approved</span>
-              <span className="cert-desc">Sustainable Biomass Program certification for EU export.</span>
+              <span className="cert-desc">{t("Sustainable Biomass Program certification for EU export.", "Chứng nhận Chương trình Sinh khối Bền vững cho xuất khẩu EU.")}</span>
             </div>
           </div>
 
@@ -140,7 +140,7 @@ export default function SpecComparison() {
             <div className="cert-icon">🔍</div>
             <div className="cert-info">
               <span className="cert-title">SGS / Intertek Quality</span>
-              <span className="cert-desc">Every shipment is verified and tested to international standard.</span>
+              <span className="cert-desc">{t("Every shipment is verified and tested to international standard.", "Mọi lô hàng đều được kiểm định theo tiêu chuẩn quốc tế.")}</span>
             </div>
           </div>
 
@@ -148,7 +148,7 @@ export default function SpecComparison() {
             <div className="cert-icon">📈</div>
             <div className="cert-info">
               <span className="cert-title">ISO 9001:2015</span>
-              <span className="cert-desc">Standardized manufacturing processes across all 20+ factories.</span>
+              <span className="cert-desc">{t("Standardized manufacturing processes across all 20+ factories.", "Quy trình sản xuất chuẩn hóa tại hơn 20 nhà máy.")}</span>
             </div>
           </div>
         </div>

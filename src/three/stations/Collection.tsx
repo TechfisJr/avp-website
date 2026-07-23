@@ -10,6 +10,7 @@ import ParticleField from "../fx/ParticleField";
 import { useStation } from "../useStation";
 import { Logs, Shavings } from "../kit/biomass";
 import { Truck } from "../kit/machines";
+import { isVisibleInTree } from "../kit/visibility";
 import { createConcreteMaterial } from "../visual/materials";
 
 const I = 2;
@@ -31,6 +32,7 @@ export default function Collection({ quality }: { quality: Quality }) {
   useFrame((frame) => {
     const g = truck.current;
     if (!g) return;
+    if (!isVisibleInTree(g)) return;
 
     const preLocal = smooth((scroll.t - (I - 1) * W) / W);
     const local = state.current.local > 0 ? state.current.local : preLocal;

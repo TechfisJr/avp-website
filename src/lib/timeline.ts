@@ -99,6 +99,13 @@ export function isActive(t: number, i: number): boolean {
   return t > a - W && t < b + W;
 }
 
+/** render a little earlier than the animation window so the browser can warm
+ * the next station before the camera arrives. Animation still uses isActive. */
+export function isRenderWarm(t: number, i: number): boolean {
+  const [a, b] = windowOf(i);
+  return t > a - W * 1.2 && t < b + W * 0.45;
+}
+
 export const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 export const smooth = (x: number) => {
   const c = clamp01(x);

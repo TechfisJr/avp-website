@@ -35,6 +35,12 @@ export default function Overlay() {
     const update = () => {
       const t = scroll.t;
       const nextActive = stationIndex(t);
+      const local = (t - nextActive * W) / W;
+      document.body.classList.toggle(
+        "scene-is-moving",
+        Math.abs(scroll.v) > 0.018 || local > 0.54
+      );
+
       if (nextActive !== lastActive) {
         lastActive = nextActive;
         setActive(nextActive);
@@ -80,7 +86,10 @@ export default function Overlay() {
     };
 
     raf = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      document.body.classList.remove("scene-is-moving");
+      cancelAnimationFrame(raf);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [COPY]);
 

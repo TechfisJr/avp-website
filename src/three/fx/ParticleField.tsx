@@ -4,7 +4,7 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { PARTICLE_VERT, PARTICLE_FRAG } from "./shaders";
-import { isVisibleInTree } from "../kit/visibility";
+import { areParentsVisible } from "../kit/visibility";
 
 export type ParticleProps = {
   count: number;
@@ -96,10 +96,12 @@ export default function ParticleField({
 
   useFrame((state) => {
     if (!mat.current) return;
-    if (!isVisibleInTree(points.current)) return;
+    if (!areParentsVisible(points.current)) return;
     const u = mat.current.uniforms;
+    const intensity = getIntensity();
+    if (points.current) points.current.visible = intensity > 0.015;
     u.uTime.value = state.clock.elapsedTime;
-    u.uIntensity.value = getIntensity();
+    u.uIntensity.value = intensity;
   });
 
   return (

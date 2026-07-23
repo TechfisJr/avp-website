@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { useFrame, type ThreeElements } from "@react-three/fiber";
 import { M } from "./industrial";
 import { createLogEndMaterial } from "../visual/materials";
+import { isVisibleInTree } from "./visibility";
 
 type GroupProps = Omit<ThreeElements["group"], "args" | "children" | "count">;
 
@@ -90,6 +91,7 @@ export function Logs({
   useFrame(() => {
     const a = getAssemble ? getAssemble() : 1;
     if (!inst.current) return;
+    if (!isVisibleInTree(inst.current)) return;
     slots.forEach((s, i) => {
       const e = a; // already eased by caller
       O.position.lerpVectors(s.scatter, s.pos, e);

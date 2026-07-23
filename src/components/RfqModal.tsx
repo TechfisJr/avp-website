@@ -116,7 +116,7 @@ export default function RfqModal({ isOpen, onClose }: RfqModalProps) {
                   type="email"
                   id="rfq-email"
                   required
-                  placeholder="email@company.com"
+                  placeholder={t("email@company.com", "email@congty.com")}
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />

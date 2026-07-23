@@ -69,6 +69,12 @@ export default function FlowBridge({
 
     const start = from * W + W * departAt;
     const end = to * W + W * arriveUntil;
+    const near = scroll.t >= start - W * 0.75 && scroll.t <= end + W * 0.45;
+    if (!near) {
+      if (g.visible) g.visible = false;
+      return;
+    }
+
     const rawProgress = (scroll.t - start) / Math.max(0.0001, end - start);
     const holdingAtEnd = rawProgress > 1 && stationLocal(scroll.t, to) <= holdAtEndUntil;
     const visible = rawProgress >= 0 && (rawProgress <= 1 || holdingAtEnd);
