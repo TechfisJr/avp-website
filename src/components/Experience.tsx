@@ -7,6 +7,7 @@ import Lenis from "lenis";
 import { scroll, flags } from "@/lib/scrollStore";
 import { TRACK_VH } from "@/lib/timeline";
 import { detectQuality, type Quality } from "@/lib/quality";
+import { I18nProvider } from "@/lib/i18n";
 import CanvasRoot from "@/three/CanvasRoot";
 import Overlay from "./Overlay";
 import NoWebGL from "./NoWebGL";
@@ -77,13 +78,13 @@ export default function Experience() {
   if (!quality) return null;
 
   return (
-    <>
+    <I18nProvider>
       {/* scroll body — the only element with height; everything else is fixed */}
       <div className="scroll-track" style={{ height: `${TRACK_VH}vh` }} />
       <CanvasRoot quality={quality} />
       <div className="vignette" />
       <Overlay />
       {quality.tier > 0 && <div className="grain" />}
-    </>
+    </I18nProvider>
   );
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { COPY } from "@/lib/copy";
+import { getCopy } from "@/lib/copy";
+import { useTranslation } from "@/lib/i18n";
 import { scroll } from "@/lib/scrollStore";
 import { N, W, overlayAlpha, overlayReveal, stationIndex } from "@/lib/timeline";
 import RfqModal from "./RfqModal";
@@ -16,6 +17,9 @@ type SectionRefs = {
 };
 
 export default function Overlay() {
+  const { locale, setLocale, t } = useTranslation();
+  const COPY = getCopy(locale);
+
   const sections = useRef<SectionRefs[]>(
     COPY.map(() => ({ root: null, inner: null, tick: null, lines: [] }))
   );
@@ -67,8 +71,8 @@ export default function Overlay() {
         scrollCue.current.style.opacity = String(Math.max(0, 1 - t * 24));
       }
       if (scanRing.current) {
-        const qcAlpha = overlayAlpha(t, 9);
-        scanRing.current.style.opacity = (qcAlpha * 0.85).toFixed(3);
+        const extensionAlpha = overlayAlpha(t, 13);
+        scanRing.current.style.opacity = (extensionAlpha * 0.85).toFixed(3);
         scanRing.current.style.transform = `translate(-50%, -50%) rotate(${t * 220}deg)`;
       }
 
@@ -77,7 +81,8 @@ export default function Overlay() {
 
     raf = requestAnimationFrame(update);
     return () => cancelAnimationFrame(raf);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [COPY]);
 
   const scrollToStation = (i: number) => {
     const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -123,7 +128,7 @@ export default function Overlay() {
                         if (node) sections.current[i].lines[lineIndex] = node;
                       }}
                     >
-                      {i === 0 && line === "to Clean Energy" ? (
+                      {i === 0 && line.toLowerCase().includes("clean energy") ? (
                         <>
                           to <em>Clean Energy</em>
                         </>
@@ -146,7 +151,7 @@ export default function Overlay() {
                 </div>
               )}
 
-              {(i === 9 || i === 13) && <SpecComparison />}
+              {i === 13 && <SpecComparison />}
 
               {section.data && <p className="datapoint">{section.data}</p>}
               </div>
@@ -167,10 +172,10 @@ export default function Overlay() {
           className="cta" 
           onClick={() => setIsRfqOpen(true)}
         >
-          Request specification
+          {t("Request specification", "Yêu cầu báo giá")}
         </button>
         
-        <nav className="rail" aria-label="Progress">
+        <nav className="rail" aria-label={t("Progress", "Tiến trình")}>
           {COPY.map((section, i) => (
             <div 
               key={section.id} 
@@ -186,7 +191,7 @@ export default function Overlay() {
         
         <div ref={scrollCue} className="scroll-cue">
           <img src="/icons/scroll-cue.svg" alt="" width={28} height={42} />
-          <span>Scroll</span>
+          <span>{t("Scroll", "Kéo xuống")}</span>
         </div>
         <span className="sr-only">{active + 1} / {N}</span>
       </div>

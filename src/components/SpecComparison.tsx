@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "@/lib/i18n";
 
 type SpecMetric = {
   name: string;
@@ -13,6 +14,7 @@ type SpecMetric = {
 };
 
 export default function SpecComparison() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<"comparison" | "certificates">("comparison");
 
   const metrics: SpecMetric[] = [

@@ -4,6 +4,7 @@ import type { Quality } from "@/lib/quality";
 import CameraRig from "./CameraRig";
 import Atmosphere from "./Atmosphere";
 import HeroPellet from "./HeroPellet";
+import MegaFactoryHall from "./environment/MegaFactoryHall";
 import Hero from "./stations/Hero";
 import Collection from "./stations/Collection";
 import Screening from "./stations/Screening";
@@ -38,6 +39,7 @@ export default function World({ quality }: { quality: Quality }) {
       <CameraRig quality={q} />
       <Atmosphere />
       <HeroPellet />
+      <MegaFactoryHall />
       <Hero quality={q} />
       <Collection quality={q} />
       <Screening quality={q} />

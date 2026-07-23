@@ -1,537 +1,166 @@
-# AVP Wood Pellet 3D Website — Storytelling Content
+# AVP Wood Pellet 3D Website - Corrected Storytelling Content
 
-## 01 — SILENT RAW-WOOD PRELUDE
+Version date: 2026-07-23
 
-No visible content card. This timeline slot is retained only for camera pacing
-between the hero and Raw Wood Receiving.
+This file supersedes the earlier "to higher value" storyline for the core
+production flow. The required story is the nine-unit wood pellet process.
+
+---
+
+## 00 - Hero
+
+### FROM RAW WOOD TO FINISHED PELLETS
+
+> A continuous nine-unit production line transforms received raw material into
+> finished wood pellets.
 
 Flow:
 
 ```text
-HERO
-↓
-CAMERA SETTLES
-↓
-RAW WOOD RECEIVING
+Raw material storage -> Finished product
 ```
-
-Key message:
-
-> No separate sourcing chapter. Raw Wood Receiving is the first visible process message.
 
 ---
 
-## 02 — RAW WOOD RECEIVING
+## 01 - Raw Material Storage Unit
 
-### THE RAW MATERIAL ARRIVES
+### RAW WOOD IS RECEIVED
 
-> Loaded wood resources arrive at the factory and are staged for processing.
-
-Core content:
-
-- Acacia
-- Wood resources
-- Wood residues, if aligned with AVP's actual sourcing model
-- Incoming raw material resources
-- Loaded log truck
-- Factory receiving area
+> Logs arrive by truck, enter the receiving yard and are staged as raw material
+> before processing.
 
 Flow:
 
 ```text
-LOADED LOG TRUCK
-↓
-FACTORY RECEIVING
-↓
-RAW WOOD STAGING
+Loaded truck -> raw material storage
 ```
 
 ---
 
-## 03 — WOOD CHIPS
+## 02 - Woods Chipping Unit
 
-### REDUCING SIZE. PREPARING THE MATERIAL.
+### LOGS BECOME WOOD CHIPS
 
-> Wood is reduced into consistent chips, preparing the material for further processing.
+> The chipping machine reduces staged logs into controlled chips.
 
 Flow:
 
 ```text
-RAW WOOD STAGING
-↓
-CHIPPING
-↓
-WOOD CHIPS
+Raw wood -> chipping -> wood chips
 ```
+
+Visual requirement: the chipper sits partly outside a large factory hall; its
+inclined conveyor carries chips up and drops them into the warehouse interior.
 
 ---
 
-## 04 — WOOD PARTICLES
+## 03 - Wet Grinding Unit
 
-### REFINED FOR CONSISTENCY
+### WET MATERIAL IS REFINED
 
-> The biomass is further refined into smaller and more uniform particles.
+> Wood chips are ground while moisture is still present, creating wet particles
+> before temporary buffering.
 
 Flow:
 
 ```text
-WOOD CHIPS
-↓
-GRINDING
-↓
-WOOD PARTICLES
+Wood chips -> wet grinding -> wet particles
 ```
 
 ---
 
-## 05 — DRY BIOMASS
+## 04 - Buffer Storage
 
-### MOISTURE UNDER CONTROL
+### MATERIAL WAITS IN BALANCE
 
-> Controlled drying prepares the biomass for efficient densification.
+> After wet grinding, intermediate material is held in buffer storage so the
+> downstream drying line receives a stable feed.
 
 Flow:
 
 ```text
-WET BIOMASS
-↓
-DRYING
-↓
-DRY BIOMASS
+Wet particles -> buffer storage
 ```
-
-Key message:
-
-> Precision begins before pelletization.
 
 ---
 
-## 06 — PELLETIZATION
+## 05 - Drying Unit
 
-### PRESSURE CREATES FORM
+### MOISTURE IS CONTROLLED
 
-> Under controlled pressure, prepared biomass is transformed into a compact and consistent solid fuel.
+> Buffered material enters the drying unit, where moisture is reduced to the
+> target range for stable pellet production.
 
 Flow:
 
 ```text
-DRY BIOMASS
-↓
-COMPRESSION
-↓
-DENSIFICATION
-↓
-PELLET
+Buffered biomass -> drying -> dry biomass
 ```
 
 ---
 
-## 07 — WOOD PELLET
+## 06 - Recovery Unit
 
-# WOOD PELLET
+### USABLE MATERIAL IS RECOVERED
 
-### RENEWABLE ENERGY. DENSIFIED.
-
-> Natural biomass transformed into a compact, consistent and transportable renewable fuel.
-
-Key message:
-
-> The result of the first transformation.
-
-At this point, the viewer should feel that the production journey has reached its finished product.
-
-Then the story continues.
-
----
-
-# VALUE UPGRADING
-
-# MORE THAN A TRANSFORMATION.  
-# A NEW LAYER OF VALUE.
-
-> The journey continues beyond conventional wood pellets.
-
-Alternative supporting line:
-
-> From an established biomass fuel to a more advanced energy product.
-
-Core transition:
-
-```text
-WOOD PELLET
-↓
-VALUE UPGRADING TECHNOLOGY
-↓
-BLACK WOOD PELLET
-```
-
-The key idea of this chapter is:
-
-```text
-PRODUCT
-↓
-TECHNOLOGY
-↓
-HIGHER VALUE
-```
-
-The White-to-Black transition must not be presented as a simple color change.
-
-It is a technology-driven value creation process.
-
----
-
-## 08 — THERMAL UPGRADING
-
-# ADVANCED THERMAL UPGRADING
-
-### UPGRADING WHAT BIOMASS CAN BECOME.
-
-> Conventional wood pellets enter a carefully controlled thermal environment, beginning a new stage of material transformation.
+> The recovery unit separates usable dried material from dust and off-size
+> fractions before the final grinding step.
 
 Flow:
 
 ```text
-WOOD PELLET
-↓
-CONTROLLED HEAT
-↓
-CONTROLLED ENVIRONMENT
-↓
-THERMAL TRANSFORMATION
+Dry biomass -> recovery -> clean dry feed
 ```
-
-Key message:
-
-> Value is no longer created by form alone. Technology begins to transform the material itself.
-
-This section marks the beginning of the second value-creation stage.
 
 ---
 
-## 09 — TORREFACTION
+## 07 - Dried Grinding Unit
 
-# TORREFACTION
+### DRY MATERIAL IS REFINED AGAIN
 
-### THE TECHNOLOGY BEHIND THE TRANSFORMATION
+> Recovered dry biomass is ground a second time to reach the particle
+> consistency required for pelletizing.
 
-> Through controlled thermal treatment, the internal characteristics of the biomass begin to change.
-
-Core message:
-
-# THIS IS NOT SIMPLY A CHANGE IN COLOR.
-
-# IT IS A CHANGE IN THE MATERIAL.
-
-Alternative premium statement:
-
-# THE COLOR CHANGES BECAUSE THE MATERIAL CHANGES.
-
-Transformation flow:
+Flow:
 
 ```text
-WHITE WOOD PELLET
-↓
-CONTROLLED THERMAL TREATMENT
-↓
-MOISTURE REDUCTION
-↓
-VOLATILE COMPONENT REDUCTION
-↓
-MATERIAL TRANSFORMATION
-↓
-BLACK WOOD PELLET
+Recovered feed -> dried grinding -> pellet feed
 ```
-
-Strong storytelling lines:
-
-> Beyond pelletization lies transformation.
-
-> The pellet is not merely darkened. It is upgraded.
-
-> Controlled heat drives a deeper material transformation.
-
-> Heat changes structure. Structure changes value.
 
 ---
 
-# VALUE CREATION
+## 08 - Pelletizer Unit
 
-# MORE THAN A TRANSFORMATION.  
-# A NEW LAYER OF VALUE.
+### PRESSURE CREATES PELLETS
 
-Value Creation Flow:
+> Prepared dry particles are compressed through the pelletizer to form dense,
+> consistent wood pellets.
+
+Flow:
 
 ```text
-WHITE WOOD PELLET
-Traditional Densified Biomass
-
-           ↓
-
-      TORREFACTION
-Technology-Driven Upgrading
-
-           ↓
-
-BLACK WOOD PELLET
-Advanced Biomass Fuel
+Pellet feed -> pelletizer -> wood pellets
 ```
 
-Core statement:
+---
 
-# THE PELLET IS NOT MERELY DARKENED.  
-# IT IS UPGRADED.
+## 09 - Finished Product Unit
 
-Supporting copy:
+### FINISHED PELLETS ARE COMPLETED
 
-> Technology transforms an established biomass product into a new layer of energy value.
+> Finished wood pellets are collected as the core product of the line, ready for
+> quality handling, storage or shipment.
 
-Value logic:
+Flow:
 
 ```text
-WHITE WOOD PELLET
-↓
-TECHNOLOGY
-↓
-MATERIAL TRANSFORMATION
-↓
-BLACK WOOD PELLET
-↓
-HIGHER VALUE
+Wood pellets -> finished product
 ```
 
 ---
 
-## 10 — BLACK WOOD PELLET
-
-# BLACK WOOD PELLET
-
-### BIOMASS. UPGRADED.
-
-Alternative:
-
-### A NEW GENERATION OF SOLID BIOENERGY.
-
-Alternative:
-
-> Thermally upgraded for a higher-value biomass future.
-
-Story logic:
-
-```text
-WOOD
-↓
-PELLETIZATION
-↓
-WOOD PELLET
-
-        +
-
-THERMAL UPGRADING
-↓
-TORREFACTION
-
-        =
-
-BLACK WOOD PELLET
-```
-
-Key positioning:
-
-> The result of manufacturing plus technology.
-
-Black Wood Pellet is not simply another product.
-
-It is:
-
-> The result of the second transformation.
-
-And:
-
-> A new layer of value creation.
-
----
-
-## 11 — ADVANCED BIOENERGY
-
-# FROM NATURAL RESOURCES TO ADVANCED BIOENERGY
-
-> A journey that begins with wood and evolves through technology into a higher-value energy product.
-
-Closing message:
-
-# FROM WOOD.  
-# TO PELLET.  
-# TO HIGHER VALUE.
-
-Alternative brand statement:
-
-# BUILT FROM RESPONSIBLE RESOURCES.  
-# SHAPED BY TECHNOLOGY.  
-# CREATED FOR HIGHER-VALUE ADVANCED BIOENERGY.
-
-Mission-inspired support message:
-
-> AVP brings a pioneer mindset to renewable energy, connecting responsible resources, technology and global partners.
-
----
-
-# MASTER STORY FLOW
-
-```text
-01
-RESPONSIBLE WOOD SOURCE
-       ↓
-
-02
-RAW WOOD RECEIVING
-       ↓
-
-03
-WOOD CHIPS
-       ↓
-
-04
-WOOD PARTICLES
-       ↓
-
-05
-DRY BIOMASS
-       ↓
-
-06
-PELLETIZATION
-       ↓
-
-07
-WOOD PELLET
-       ↓
-
-────────── VALUE UPGRADING ──────────
-
-MORE THAN A TRANSFORMATION.
-A NEW LAYER OF VALUE.
-
-       ↓
-
-08
-THERMAL UPGRADING
-       ↓
-
-09
-TORREFACTION
-       ↓
-
-VALUE CREATION
-TECHNOLOGY CREATES VALUE
-
-       ↓
-
-10
-BLACK WOOD PELLET
-       ↓
-
-11
-ADVANCED BIOENERGY
-```
-
----
-
-# CORE MESSAGE HIERARCHY
-
-## Overall Website Message
-
-# FROM WOOD TO ADVANCED BIOENERGY.
-
----
-
-## Value Upgrading Chapter
-
-# MORE THAN A TRANSFORMATION.  
-# A NEW LAYER OF VALUE.
-
----
-
-## White Pellet → Black Pellet Technology Message
-
-# THE COLOR CHANGES BECAUSE THE MATERIAL CHANGES.
-
----
-
-## Value Creation Message
-
-# THE PELLET IS NOT MERELY DARKENED.  
-# IT IS UPGRADED.
-
----
-
-## Final Brand Message
-
-# BUILT FROM RESPONSIBLE RESOURCES.  
-# SHAPED BY TECHNOLOGY.  
-# CREATED FOR HIGHER-VALUE ADVANCED BIOENERGY.
-
----
-
-# CONTENT DIRECTION SUMMARY
-
-The website follows one continuous and easy-to-understand production journey:
-
-```text
-RESPONSIBLE SOURCE
-↓
-LOADED LOG TRUCK
-↓
-RAW WOOD RECEIVING
-↓
-WOOD CHIPS
-↓
-WOOD PARTICLES
-↓
-DRY BIOMASS
-↓
-PELLETIZATION
-↓
-WOOD PELLET
-```
-
-At the Wood Pellet milestone, the storytelling shifts into a stronger technology chapter:
-
-```text
-WOOD PELLET
-↓
-VALUE UPGRADING
-↓
-THERMAL UPGRADING
-↓
-TORREFACTION
-↓
-MATERIAL TRANSFORMATION
-↓
-BLACK WOOD PELLET
-↓
-ADVANCED BIOENERGY
-```
-
-The key storytelling principle is:
-
-> White Wood Pellet to Black Wood Pellet is not presented as a color transition.
-
-It is presented as:
-
-```text
-PRODUCT
-↓
-TECHNOLOGY
-↓
-TRANSFORMATION
-↓
-VALUE CREATION
-```
-
-The Value Upgrading section must therefore be the main technological highlight of the website.
-
-Its central message is:
-
-# MORE THAN A TRANSFORMATION.  
-# A NEW LAYER OF VALUE.
+## Optional Downstream Extension
+
+Value upgrading, torrefaction and Black Wood Pellet may be described after the
+finished product unit as a separate advanced-product route. They must not
+replace or interrupt the nine-unit production line above.

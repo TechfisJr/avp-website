@@ -1,128 +1,121 @@
-# 02 — Storyboard
+# 02 - Storyboard
 
-One continuous shot. `t` = global scroll progress 0→1 across 15 stations.
-Phase 1 keeps the existing world path, but the narrative now follows the target
-AVP Wood Pellet story: wood becomes pellet, then technology upgrades it into a
-higher-value energy product.
+One continuous shot. `t` = global scroll progress 0 -> 1 across 15 stations.
+Phase 1 keeps the existing world path and station ids, but the narrative now
+follows the supplied AVP Wood Pellet process diagram.
 
----
-
-### S00 · HERO — “From Wood to Higher Value” (t 0.00-0.07)
-
-Black void. A single wood pellet floats center-frame as the title establishes
-the full promise: from wood, to pellet, to higher value.
-**Camera:** slow push-in from 6m → 3.2m, slight orbital drift.
-**Transition out:** pellet matter breaks into wood-grain particles and pulls
-the viewer back to origin.
-
-### S01 · SILENT RAW-WOOD PRELUDE (t 0.07-0.145)
-
-No standalone content card and no separate 3D scene. This spacer only lets the
-camera settle toward the raw-wood receiving area after the hero.
-**Camera:** quiet drift toward the same receiving scene used by S02.
-**Transition out:** no separate bridge; S02 takes over with the first process
-message.
-
-### S02 · RAW WOOD (t 0.145-0.215)
-
-Factory receiving area. The loaded truck arrives in front of the plant, logs are
-received and staged as raw material before chipping.
-**Camera:** same 3/4 exhibition grammar; frame the truck, receiving area and
-log pile as one readable handoff.
-
-### S03 · WOOD CHIPS (t 0.215-0.285)
-
-Wood is reduced into consistent chips by a long industrial chipper line. A
-grapple/crane feeds logs into the bunker; the chipper reduces material; an
-inclined conveyor lifts chips and drops them into a pile.
-**Camera:** stable 3/4 factory line view; keep the full machine length,
-grapple feed and elevated chip drop readable.
-
-### S04 · WOOD PARTICLES (t 0.285-0.355)
-
-Hammer-mill refinement turns chips into smaller and more uniform particles.
-This is the material consistency beat.
-**Camera:** push toward the intake, slight scrub-safe mechanical shake.
-
-### S05 · DRY BIOMASS (t 0.355-0.425)
-
-A rotary dryer controls moisture before densification. Heat is precise and
-preparatory, not the final energy use.
-**Camera:** tracking shot along the drum’s length.
-
-### S06 · PREPARATION (t 0.425-0.49)
-
-Conditioned biomass is prepared for stable pelletization. Steam and motion
-signal control before pressure.
-**Camera:** slow orbit around the vessel.
-
-### S07 · PELLETIZING (t 0.49-0.565)
-
-Pressure creates form. Fiber is compressed through a rotating die, and the
-first transformation becomes visible as pellets are born.
-**Camera:** inside-the-die reveal → pull back as pellets emerge.
-
-### S08 · WOOD PELLET (t 0.565-0.63)
-
-The production journey reaches its first finished product: compact, consistent
-and transportable renewable fuel.
-**Camera:** top-down over the pellet bed, settling to level for product
-readability.
-
-### S09 · VALUE UPGRADING (t 0.63-0.70)
-
-The story shifts beyond conventional wood pellets. The product is no longer the
-ending; it becomes the starting point for a new technology chapter.
-**Camera:** macro product inspection that hands the pellet into the upgrading
-sequence.
-
-### S10 · THERMAL UPGRADING (t 0.70-0.765)
-
-Conventional wood pellets enter a controlled thermal environment. The visual
-slot now reads as a thermal tunnel/chamber, with heat, containment and
-instrumentation replacing the old packaging emphasis.
-**Camera:** low controlled-entry angle, moving toward heat and instrumentation.
-
-### S11 · TORREFACTION (t 0.765-0.825)
-
-Controlled thermal treatment changes the internal characteristics of biomass.
-The key message: this is not simply a change in color; it is a change in the
-material.
-**Camera:** slow chamber pass or reactor-side tracking shot.
-
-### S12 · VALUE CREATION (t 0.825-0.89)
-
-The value logic becomes explicit: white wood pellet, technology-driven
-torrefaction, black wood pellet. Product becomes higher-value energy material.
-**Camera:** wide explanatory composition with value-flow arcs or comparison
-beats.
-
-### S13 · BLACK WOOD PELLET (t 0.89-0.945)
-
-The upgraded product is revealed. Black Wood Pellet should read as biomass
-upgraded by manufacturing plus technology, not as a burnt pellet.
-**Camera:** product-hero approach, with thermal glow as proof of process rather
-than active combustion.
-
-### S14 · ADVANCED BIOENERGY (t 0.945-1.00)
-
-Final brand close: from responsible wood resources to pelletization, then through
-technology into a higher-value energy product.
-**Camera:** pull back to a hero framing where the upgraded product and value
-message resolve together.
+The core production story ends at Unit 9, Finished product Unit. Any
+torrefaction, value upgrading or black-pellet content must be treated as a
+separate downstream extension after the finished product, not as part of the
+core process.
 
 ---
 
-## Completed late-stage rebuild notes
+### S00 - HERO - "From raw wood to finished pellets" (t 0.00-0.07)
 
-The following legacy station ids remain for import stability, but their visuals
-now carry the target AVP Wood Pellet story:
+Black void. A single pellet establishes the complete nine-unit production line:
+raw material storage, chipping, wet grinding, buffer storage, drying, recovery,
+dried grinding, pelletizing and finished product.
+**Camera:** slow push-in from 6m -> 3.2m, slight side/three-quarter drift.
+**Transition out:** particles pull the viewer toward the receiving/storage
+yard.
 
-| Station id | Target role | Current visual direction |
+### S01 - RAW MATERIAL STORAGE UNIT (t 0.07-0.145)
+
+Logs arrive by truck and are staged in the raw material storage/receiving area.
+This is Unit 1 and the first visible process beat.
+**Camera:** side or three-quarter side view, no top-down framing.
+
+### S02 - SILENT CONTINUATION (t 0.145-0.215)
+
+No standalone content card. This spacer lets the truck/storage beat settle
+before the chipping line takes over.
+**Camera:** continue the same yard-to-factory direction.
+
+### S03 - WOODS CHIPPING UNIT (t 0.215-0.285)
+
+The chipping machine reduces logs into controlled wood chips. The chipper should
+sit partially outside the large factory hall, with the discharge conveyor
+throwing chips into the warehouse interior.
+**Camera:** stable side/three-quarter factory-line view.
+
+### S04 - WET GRINDING UNIT (t 0.285-0.355)
+
+Wood chips are ground while moisture is still present. This first grinding step
+creates wet particles before buffer storage.
+**Camera:** side view at machine/operator height.
+
+### S05 - BUFFER STORAGE (t 0.355-0.425)
+
+Wet-ground material is temporarily held so the downstream drying unit receives a
+stable feed. This beat must come before drying.
+**Camera:** show buffer volume, feeder path and handoff toward drying.
+
+### S06 - DRYING UNIT (t 0.425-0.49)
+
+Buffered biomass enters the drying unit and moisture is reduced to the target
+range for pellet production.
+**Camera:** tracking shot along the dryer or drying line, side/three-quarter.
+
+### S07 - RECOVERY UNIT (t 0.49-0.565)
+
+The recovery unit separates usable dried material from dust and off-size
+fractions before final particle refinement.
+**Camera:** side view with collector/cyclone/filter logic readable.
+
+### S08 - DRIED GRINDING UNIT (t 0.565-0.63)
+
+Recovered dry biomass is ground a second time. This is distinct from wet
+grinding and prepares final pellet feed consistency.
+**Camera:** side view, no overhead reveal.
+
+### S09 - PELLETIZER UNIT (t 0.63-0.70)
+
+Prepared dry particles are compressed through the pelletizer to form dense,
+consistent wood pellets.
+**Camera:** side/three-quarter view of feed entering and pellets exiting.
+
+### S10 - FINISHED PRODUCT UNIT (t 0.70-0.765)
+
+Finished wood pellets are collected as the core output of the line, ready for
+quality handling, storage or shipment.
+**Camera:** readable finished-product reveal without implying torrefaction.
+
+### S11 - OPTIONAL UPGRADE PATH (t 0.765-0.825)
+
+Only after the finished product unit can the story branch into value upgrading.
+This is not one of the nine required units.
+
+### S12 - OPTIONAL TORREFACTION (t 0.825-0.89)
+
+If included, torrefaction is a downstream thermal-treatment option after normal
+wood pellet production is complete.
+
+### S13 - BLACK WOOD PELLET (t 0.89-0.945)
+
+Black wood pellet is presented as an advanced product after finished pellets,
+not as the required output of the base process.
+
+### S14 - ADVANCED BIOENERGY (t 0.945-1.00)
+
+Final brand close: first the correct nine-unit line, then any optional
+technology extension.
+
+---
+
+## Process Mapping Notes
+
+| Core unit | Station slot | Requirement |
 |---|---|---|
-| S09 qc | Value Upgrading | Product selection and technology handoff gate |
-| S10 packaging | Thermal Upgrading | Controlled heat tunnel/chamber |
-| S11 warehouse | Torrefaction | Sealed reactor/treatment chamber |
-| S12 logistics | Value Creation | White pellet -> technology core -> black pellet |
-| S13 energy | Black Wood Pellet | Upgraded product hero |
-| S14 circular | Advanced Bioenergy | Premium value ladder and final brand close |
+| 1. Raw material storage Unit | S01 forest | Receiving/storage yard starts the process |
+| 2. Woods chipping Unit | S03 screening | Realistic chipper beside a large factory hall |
+| 3. Wet grinding Unit | S04 grinding | First grinding step, before buffer |
+| 4. Buffer storage | S05 drying | Buffer must sit after wet grinding and before drying |
+| 5. Drying Unit | S06 conditioning | Moisture control after buffer |
+| 6. Recovery Unit | S07 pelletizing | Recover usable dry material |
+| 7. Dried grinding Unit | S08 cooling | Second grinding step after recovery |
+| 8. Pelletizer Unit | S09 qc | Pellet formation |
+| 9. Finished product Unit | S10 packaging | Core product endpoint |
+
+Station ids are legacy implementation slots. Do not rename them until visual
+QA is stable.

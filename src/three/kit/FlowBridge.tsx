@@ -4,7 +4,7 @@ import { type ReactNode, useRef } from "react";
 import * as THREE from "three";
 import { useFrame, type ThreeElements } from "@react-three/fiber";
 import { scroll } from "@/lib/scrollStore";
-import { STATIONS, W, smooth } from "@/lib/timeline";
+import { STATIONS, W, smooth, stationLocal } from "@/lib/timeline";
 
 type V3 = [number, number, number];
 type GroupProps = Omit<ThreeElements["group"], "position" | "children">;
@@ -25,6 +25,7 @@ type FlowBridgeProps = {
   departAt?: number;
   arriveUntil?: number;
   arcHeight?: number;
+  holdAtEndUntil?: number;
   orientAlongPath?: boolean;
   children: ReactNode;
   onFrame?: (state: FlowBridgeFrame) => void;
@@ -54,6 +55,7 @@ export default function FlowBridge({
   departAt = 0.6,
   arriveUntil = 0.25,
   arcHeight = 0,
+  holdAtEndUntil = 0,
   orientAlongPath = false,
   children,
   onFrame,
@@ -68,7 +70,8 @@ export default function FlowBridge({
     const start = from * W + W * departAt;
     const end = to * W + W * arriveUntil;
     const rawProgress = (scroll.t - start) / Math.max(0.0001, end - start);
-    const visible = rawProgress >= 0 && rawProgress <= 1;
+    const holdingAtEnd = rawProgress > 1 && stationLocal(scroll.t, to) <= holdAtEndUntil;
+    const visible = rawProgress >= 0 && (rawProgress <= 1 || holdingAtEnd);
 
     if (g.visible !== visible) g.visible = visible;
     if (!visible) {
@@ -76,7 +79,7 @@ export default function FlowBridge({
       return;
     }
 
-    const progress = smooth(rawProgress);
+    const progress = holdingAtEnd ? 1 : smooth(rawProgress);
     stationPoint(from, exitOffset, A);
     stationPoint(to, enterOffset, B);
     P.lerpVectors(A, B, progress);

@@ -255,6 +255,27 @@ body {
   box-shadow: 0 0 15px rgba(232, 163, 61, 0.3);
 }
 
+/* ---------- floating lang switcher ---------- */
+.float-lang {
+  background: rgba(11, 10, 8, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(237, 230, 218, 0.15);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.float-lang:hover {
+  border-color: var(--frost);
+  color: var(--frost);
+  box-shadow: 0 10px 25px rgba(127, 180, 199, 0.15);
+}
+
+.float-lang-text {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
 .scroll-cue {
   position: absolute;
   bottom: 2.2rem;

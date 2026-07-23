@@ -86,7 +86,7 @@ export default function Forest({ quality }: { quality: Quality }) {
         rise={0.05}
         spread={0.14}
         curl={0.28}
-        getIntensity={() => 0.28 + 0.42 * bell(state.current.local)}
+        getIntensity={() => 0.32 + 0.38 * bell(state.current.local) + 0.25 * (1 - smooth((state.current.local - 0.42) / 0.18))}
       />
       <ParticleField
         count={Math.round(55 * quality.particleScale) + 10}

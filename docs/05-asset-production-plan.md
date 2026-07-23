@@ -1,88 +1,84 @@
-# 05 — 3D Asset Production Plan
+# 05 - 3D Asset Production Plan
 
 Classification (see `public/asset-manifest.json` for the full inventory):
-A Custom 3D Model · B Spline Scene · C Procedural Three.js · D Photography ·
-E Video · F SVG/UI · G AI-generated · H Reusable Shared
+A Custom 3D Model, B Spline Scene, C Procedural Three.js, D Photography,
+E Video, F SVG/UI, G AI-generated, H Reusable Shared.
 
-## Production decision
-This build ships **100% procedural (C) + SVG (F)** assets, generated in code
-at runtime. Rationale:
-- Zero network weight for geometry (the entire world costs ~0 KB of downloads;
-  it is math). Draco/Meshopt budgets in `10-performance-strategy.md` apply to
-  the optional authored-model upgrade path (A), which the manifest tracks with
-  `status: "upgrade-path"` and a procedural `fallback` that is already live.
-- Every asset is real and on screen from day one — no placeholders.
+## Production Decision
 
-## Procedural asset recipes
+This build ships procedural (C) + SVG (F) assets generated in code at runtime.
+The authored-model path remains available for later GLB upgrades, but the live
+experience should already read as a real continuous factory line.
+
+## Core Process Asset Recipes
 
 ### Hero & product
-- **Hero pellet (H/C):** `CapsuleGeometry(0.5, 1.6)` + custom `ShaderMaterial`;
-  triplanar wood-fiber noise (fbm), radial extrusion striations, `uPhase`
-  uniform morphs albedo/roughness raw-bark → fiber → compressed → ember-hot →
-  torrefied product. One asset, reused in S00 and post-pelletizing
-  transformation beats; after the opening dissolve it stays hidden until the
-  Pelletizing station so raw/fiber/conditioned biomass never reads as a
-  finished pellet.
-- **Pellet mass (H/C):** `InstancedMesh` capsules — cooler bed 3,000 (desktop)
-  / 900 (mobile); streams use the shared GPU particle engine with capsule
-  sprites. Per-instance hue jitter via `instanceColor`.
+
+- **Hero pellet (H/C):** compressed wood-fiber pellet material used for the
+  opening and final product proof only. It should not imply black pellet or
+  torrefaction inside the core nine-unit process.
+- **Pellet mass (H/C):** instanced capsule pellets for finished product bins,
+  beds or discharge streams after the pelletizer.
 
 ### Biomass
-- **Logs:** instanced open cylinders, vertex-noise displaced bark shader,
-  ring-texture end caps (procedural canvas texture).
-- **Wood chips:** instanced low-poly tetrahedra/shards, 2-tone vertex color.
-- **Sawdust / fibers:** GPU points, curl-noise turbulence, 1px–3px size ramp.
-- **Shavings:** instanced helix ribbons (`TubeGeometry` on a spiral curve), few.
 
-### Machinery (shared kit-of-parts, H)
-`materials/industrial.ts` exports brushed-steel, safety-amber, dark-housing
-PBR materials + a `Frame`, `Hopper`, `Duct`, `Guard` primitive kit. Machines:
-- **Screen deck:** inclined slotted box (shader-cut slots), spring mounts,
-  sinusoidal vibration in `useFrame`.
-- **Hammer mill:** housing + rotating drum with hammer plates, intake hopper.
-- **Rotary dryer:** 14m ribbed cylinder (radial `TorusGeometry` ribs), riding
-  rings, slow axis rotation, inlet heat-glow emissive.
-- **Conditioner:** vertical vessel + paddle shaft + steam nozzles.
-- **Pellet mill:** ring die (`CylinderGeometry` with instanced hole plugs +
-  emissive bore rim), two rollers, extrusion strands (scaling capsules).
-- **Counterflow cooler:** glass-walled bin (transmission material) over a
-  discharge grid, pellet bed inside.
-- **Conveyors (H):** parameterized belt module (rails, rollers, scrolling
-  UV-striped belt shader) reused across pelletizing, cooling and upgrading.
-- **Value upgrading gate:** selection ring, completed pellet bed, technology
-  handoff portal and warm value-flow arcs.
-- **Thermal upgrading chamber:** sealed entry conveyor, transparent preheat
-  tunnel, heater rings, rotating airlock door and instrumentation panel.
-- **Torrefaction chamber:** sealed reactor tube, heater rings, controlled
-  atmosphere and pellet-gradient material change.
-- **Value creation bridge:** pale pellet cluster, torrefaction core, black
-  pellet cluster and comparative value markers.
-- **Black Wood Pellet product hero:** premium plinth, darker dense-pellet
-  material state, comparison ghost and thermal proof halo.
-- **Advanced bioenergy close:** value ladder from wood to pellet to higher
-  value, Black Wood Pellet proof point and final brand-close arcs.
-- **Material flow bridges:** world-space transition objects in
-  `src/three/bridges/`, mounted outside station groups and visible only during
-  camera travel windows. The full rollout covers all 13 target-story handoffs
-  from Sustainable Forest through Advanced Bioenergy. Pre-pelletizing bridges
-  use logs, chips, fibers and biomass ribbons; pellet cylinders appear only
-  after the pelletizing die creates them.
+- **Logs:** instanced open cylinders with bark sides and cut end caps.
+- **Wood chips:** irregular flake geometry for the chipping unit and chip pile.
+- **Wet particles / fibers:** GPU points and small fiber ribbons for wet
+  grinding output.
+- **Dry particles:** lighter sawdust/fiber streams after drying and recovery.
 
-### Effects (all C, one shared engine)
-`fx/ParticleField` — a single BufferGeometry points system with per-use config
-{count, spawn volume, velocity field, curl strength, size, color ramp, opacity
-over life, gravity}. Instances: spores, dust motes, chip rain, sawdust burst,
-steam, controlled-atmosphere haze, heat motes, ember rise and value particles.
-Value arcs use `TubeGeometry` + dash shader instead.
+### Machinery
 
-### SVG/UI (F)
-Wordmark, progress-rail ticks, scroll cue, QC scan-ring, section eyebrow tick,
-noise/grain overlay (SVG turbulence) — authored in `public/icons/`.
+- **Raw material storage Unit:** loaded log truck, receiving yard, staged log
+  piles and a large factory-hall context.
+- **Woods chipping Unit:** reference the real machine: blue feed table/hopper,
+  red chipper drum area, elevated discharge conveyor, chip pile inside the
+  warehouse, and a handler/grapple beside the line.
+- **Wet grinding Unit:** enclosed hammer/grinding equipment for moist chip
+  feed. This is the first grinding step only.
+- **Buffer storage:** bin/silo/buffer bay after wet grinding and before drying,
+  with level mass and controlled feeder path.
+- **Drying Unit:** dryer or drying line with moisture haze, exhaust logic and
+  dry biomass outlet.
+- **Recovery Unit:** cyclone/filter/separator system that recovers usable dry
+  material and rejects dust/off-size fractions.
+- **Dried grinding Unit:** second grinder for dry recovered biomass, with dust
+  control and final particle consistency.
+- **Pelletizer Unit:** pellet mill/ring die, feed inlet and pellet discharge
+  proof.
+- **Finished product Unit:** finished pellet bed/bin, collection or storage
+  proof as the core product endpoint.
+- **Conveyors (H):** parameterized belt module reused between machines. Use
+  conveyors/chutes/bins for handoffs instead of uncontrolled particle bursts.
 
-## Upgrade path (A/B/D/E — tracked in manifest)
-If photoreal models are later commissioned: export GLB → `gltf-transform`
-Draco + Meshopt + KTX2; drop into `/public/models`; each station component
-accepts a `model` prop that swaps the procedural group for the GLB while
-keeping animation hooks. Photography/video (D/E) slots should support source,
-process and product proof only; packaging/logistics plates are no longer part
-of the primary target narrative.
+### Optional extension assets
+
+Value upgrading, torrefaction, Black Wood Pellet and advanced bioenergy scenes
+may remain as downstream extension modules after Unit 9. They should not be
+described as part of the core nine-unit line.
+
+## Effects
+
+`fx/ParticleField` remains the shared GPU particle system for dust, chip rain,
+steam/haze, heat motes and ambient factory particles. Effects must support
+physical machine behavior: chip discharge goes up a conveyor then falls into a
+pile; material does not fly randomly across the scene.
+
+## SVG/UI
+
+Wordmark, progress rail ticks, scroll cue, scan ring, section eyebrow tick and
+grain overlay remain authored SVG/UI assets.
+
+## Upgrade Path
+
+If photoreal models are later commissioned: export GLB -> `gltf-transform`
+Draco + Meshopt + KTX2; drop into `/public/models`; each station component can
+swap the procedural group for the GLB while keeping animation hooks.
+
+Prioritize commissioned models in this order:
+
+1. Realistic woods chipping machine + handler + warehouse entrance.
+2. Buffer storage, dryer, recovery and dried grinding chain.
+3. Pelletizer and finished product unit.
+4. Optional torrefaction / black pellet extension.

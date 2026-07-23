@@ -28,6 +28,12 @@ export const metadata: Metadata = {
       "From natural wood resources to pelletization, thermal upgrading and higher-value advanced bioenergy.",
     type: "website",
   },
+  alternates: {
+    languages: {
+      en: "/",
+      vi: "/",
+    },
+  },
 };
 
 export const viewport: Viewport = {

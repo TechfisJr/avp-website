@@ -1,68 +1,77 @@
-# 03 — Section Architecture
+# 03 - Section Architecture
 
 The DOM remains a tall scroll track and the 3D world remains a fixed canvas
 behind it. Phase 1 keeps the existing 15 station ids so the site stays stable,
-but the content architecture now follows the target AVP Wood Pellet narrative:
+but the content architecture now follows the actual AVP Wood Pellet production
+order supplied by the process diagram:
 
 ```text
-FROM WOOD
-↓
-TO PELLET
-↓
-TO HIGHER VALUE
+1. Raw material storage Unit
+2. Woods chipping Unit
+3. Wet grinding Unit
+4. Buffer storage
+5. Drying Unit
+6. Recovery Unit
+7. Dried grinding Unit
+8. Pelletizer Unit
+9. Finished product Unit
 ```
 
-## Phase 1 section matrix
+Any torrefaction, value-upgrading or black-pellet message is a downstream
+extension after Unit 9. It is not part of the core nine-unit flow.
+
+## Phase 1 Section Matrix
 
 | # | id | Eyebrow | Headline | Data point |
 |---|----|---------|----------|-----------|
-| 00 | hero | AVP BIOMASS | From wood. To pellet. To higher value. | — |
-| 01 | forest | SILENT SPACER | No visible card. Camera prelude to Raw Wood Receiving. | — |
-| 02 | collection | RAW WOOD RECEIVING | The raw material arrives. | Loaded truck → factory receiving |
-| 03 | screening | WOOD CHIPS | Reducing size. Preparing material. | Raw wood → chipping → wood chips |
-| 04 | grinding | WOOD PARTICLES | Refined for consistency. | Wood chips → grinding → particles |
-| 05 | drying | DRY BIOMASS | Moisture under control. | Wet biomass → drying → dry biomass |
-| 06 | conditioning | PREPARATION | Precision begins before pelletization. | Prepared biomass · ready for densification |
-| 07 | pelletizing | PELLETIZING | Pressure creates form. | Compression → densification → pellet |
-| 08 | cooling | WOOD PELLET | Renewable energy. Densified. | The result of the first transformation |
-| 09 | qc | VALUE UPGRADING | More than a transformation. | Product → technology → higher value |
-| 10 | packaging | THERMAL UPGRADING | Upgrading what biomass can become. | Wood pellet → controlled heat |
-| 11 | warehouse | TORREFACTION | The technology behind the transformation. | Heat changes structure |
-| 12 | logistics | VALUE CREATION | The pellet is not merely darkened. | White pellet → technology → black pellet |
-| 13 | energy | BLACK WOOD PELLET | Biomass. Upgraded. | The result of the second transformation |
-| 14 | circular | ADVANCED BIOENERGY | From wood. To pellet. To higher value. | Responsible resources → technology → global energy value |
+| 00 | hero | AVP WOOD PELLET PROCESS | From raw wood to finished pellets. | 9 core units |
+| 01 | forest | RAW MATERIAL STORAGE UNIT | Raw wood is received. | Loaded truck -> raw material storage |
+| 02 | collection | SILENT SPACER | No visible card. Camera continuation for Unit 1. | - |
+| 03 | screening | WOODS CHIPPING UNIT | Logs become wood chips. | Raw wood -> chipping -> wood chips |
+| 04 | grinding | WET GRINDING UNIT | Wet material is refined. | Wood chips -> wet grinding -> wet particles |
+| 05 | drying | BUFFER STORAGE | Material waits in balance. | Wet particles -> buffer storage |
+| 06 | conditioning | DRYING UNIT | Moisture is controlled. | Buffered biomass -> drying -> dry biomass |
+| 07 | pelletizing | RECOVERY UNIT | Usable material is recovered. | Dry biomass -> recovery -> clean dry feed |
+| 08 | cooling | DRIED GRINDING UNIT | Dry material is refined again. | Recovered feed -> dried grinding -> pellet feed |
+| 09 | qc | PELLETIZER UNIT | Pressure creates pellets. | Pellet feed -> pelletizer -> wood pellets |
+| 10 | packaging | FINISHED PRODUCT UNIT | Finished pellets are completed. | Wood pellets -> finished product |
+| 11 | warehouse | OPTIONAL UPGRADE PATH | Beyond the core line. | Finished product -> optional upgrade |
+| 12 | logistics | OPTIONAL TORREFACTION | Thermal treatment comes later. | Finished pellets -> torrefaction option |
+| 13 | energy | BLACK WOOD PELLET | Advanced product after pellets. | Finished pellet -> upgraded pellet |
+| 14 | circular | ADVANCED BIOENERGY | Core process first. Upgrade path second. | 9 core units -> optional technology extension |
 
-## Chapter grouping
+## Chapter Grouping
 
 | Chapter | Stations | Narrative role |
 |---|---|---|
-| Origin | S01-S02 | Silent prelude, then Raw Wood Receiving as the first visible process beat |
-| Material preparation | S03-S06 | Chipping, refining, drying and conditioning |
-| First transformation | S07-S08 | Pelletization and finished wood pellet milestone |
-| Value upgrading | S09-S12 | Technology-driven shift from product to higher value |
-| Advanced product | S13-S14 | Black Wood Pellet reveal and advanced bioenergy close |
+| Core intake | S01-S03 | Raw material storage, then chipping |
+| Preprocessing | S04-S08 | Wet grinding, buffer storage, drying, recovery, dried grinding |
+| Finishing | S09-S10 | Pelletizer unit and finished product unit |
+| Optional extension | S11-S14 | Downstream value-upgrading story after the core line |
 
-## Layout system
+## Layout System
 
-- **Scroll track:** `height: (15 × 160)vh`; Lenis smooths and GSAP
+- **Scroll track:** `height: (15 x 160)vh`; Lenis smooths and GSAP
   ScrollTrigger scrubs one normalized `progress`.
 - **Overlay blocks:** one full-viewport section per station, alternating
   left/right thirds. Mobile remains bottom-third, center-aligned.
 - **Persistent HUD:** progress rail, wordmark, CTA, scroll cue and QC scan ring
   still use the existing overlay component.
-- **Origin visual rule:** `forest` remains a legacy station id only as a silent
-  spacer. It renders no station scene and shows no overlay card; Raw Wood
-  Receiving is the first visible process chapter.
+- **Origin visual rule:** `forest` is now the visible Unit 1 raw material
+  storage/receiving beat. `collection` remains the silent spacer.
+- **Camera rule:** all station assets stay in side or three-quarter side views
+  at machine/operator height. Avoid top-down views for production assets.
 - **Migration note:** late-stage station ids still use old component names
   (`Packaging`, `Warehouse`, `Logistics`, `Energy`, `Circular`) for import
-  stability, but their visuals now carry the target chapters.
+  stability. Their core/extension meaning is defined by this matrix until the
+  visual components are renamed in a later cleanup.
 
-## Component tree
+## Component Tree
 
 ```text
 app/page.tsx
 └─ <Experience>                    (client)
-   ├─ <ScrollRoot>                 Lenis + ScrollTrigger → progress store
+   ├─ <ScrollRoot>                 Lenis + ScrollTrigger -> progress store
    ├─ <CanvasRoot>                 fixed R3F canvas
    │  └─ <World>
    │     ├─ <CameraRig/>           camera path + lookAt from progress
@@ -71,11 +80,11 @@ app/page.tsx
    │     └─ <stations/*>           15 scene groups along the path
    └─ <Overlay>
       ├─ <Hud/>  <ProgressRail/>
-      └─ <Section × 15>            copy + reveal animations
+      └─ <Section x 15>            copy + reveal animations
 ```
 
-## Cleanup rule
+## Cleanup Rule
 
 Do not rename station ids until visual rebuilds are stable and QA remains
-green. For now, copy, timeline and visuals describe the target story while a
-few component filenames remain legacy implementation slots.
+green. For now, copy and timeline define the correct process order while a few
+component filenames remain legacy implementation slots.

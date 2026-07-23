@@ -1,83 +1,59 @@
 "use client";
 
-import { useRef } from "react";
 import * as THREE from "three";
-import { useFrame } from "@react-three/fiber";
 import { STATIONS, bell } from "@/lib/timeline";
 import type { Quality } from "@/lib/quality";
 import ParticleField from "../fx/ParticleField";
 import { useStation } from "../useStation";
 import { M } from "../kit/industrial";
+import { InclinedFeedBelt, LargeBufferSilo, MaterialPile, creamMat } from "./ProcessMachines";
 
 const I = 5;
 const S = STATIONS[I];
 
-/** S05 — rotary dryer: long ribbed drum, inlet heat glow, steam columns. */
+/** S05 - Buffer storage.
+ * The buffer is a real intermediate storage volume, not a dryer. It stabilizes
+ * wet-ground material before the drying/recovery line. */
 export default function Drying({ quality }: { quality: Quality }) {
   const { group, state } = useStation(I);
-  const drum = useRef<THREE.Group>(null);
   const q = quality.particleScale;
-
-  useFrame((_, delta) => {
-    if (!drum.current || !state.current.active) return;
-    drum.current.rotation.x += delta * (0.25 + 0.55 * bell(state.current.local));
-  });
 
   return (
     <group ref={group} position={S.pos}>
       <mesh rotation={[-Math.PI / 2, 0, 0]} material={M.concrete}>
-        <circleGeometry args={[30, 20]} />
+        <circleGeometry args={[24, 18]} />
       </mesh>
 
-      {/* drum along x, slightly inclined */}
-      <group position={[0, 2.4, 0]} rotation={[0, 0, 0.045]}>
-        <group ref={drum} rotation={[0, 0, Math.PI / 2]}>
-          <mesh material={M.steel}>
-            <cylinderGeometry args={[1.5, 1.5, 14, 20]} />
-          </mesh>
-          {[-5.5, -2.75, 0, 2.75, 5.5].map((y) => (
-            <mesh key={y} position={[0, y, 0]} rotation={[Math.PI / 2, 0, 0]} material={M.housing}>
-              <torusGeometry args={[1.62, 0.1, 8, 24]} />
-            </mesh>
-          ))}
-        </group>
-        {/* inlet heat glow */}
-        <mesh position={[-7.15, 0, 0]} rotation={[0, 0, Math.PI / 2]} material={M.emberGlow}>
-          <cylinderGeometry args={[1.32, 1.32, 0.2, 20]} />
-        </mesh>
-      </group>
-      {/* riding supports */}
-      {[-4.5, 4.5].map((x) => (
-        <group key={x} position={[x, 0, 0]}>
-          <mesh position={[0, 0.55, 0]} material={M.housing}>
-            <boxGeometry args={[1.4, 1.1, 2.6]} />
-          </mesh>
-          {[-1, 1].map((s) => (
-            <mesh key={s} position={[0, 1.15, s * 0.85]} rotation={[0, 0, Math.PI / 2]} material={M.dark}>
-              <cylinderGeometry args={[0.32, 0.32, 1.1, 12]} />
-            </mesh>
-          ))}
-        </group>
-      ))}
-      <pointLight position={[-7.6, 2.4, 0]} color="#e85d26" intensity={30} distance={12} decay={1.8} />
+      <LargeBufferSilo position={[0, 0, -0.25]} />
 
-      {/* steam rising along the drum */}
-      {[-3, 0.5, 4].map((x, i) => (
-        <ParticleField
-          key={i}
-          count={Math.round(200 * q) + 30}
-          area={[1, 0.4, 0.8]}
-          center={[x, 4.1, 0]}
-          colorA="#cdbfae"
-          colorB="#4a443c"
-          size={3.2}
-          life={4.5}
-          rise={1.1}
-          spread={0.35}
-          curl={0.8}
-          getIntensity={() => 0.32 * bell(state.current.local)}
-        />
-      ))}
+      <group position={[-4.2, 1.05, 1.45]} rotation={[0, 0, 0.48]}>
+        <InclinedFeedBelt length={7.2} />
+      </group>
+      <group position={[3.85, 0.95, 0.85]} rotation={[0, Math.PI, -0.18]}>
+        <InclinedFeedBelt length={5.4} />
+      </group>
+
+      <mesh position={[0, 0.26, 1.58]} material={creamMat}>
+        <boxGeometry args={[1.8, 0.22, 0.72]} />
+      </mesh>
+      <MaterialPile kind="chips" position={[0, 0.5, 1.56]} />
+
+      <ParticleField
+        count={Math.round(60 * q) + 10}
+        area={[0.65, 0.16, 0.34]}
+        center={[-1.6, 4.9, 1.25]}
+        colorA="#caa069"
+        colorB="#8c5a2b"
+        size={0.58}
+        life={1.5}
+        gravity={-1.8}
+        spread={0.2}
+        shape="shard"
+        getIntensity={() => 0.35 * bell(state.current.local)}
+      />
+
+      <pointLight position={[-2.7, 6.1, 2.0]} color="#f0d8b0" intensity={11} distance={13} decay={1.8} />
+      <pointLight position={[2.9, 4.2, -0.5]} color="#e8a33d" intensity={6} distance={10} decay={2} />
     </group>
   );
 }

@@ -4,6 +4,7 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { PARTICLE_VERT, PARTICLE_FRAG } from "./shaders";
+import { isVisibleInTree } from "../kit/visibility";
 
 export type ParticleProps = {
   count: number;
@@ -54,6 +55,7 @@ export default function ParticleField({
   getIntensity,
 }: ParticleProps) {
   const mat = useRef<THREE.ShaderMaterial>(null);
+  const points = useRef<THREE.Points>(null);
 
   const { geometry, uniforms } = useMemo(() => {
     const geo = new THREE.BufferGeometry();
@@ -94,13 +96,14 @@ export default function ParticleField({
 
   useFrame((state) => {
     if (!mat.current) return;
+    if (!isVisibleInTree(points.current)) return;
     const u = mat.current.uniforms;
     u.uTime.value = state.clock.elapsedTime;
     u.uIntensity.value = getIntensity();
   });
 
   return (
-    <points geometry={geometry} frustumCulled={false}>
+    <points ref={points} geometry={geometry} frustumCulled={false}>
       <shaderMaterial
         ref={mat}
         vertexShader={PARTICLE_VERT}

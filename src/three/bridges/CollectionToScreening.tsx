@@ -8,10 +8,11 @@ import { Truck } from "../kit/machines";
 export default function CollectionToScreening() {
   const truck = useRef<THREE.Group>(null);
 
-  const handleFrame = ({ progress, elapsedTime }: FlowBridgeFrame) => {
+  const handleFrame = ({ progress, rawProgress, elapsedTime }: FlowBridgeFrame) => {
     if (!truck.current) return;
-    truck.current.position.y = Math.sin(progress * Math.PI) * 0.12 + Math.sin(elapsedTime * 12) * 0.015;
-    truck.current.rotation.set(0, -Math.PI / 2, Math.sin(elapsedTime * 8) * 0.018);
+    const parked = rawProgress > 1;
+    truck.current.position.y = parked ? 0 : Math.sin(progress * Math.PI) * 0.12 + Math.sin(elapsedTime * 12) * 0.015;
+    truck.current.rotation.set(0, -Math.PI / 2, parked ? 0 : Math.sin(elapsedTime * 8) * 0.018);
   };
 
   return (
@@ -22,6 +23,7 @@ export default function CollectionToScreening() {
       enterOffset={[-3.15, 0, 2.65]}
       departAt={0.76}
       arriveUntil={0.2}
+      holdAtEndUntil={0.96}
       orientAlongPath
       onFrame={handleFrame}
     >

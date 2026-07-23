@@ -35,9 +35,9 @@
                                Packaging.tsx Warehouse.tsx Logistics.tsx
                                Energy.tsx Circular.tsx
                                Note: late-stage filenames are migration slots;
-                               live scenes now map to Value Upgrading,
-                               Thermal Upgrading, Torrefaction, Value Creation,
-                               Black Wood Pellet and Advanced Bioenergy.
+                               copy maps them to the corrected process slots:
+                               Recovery, Dried Grinding, Pelletizer, Finished
+                               Product, then optional downstream extensions.
     /fx
       ParticleField.tsx        the shared GPU particle engine
       shaders.ts               all GLSL (pellet, particles, belt, dash)

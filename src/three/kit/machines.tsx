@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { useFrame, type ThreeElements } from "@react-three/fiber";
 import { M } from "./industrial";
 import { Chips } from "./biomass";
+import { isVisibleInTree } from "./visibility";
 
 type GroupProps = ThreeElements["group"];
 import { BELT_VERT, BELT_FRAG } from "../fx/shaders";
@@ -25,19 +26,21 @@ export function Conveyor({
   getRun?: () => number;
 } & GroupProps) {
   const mat = useRef<THREE.ShaderMaterial>(null);
+  const root = useRef<THREE.Group>(null);
   const uniforms = useMemo(
     () => ({ uTime: { value: 0 }, uSpeed: { value: speed } }),
     [speed]
   );
   useFrame((state) => {
     if (mat.current) {
+      if (!isVisibleInTree(root.current)) return;
       const run = getRun ? getRun() : 1;
       mat.current.uniforms.uTime.value = state.clock.elapsedTime * run;
     }
   });
   const legs = Math.max(2, Math.round(length / 3));
   return (
-    <group {...props}>
+    <group ref={root} {...props}>
       {/* belt */}
       <mesh position={[0, height, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[length, width]} />
@@ -141,7 +144,9 @@ export function JumboBag({
   };
 
   useFrame(() => {
-    if (getFill) applyFill(getFill());
+    if (!getFill) return;
+    if (!isVisibleInTree(bodyGroup.current)) return;
+    applyFill(getFill());
   });
 
   const initialFill = 0.3 + 0.7 * fill;
@@ -202,6 +207,8 @@ export function Truck({
   const cargo = useRef<(THREE.Group | null)[]>([]);
 
   useFrame(() => {
+    if (!getCargoLoad) return;
+    if (!isVisibleInTree(cargo.current[0])) return;
     const load = Math.min(1, Math.max(0, getCargoLoad ? getCargoLoad() : cargoLoad));
     cargo.current.forEach((log, i) => {
       if (!log) return;
@@ -331,6 +338,8 @@ export function SmallChipCart({
   const chips = useRef<THREE.Group>(null);
 
   useFrame(() => {
+    if (!getChipLoad && !getDump) return;
+    if (!isVisibleInTree(bed.current)) return;
     const load = Math.min(1, Math.max(0, getChipLoad ? getChipLoad() : chipLoad));
     const dump = Math.min(1, Math.max(0, getDump ? getDump() : 0));
     if (bed.current) {
@@ -393,6 +402,7 @@ export function ScreenDeck({
   const deck = useRef<THREE.Group>(null);
   useFrame((state) => {
     if (!deck.current) return;
+    if (!isVisibleInTree(deck.current)) return;
     const amp = (getVibe ? getVibe() : 1) * 0.03;
     deck.current.position.y = 1.35 + Math.sin(state.clock.elapsedTime * 34) * amp;
   });

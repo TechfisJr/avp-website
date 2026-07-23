@@ -36,24 +36,26 @@ const base = (i: number): V3 => [Math.sin(i * 0.85) * 18, 0, -i * SPACING];
 const add = (a: V3, b: V3): V3 => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 
 // id, focus offset, camera offset, fog, key, keyIntensity, fogDensity, preset, hero staging
+// Camera rule for station assets: use side or three-quarter side views at
+// machine/operator height. Do not use top-down camera offsets for asset scenes.
 type Row = [string, V3, V3, string, string, number, number, PresetName, StationDef["hero"]];
 
 const ROWS: Row[] = [
   ["hero",        [0, 2, 0],   [0, 2.2, 5],    "#090806", PALETTE.amber, 3.2, 0.02,  "heroProduct", { off: [1.25, -0.05, -3.65], scale: 0.68, heat: 0.08, green: 0, char: 0 }],
-  ["forest",      [4.33, 1.6, -30], [12.33, 4.2, -20.5], "#16110a", PALETTE.amber, 2.2, 0.024, "warmBiomass", { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
-  ["collection",  [0, 1.6, 0], [8, 2.6, 9.5],  "#16110a", PALETTE.amber, 2.4, 0.024, "warmBiomass", { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
-  ["screening",   [0, 2.5, 0], [1, 8, 10],     "#121315", "#e4d6b4",     2.1, 0.022, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
-  ["grinding",    [0, 2, 0],   [8, 2.5, 9],    "#15100c", PALETTE.amber, 2.6, 0.022, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
-  ["drying",      [0, 2.5, 0], [11, 3.5, 7],   "#170f08", "#e8b46b",     2.6, 0.024, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
-  ["conditioning",[0, 3, 0],   [-9, 3.5, 9],   "#15100a", "#e0b984",     2.3, 0.026, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0.4,  green: 0,    char: 0 }],
-  ["pelletizing", [0, 2.5, 0], [0, 2.8, 8],    "#180c08", PALETTE.ember, 3.0, 0.024, "industrial",  { off: [1.3, -0.5, -3.6], scale: 0.42, heat: 0.95, green: 0, char: 0 }],
-  ["cooling",     [0, 1.5, 0], [0.5, 9, 7],    "#0d1518", PALETTE.frost, 2.0, 0.023, "industrial",  { off: [0.9, 0, -3.2],scale: 1,   heat: 0.25, green: 0, char: 0 }],
-  ["qc",          [0, 2, 0],   [0, 2.4, 5],    "#0d1518", PALETTE.frost, 2.2, 0.02,  "industrial",  { off: [1.35, -0.35, -3.55], scale: 0.42, heat: 0.08, green: 0, char: 0 }],
-  ["packaging",   [0, 2.2, 0], [4.5, 2.1, 8],  "#160b06", PALETTE.ember, 2.6, 0.022, "industrial",  { off: [-1.35, -0.45, -4.35], scale: 0.34, heat: 0.28, green: 0, char: 0.08 }],
-  ["warehouse",   [0, 2.5, 0], [0, 2.6, 15],   "#150b06", PALETTE.ember, 2.8, 0.023, "industrial",  { off: [1.9, -0.85, -5.1], scale: 0.24, heat: 0.32, green: 0, char: 1 }],
-  ["logistics",   [0, 1.8, 0], [3.8, 3.2, 9],  "#120906", PALETTE.ember, 2.6, 0.02,  "industrial",  { off: [1.15, -0.35, -4.1], scale: 0, heat: 0.25, green: 0, char: 1 }],
-  ["energy",      [0, 3, 0],   [1.2, 2.8, 10], "#120906", PALETTE.ember, 2.8, 0.02,  "industrial",  { off: [1.25, -0.55, -4.15], scale: 0, heat: 0.22, green: 0,    char: 1 }],
-  ["circular",    [0, 2.4, 0], [2.8, 2.6, 9],  "#120906", PALETTE.ember, 2.7, 0.021, "industrial",  { off: [0.4, -0.2, -3.8],  scale: 0, heat: 0.12, green: 0, char: 1 }],
+  ["forest",      [-3.6, 2.2, -60], [2.8, 1.8, 18], "#16110a", PALETTE.amber, 2.4, 0.023, "warmBiomass", { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
+  ["collection",  [-6.4, 2.25, -30], [5.2, 2.1, 13],  "#16110a", PALETTE.amber, 2.5, 0.023, "warmBiomass", { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
+  ["screening",   [0, 1.8, 0], [7, 1.1, 21], "#121315", "#e4d6b4", 2.1, 0.022, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
+  ["grinding",    [0, 1.65, 0], [8.6, 0.85, 8.8], "#121315", "#e4d6b4", 2.35, 0.022, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
+  ["drying",      [0, 1.75, 0], [10, 0.95, 7.5], "#170f08", "#e8b46b",   2.6, 0.024, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0,    green: 0,    char: 0 }],
+  ["conditioning",[0, 1.75, 0], [-5, 1, 8.5], "#15100a", "#e0b984",      2.3, 0.026, "industrial",  { off: [0, 0, -3],    scale: 0,   heat: 0.4,  green: 0,    char: 0 }],
+  ["pelletizing", [0, 1.75, 0], [-6, 0.95, 8], "#180c08", PALETTE.ember, 3.0, 0.024, "industrial",  { off: [0, 0, -3], scale: 0, heat: 0, green: 0, char: 0 }],
+  ["cooling",     [0, 1.25, 0], [7, 0.9, 8], "#0d1518", PALETTE.frost, 2.0, 0.023, "industrial",  { off: [0, 0, -3.2],scale: 0,   heat: 0, green: 0, char: 0 }],
+  ["qc",          [0, 1.45, 0], [2.5, 0.9, 7.2], "#0d1518", PALETTE.frost, 2.2, 0.02,  "industrial",  { off: [0, 0, -3.55], scale: 0, heat: 0, green: 0, char: 0 }],
+  ["packaging",   [0, 1.65, 0], [4.5, 0.9, 8], "#160b06", PALETTE.ember, 2.6, 0.022, "industrial",  { off: [0, 0, -4.35], scale: 0, heat: 0, green: 0, char: 0 }],
+  ["warehouse",   [0, 1.7, 0], [-5, 0.9, 10.5], "#150b06", PALETTE.ember, 2.8, 0.023, "industrial",  { off: [1.9, -0.85, -5.1], scale: 0.24, heat: 0.32, green: 0, char: 1 }],
+  ["logistics",   [0, 1.45, 0], [3.8, 1.1, 9], "#120906", PALETTE.ember, 2.6, 0.02,  "industrial",  { off: [1.15, -0.35, -4.1], scale: 0, heat: 0.25, green: 0, char: 1 }],
+  ["energy",      [0, 1.75, 0], [-4.8, 1, 9], "#120906", PALETTE.ember, 2.8, 0.02,  "industrial",  { off: [1.25, -0.55, -4.15], scale: 0, heat: 0.22, green: 0,    char: 1 }],
+  ["circular",    [0, 1.7, 0], [2.8, 1, 9], "#120906", PALETTE.ember, 2.7, 0.021, "industrial",  { off: [0.4, -0.2, -3.8],  scale: 0, heat: 0.12, green: 0, char: 1 }],
 ];
 
 export const STATIONS: StationDef[] = ROWS.map((r, i) => {
@@ -131,6 +133,11 @@ export function overlayAlpha(t: number, i: number): number {
     const outA = 1 - smooth((local - 0.72) / 0.2);
     return clamp01(Math.min(inA, outA));
   }
+  if (i === 1 || i === 2) {
+    const inA = smooth((local - 0.02) / 0.14);
+    const outA = 1 - smooth((local - 0.74) / 0.2);
+    return clamp01(Math.min(inA, outA));
+  }
   const inA = smooth((local - 0.12) / 0.22);
   const last = i === N - 1;
   const outA = last ? 1 : 1 - smooth((local - 0.72) / 0.2);
@@ -141,5 +148,6 @@ export function overlayAlpha(t: number, i: number): number {
 export function overlayReveal(t: number, i: number): number {
   const local = (t - i * W) / W;
   if (i === 0) return smooth((local - 0.08) / 0.28);
+  if (i === 1 || i === 2) return smooth((local - 0.02) / 0.18);
   return smooth((local - 0.1) / 0.3);
 }

@@ -3,7 +3,8 @@
 import { useRef, type MutableRefObject } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
-import { STATIONS, bell, smooth } from "@/lib/timeline";
+import { scroll } from "@/lib/scrollStore";
+import { STATIONS, W, bell, smooth } from "@/lib/timeline";
 import type { Quality } from "@/lib/quality";
 import ParticleField from "../fx/ParticleField";
 import { useStation } from "../useStation";
@@ -21,6 +22,14 @@ const chipperRed = new THREE.MeshStandardMaterial({
   emissiveIntensity: 0.22,
   roughness: 0.46,
   metalness: 0.25,
+});
+
+const cabGlass = new THREE.MeshStandardMaterial({
+  color: "#7fa8b7",
+  emissive: "#19333b",
+  emissiveIntensity: 0.18,
+  roughness: 0.22,
+  metalness: 0.05,
 });
 
 function FeedBunker({ getRun }: { getRun: () => number }) {
@@ -239,27 +248,312 @@ function InclinedDischarge({ getRun }: { getRun: () => number }) {
   );
 }
 
+function RealisticFeedTable() {
+  const legX = [-2.45, -0.85, 0.8, 2.45, 3.95];
+  return (
+    <group position={[0.98, 0, 0]} rotation={[0, -0.02, 0]}>
+      {/* Long open receiving trough on a steel frame, based on the real chipper feed table. */}
+      <mesh position={[0.7, 1.02, 0]} material={M.housing}>
+        <boxGeometry args={[6.9, 0.18, 1.52]} />
+      </mesh>
+      {[-1, 1].map((z) => (
+        <mesh key={z} position={[0.72, 1.54, z * 0.9]} rotation={[z * -0.18, 0, 0]} material={M.accentBlue}>
+          <boxGeometry args={[7.05, 0.92, 0.14]} />
+        </mesh>
+      ))}
+      <mesh position={[4.26, 1.62, 0]} rotation={[0, 0, -0.16]} material={M.accentBlue}>
+        <boxGeometry args={[1.18, 0.9, 1.95]} />
+      </mesh>
+      <mesh position={[0.64, 1.2, 0]} material={M.rubber}>
+        <boxGeometry args={[6.7, 0.1, 1.18]} />
+      </mesh>
+      <mesh position={[0.62, 1.96, 0]} material={M.steel}>
+        <boxGeometry args={[6.95, 0.08, 1.72]} />
+      </mesh>
+      {legX.flatMap((x) =>
+        [-0.82, 0.82].map((z) => (
+          <mesh key={`${x}-${z}`} position={[x, 0.5, z]} material={M.housing}>
+            <boxGeometry args={[0.14, 1.0, 0.14]} />
+          </mesh>
+        ))
+      )}
+      {legX.slice(0, -1).map((x) => (
+        <group key={x} position={[x + 0.82, 0.62, 0]}>
+          {[-1, 1].map((z) => (
+            <mesh key={z} position={[0, 0, z * 0.9]} rotation={[0, 0, z * 0.34]} material={M.housing}>
+              <boxGeometry args={[1.75, 0.08, 0.08]} />
+            </mesh>
+          ))}
+        </group>
+      ))}
+      {[-2.2, -1.1, 0, 1.1, 2.2].map((x) => (
+        <mesh key={x} position={[x + 0.72, 1.96, 0]} rotation={[Math.PI / 2, 0, 0]} material={M.steel}>
+          <cylinderGeometry args={[0.025, 0.025, 1.55, 8]} />
+        </mesh>
+      ))}
+      <group position={[1.5, 2.05, 0.03]} rotation={[0, 0.02, 0]}>
+        {[-0.54, -0.18, 0.18, 0.54].map((z, i) => (
+          <group key={z} position={[-0.35 + i * 0.46, i * 0.05, z]} rotation={[0.04 * i, -0.02, 0.02 * i]}>
+            <BridgeLog length={3.6 - i * 0.22} radius={0.16 + i * 0.012} />
+          </group>
+        ))}
+      </group>
+    </group>
+  );
+}
+
+function RealisticChipperUnit({ getRun }: { getRun: () => number }) {
+  const drum = useRef<THREE.Group>(null);
+
+  useFrame((_, delta) => {
+    if (drum.current) drum.current.rotation.z += delta * 18 * getRun();
+  });
+
+  return (
+    <group position={[-3.25, 0, -0.04]}>
+      <mesh position={[0.1, 1.1, 0]} material={M.housing}>
+        <boxGeometry args={[1.7, 0.36, 2.06]} />
+      </mesh>
+      <mesh position={[0.18, 1.36, 0]} material={chipperRed}>
+        <boxGeometry args={[1.45, 0.9, 1.88]} />
+      </mesh>
+      <mesh position={[0.02, 1.8, 0.95]} rotation={[Math.PI / 2, 0, 0]} material={chipperRed}>
+        <cylinderGeometry args={[0.55, 0.55, 0.22, 28]} />
+      </mesh>
+      <mesh position={[-0.95, 1.46, 0]} rotation={[0, 0, -0.18]} material={M.steel}>
+        <boxGeometry args={[1.28, 0.18, 1.36]} />
+      </mesh>
+      <mesh position={[0.98, 1.46, 0.98]} rotation={[Math.PI / 2, 0, 0]} material={M.steel}>
+        <cylinderGeometry args={[0.34, 0.34, 0.36, 20]} />
+      </mesh>
+      <group ref={drum} position={[0.02, 1.8, 1.08]}>
+        <mesh rotation={[Math.PI / 2, 0, 0]} material={M.dark}>
+          <cylinderGeometry args={[0.42, 0.42, 0.26, 22]} />
+        </mesh>
+        {Array.from({ length: 8 }, (_, i) => {
+          const a = (i / 8) * Math.PI * 2;
+          return (
+            <mesh key={i} position={[Math.cos(a) * 0.48, Math.sin(a) * 0.48, 0]} rotation={[0, 0, a]} material={M.steel}>
+              <boxGeometry args={[0.28, 0.06, 0.18]} />
+            </mesh>
+          );
+        })}
+      </group>
+      <mesh position={[-0.15, 0.48, 0]} material={M.housing}>
+        <boxGeometry args={[2.4, 0.18, 2.2]} />
+      </mesh>
+      {[-0.8, 0.8].map((z) => (
+        <mesh key={z} position={[0.3, 0.84, z]} material={M.safetyYellow}>
+          <boxGeometry args={[1.85, 0.06, 0.06]} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function RealisticDischargeConveyor({ getRun }: { getRun: () => number }) {
+  return (
+    <group position={[-5.18, 2.66, 0]} rotation={[0, 0, -0.46]}>
+      <Conveyor length={7.4} width={0.72} height={0.42} speed={1.55} getRun={getRun} />
+      <mesh position={[3.88, 0.52, 0]} material={M.housing}>
+        <boxGeometry args={[0.72, 0.58, 0.86]} />
+      </mesh>
+      <mesh position={[-3.92, 0.5, 0]} rotation={[0, 0, -0.16]} material={M.steel}>
+        <boxGeometry args={[0.72, 0.16, 0.72]} />
+      </mesh>
+      {[-1, 1].map((z) => (
+        <mesh key={z} position={[0, 0.62, z * 0.5]} material={M.accentBlue}>
+          <boxGeometry args={[7.55, 0.16, 0.12]} />
+        </mesh>
+      ))}
+      {[-2.9, -1.25, 0.55, 2.3].map((x, i) => (
+        <mesh key={x} position={[x, -0.42 - i * 0.1, 0]} rotation={[0, 0, 0.46]} material={M.housing}>
+          <boxGeometry args={[0.11, 1.55 + i * 0.34, 0.11]} />
+        </mesh>
+      ))}
+      {[-1, 1].map((z) => (
+        <mesh key={z} position={[0, 0.86, z * 0.46]} material={M.steel}>
+          <boxGeometry args={[7.5, 0.08, 0.08]} />
+        </mesh>
+      ))}
+      {[-2.55, -1.3, -0.05, 1.2, 2.45].map((x, i) => (
+        <mesh key={x} position={[x, 0.5, (i % 2 === 0 ? -0.1 : 0.12)]} rotation={[0.1 * i, 0.18, 0.04 * i]} material={M.chip}>
+          <boxGeometry args={[0.26, 0.055, 0.14]} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function LeftWarehouseReceivingBay() {
+  return (
+    <group>
+      <mesh position={[-7.55, 4.05, 2.92]} material={M.housing}>
+        <boxGeometry args={[6.8, 0.28, 0.26]} />
+      </mesh>
+      {[-10.4, -7.5, -4.8].map((x) => (
+        <mesh key={x} position={[x, 2.1, 2.86]} material={M.housing}>
+          <boxGeometry args={[0.18, 4.2, 0.18]} />
+        </mesh>
+      ))}
+      <mesh position={[-8.65, 0.48, 0.45]} rotation={[-Math.PI / 2, 0, 0]} scale={[1.55, 1, 1]} material={M.chip}>
+        <circleGeometry args={[1.55, 28]} />
+      </mesh>
+      <mesh position={[-13.1, 0.18, 0.82]} rotation={[0, -0.34, 0]} material={M.rubber}>
+        <boxGeometry args={[7.2, 0.08, 0.72]} />
+      </mesh>
+      {[-1, 1].map((z) => (
+        <mesh key={z} position={[-13.1, 0.32, 0.82 + z * 0.42]} rotation={[0, -0.34, 0]} material={M.steel}>
+          <boxGeometry args={[7.35, 0.08, 0.08]} />
+        </mesh>
+      ))}
+      {[-16.3, -14.7, -13.1, -11.5].map((x, i) => (
+        <mesh key={x} position={[x, 0.48, 0.18 + i * 0.12]} rotation={[0.08 * i, -0.34, 0.08 * i]} material={M.chip}>
+          <boxGeometry args={[0.38, 0.06, 0.16]} />
+        </mesh>
+      ))}
+      <pointLight position={[-11.5, 7.1, 1.8]} color="#e7d2a8" intensity={15} distance={15} decay={1.8} />
+    </group>
+  );
+}
+
+function SideExcavatorLoader({ getLocal }: { getLocal: () => number }) {
+  const boom = useRef<THREE.Group>(null);
+  const stick = useRef<THREE.Group>(null);
+  const grapple = useRef<THREE.Group>(null);
+
+  useFrame(() => {
+    const local = getLocal();
+    const lift = smooth((local - 0.08) / 0.28);
+    const dump = smooth((local - 0.42) / 0.28);
+    if (boom.current) boom.current.rotation.z = -0.78 + lift * 0.14;
+    if (stick.current) stick.current.rotation.z = 1.04 - dump * 0.22;
+    if (grapple.current) {
+      grapple.current.rotation.z = -0.24 + dump * 0.42;
+      grapple.current.position.y = -0.05 - dump * 0.18;
+    }
+  });
+
+  return (
+    <group position={[5.05, 0, 1.72]} rotation={[0, 0.02, 0]} scale={0.9}>
+      <mesh position={[0, 0.34, 0]} material={M.rubber}>
+        <boxGeometry args={[2.34, 0.38, 1.16]} />
+      </mesh>
+      {[-0.5, 0.5].map((z) => (
+        <mesh key={z} position={[0, 0.42, z]} material={M.dark}>
+          <boxGeometry args={[2.48, 0.34, 0.22]} />
+        </mesh>
+      ))}
+      {[-0.55, 0.55].flatMap((z) =>
+        [-0.92, -0.28, 0.36, 0.96].map((x) => (
+          <mesh key={`${x}-${z}`} position={[x, 0.32, z]} rotation={[Math.PI / 2, 0, 0]} material={M.rubber}>
+            <cylinderGeometry args={[0.23, 0.23, 0.18, 18]} />
+          </mesh>
+        ))
+      )}
+      <mesh position={[0.18, 0.72, 0]} rotation={[Math.PI / 2, 0, 0]} material={M.housing}>
+        <cylinderGeometry args={[0.68, 0.68, 0.46, 24]} />
+      </mesh>
+      <mesh position={[0.48, 1.0, 0]} material={M.dark}>
+        <boxGeometry args={[1.05, 0.68, 1.04]} />
+      </mesh>
+      <mesh position={[-0.36, 1.1, 0]} material={M.safetyYellow}>
+        <boxGeometry args={[1.0, 0.88, 0.96]} />
+      </mesh>
+      <mesh position={[-0.72, 1.32, 0.5]} rotation={[0.02, 0, -0.12]} material={cabGlass}>
+        <boxGeometry args={[0.5, 0.48, 0.055]} />
+      </mesh>
+      <mesh position={[-0.32, 1.34, 0.5]} material={cabGlass}>
+        <boxGeometry args={[0.36, 0.44, 0.055]} />
+      </mesh>
+      <mesh position={[-0.56, 1.16, 0.52]} material={M.dark}>
+        <boxGeometry args={[0.72, 0.045, 0.045]} />
+      </mesh>
+      <mesh position={[-0.08, 1.15, 0.52]} material={M.dark}>
+        <boxGeometry args={[0.045, 0.5, 0.045]} />
+      </mesh>
+      <mesh position={[-0.4, 1.58, 0]} material={M.dark}>
+        <boxGeometry args={[0.98, 0.08, 0.98]} />
+      </mesh>
+      <mesh position={[1.0, 1.02, 0]} material={M.housing}>
+        <boxGeometry args={[0.62, 0.62, 1.0]} />
+      </mesh>
+      <mesh position={[1.37, 1.16, -0.1]} material={M.dark}>
+        <boxGeometry args={[0.08, 0.7, 0.08]} />
+      </mesh>
+      <group ref={boom} position={[-0.85, 1.58, 0]} rotation={[0, 0, -0.78]}>
+        <mesh position={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]} material={M.steel}>
+          <cylinderGeometry args={[0.18, 0.18, 0.62, 18]} />
+        </mesh>
+        {[-0.16, 0.16].map((z) => (
+          <mesh key={z} position={[-1.36, 0, z]} material={M.housing}>
+            <boxGeometry args={[2.95, 0.2, 0.12]} />
+          </mesh>
+        ))}
+        <mesh position={[-1.36, 0.11, 0]} material={M.safetyYellow}>
+          <boxGeometry args={[2.52, 0.055, 0.12]} />
+        </mesh>
+        <mesh position={[-1.48, -0.18, 0]} material={M.steel}>
+          <boxGeometry args={[2.05, 0.055, 0.07]} />
+        </mesh>
+        <mesh position={[-1.28, -0.34, 0]} rotation={[0, 0, 0.26]} material={M.steel}>
+          <boxGeometry args={[1.75, 0.08, 0.08]} />
+        </mesh>
+        <mesh position={[-2.78, 0, 0]} rotation={[Math.PI / 2, 0, 0]} material={M.steel}>
+          <cylinderGeometry args={[0.14, 0.14, 0.56, 18]} />
+        </mesh>
+        <mesh position={[-2.78, -0.2, 0]} rotation={[0, 0, 0.72]} material={M.steel}>
+          <boxGeometry args={[0.08, 0.95, 0.08]} />
+        </mesh>
+        <group ref={stick} position={[-2.74, 0, 0]} rotation={[0, 0, 1.04]}>
+          {[-0.13, 0.13].map((z) => (
+            <mesh key={z} position={[-1.05, 0, z]} material={M.housing}>
+              <boxGeometry args={[2.25, 0.17, 0.1]} />
+            </mesh>
+          ))}
+          <mesh position={[-1.05, 0.08, 0]} material={M.safetyYellow}>
+            <boxGeometry args={[1.82, 0.045, 0.1]} />
+          </mesh>
+          <mesh position={[-0.84, -0.22, 0]} rotation={[0, 0, -0.22]} material={M.steel}>
+            <boxGeometry args={[1.46, 0.06, 0.07]} />
+          </mesh>
+          <mesh position={[-2.12, 0, 0]} rotation={[Math.PI / 2, 0, 0]} material={M.steel}>
+            <cylinderGeometry args={[0.12, 0.12, 0.5, 16]} />
+          </mesh>
+          <group ref={grapple} position={[-2.18, -0.05, 0]} rotation={[0, 0, -0.24]}>
+            <mesh position={[0, 0.12, 0]} rotation={[Math.PI / 2, 0, 0]} material={M.steel}>
+              <cylinderGeometry args={[0.12, 0.12, 0.74, 14]} />
+            </mesh>
+            <mesh position={[0, -0.06, 0]} material={M.steel}>
+              <boxGeometry args={[0.64, 0.12, 0.92]} />
+            </mesh>
+            {[-1, 1].flatMap((side) =>
+              [-0.32, 0, 0.32].map((z, i) => (
+                <mesh key={`${side}-${z}`} position={[side * 0.26, -0.36, z]} rotation={[0.6, side * 0.86, 0]} material={M.dark}>
+                  <boxGeometry args={[0.08, 0.86 - i * 0.06, 0.06]} />
+                </mesh>
+              ))
+            )}
+            <group position={[-0.1, -0.44, 0]}>
+              {[-0.36, -0.1, 0.16, 0.42].map((z, i) => (
+                <group key={z} position={[0.04 * i, -0.04 * i, z]} rotation={[0, 0.18 * i, 0.08 * i]}>
+                  <BridgeLog length={1.5 + i * 0.16} radius={0.08} />
+                </group>
+              ))}
+            </group>
+          </group>
+        </group>
+      </group>
+    </group>
+  );
+}
+
 function FactoryShell({ fixtureRefs }: { fixtureRefs: MutableRefObject<THREE.MeshStandardMaterial[]> }) {
   return (
     <>
       <mesh rotation={[-Math.PI / 2, 0, 0]} material={M.concrete}>
         <circleGeometry args={[30, 24]} />
       </mesh>
-      <mesh position={[0, 5, -9]} material={M.housing}>
-        <boxGeometry args={[26, 10, 0.4]} />
-      </mesh>
-      {[-9, -3, 3, 9].map((x) => (
-        <mesh key={x} position={[x, 4.5, -8.75]} material={M.dark}>
-          <boxGeometry args={[0.22, 8.8, 0.22]} />
-        </mesh>
-      ))}
-      {[-7, 7].flatMap((x) =>
-        [-6, 3.5].map((z) => (
-          <mesh key={`${x}${z}`} position={[x, 4, z]} material={M.housing}>
-            <boxGeometry args={[0.38, 8, 0.38]} />
-          </mesh>
-        ))
-      )}
       {[-5, 0, 5].map((x, i) => (
         <group key={x} position={[x, 7.5, -2.4]}>
           <mesh material={M.dark}>
@@ -292,6 +586,10 @@ export default function Screening({ quality }: { quality: Quality }) {
   const fixtures = useRef<THREE.MeshStandardMaterial[]>([]);
 
   useFrame(() => {
+    if (group.current) {
+      const visible = scroll.t > (I - 2) * W && scroll.t < (I + 1) * W;
+      if (group.current.visible !== visible) group.current.visible = visible;
+    }
     if (!state.current.active) return;
     const on = 1.25 * smooth((state.current.local - 0.04) / 0.28);
     fixtures.current.forEach((m) => {
@@ -304,17 +602,17 @@ export default function Screening({ quality }: { quality: Quality }) {
   return (
     <group ref={group} position={S.pos}>
       <FactoryShell fixtureRefs={fixtures} />
+      <LeftWarehouseReceivingBay />
 
-      <FeedBunker getRun={run} />
-      <CraneGrapple getLocal={() => state.current.local} />
-      <GrappleFeedHead getLocal={() => state.current.local} />
-      <ChipperBody getRun={run} />
-      <InclinedDischarge getRun={run} />
+      <RealisticFeedTable />
+      <SideExcavatorLoader getLocal={() => state.current.local} />
+      <RealisticChipperUnit getRun={run} />
+      <RealisticDischargeConveyor getRun={run} />
 
-      <mesh position={[-5.15, 0.33, 0]} material={M.chip}>
-        <coneGeometry args={[1.38, 0.72, 24]} />
+      <mesh position={[-8.58, 0.42, 0]} scale={[1.55, 1, 1.05]} material={M.chip}>
+        <coneGeometry args={[1.45, 0.86, 26]} />
       </mesh>
-      <Chips count={quality.tier === 0 ? 46 : 88} position={[-5.2, 0.72, 0]} area={[1.05, 0.25, 0.72]} />
+      <Chips count={quality.tier === 0 ? 54 : 104} position={[-8.55, 0.82, 0]} area={[1.4, 0.26, 0.82]} />
 
       <pointLight position={[2.6, 4.2, 2.8]} color="#f7d7a8" intensity={20} distance={13} decay={1.8} />
       <pointLight position={[-4.8, 4.8, 1.4]} color="#ffd69a" intensity={16} distance={14} decay={1.8} />
@@ -323,8 +621,8 @@ export default function Screening({ quality }: { quality: Quality }) {
       {/* feed-zone dust and splinters from the grapple drop */}
       <ParticleField
         count={Math.round(90 * q) + 16}
-        area={[1.2, 0.35, 0.9]}
-        center={[3.55, 2.7, 0]}
+        area={[1.4, 0.45, 1.1]}
+        center={[4.0, 2.45, 0.25]}
         colorA="#d4ae78"
         colorB="#8c5a2b"
         size={0.82}
@@ -336,38 +634,38 @@ export default function Screening({ quality }: { quality: Quality }) {
         getIntensity={() => 0.7 * smooth((state.current.local - 0.16) / 0.28)}
       />
 
-      {/* chips lifted on the discharge conveyor */}
+      {/* small chips riding upward on the discharge conveyor */}
       <ParticleField
-        count={Math.round(180 * q) + 28}
-        area={[0.5, 1.9, 0.45]}
-        center={[-3.35, 2.5, 0]}
+        count={Math.round(70 * q) + 14}
+        area={[3.2, 0.16, 0.42]}
+        center={[-5.45, 2.9, 0]}
         colorA="#c99e63"
         colorB="#8c5a2b"
-        size={0.72}
-        life={1.8}
-        rise={0.7}
-        spread={0.34}
-        curl={0.18}
+        size={0.42}
+        life={1.2}
+        rise={0.18}
+        spread={0.08}
+        curl={0.06}
         shape="shard"
         blending={THREE.NormalBlending}
-        getIntensity={() => 0.52 * bell(state.current.local)}
+        getIntensity={() => 0.34 * bell(state.current.local)}
       />
 
-      {/* elevated drop: chips fall from the conveyor head into a pile. */}
+      {/* controlled elevated drop from the conveyor head into the chip pile. */}
       <ParticleField
-        count={Math.round(280 * q) + 48}
-        area={[0.42, 0.32, 0.42]}
-        center={[-5.25, 4.25, 0]}
+        count={Math.round(190 * q) + 36}
+        area={[0.28, 0.22, 0.32]}
+        center={[-8.35, 4.55, 0]}
         colorA="#d9b47a"
         colorB="#8c5a2b"
-        size={1.1}
-        life={1.55}
-        gravity={-5.6}
-        spread={0.52}
-        curl={0.34}
+        size={0.86}
+        life={1.25}
+        gravity={-6.4}
+        spread={0.18}
+        curl={0.12}
         shape="shard"
         blending={THREE.NormalBlending}
-        getIntensity={() => 0.72 * bell(state.current.local)}
+        getIntensity={() => 0.58 * bell(state.current.local)}
       />
 
       <ParticleField

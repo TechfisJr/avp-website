@@ -1,46 +1,47 @@
-# AVP Website Content Documents — Index
+# AVP Website Content Documents - Index
 
-Version date: 2026-07-21
+Version date: 2026-07-23
 
 ## Direction
 
-The website should follow:
+The website should follow the actual AVP Wood Pellet production flow:
 
 ```text
-FROM WOOD.
-TO PELLET.
-TO HIGHER VALUE.
+1. Raw material storage Unit
+2. Woods chipping Unit
+3. Wet grinding Unit
+4. Buffer storage
+5. Drying Unit
+6. Recovery Unit
+7. Dried grinding Unit
+8. Pelletizer Unit
+9. Finished product Unit
 ```
 
-The target narrative is defined by:
+Torrefaction, value upgrading and Black Wood Pellet are optional downstream
+extensions after Unit 9. They are not part of the core production line.
 
-`AVP_Wood_Pellet_3D_Storytelling_Content_Final.md`
-
-## Required docs
+## Required Docs
 
 | File | Use |
 |---|---|
-| `AVP_Wood_Pellet_3D_Storytelling_Content_Final.md` | Target storytelling source |
-| `AVP_Target_Implementation_Plan_Checklist.md` | Execution checklist for content, 3D, timeline, QA and docs cleanup |
+| `AVP_Wood_Pellet_3D_Storytelling_Content_Final.md` | Corrected storytelling source for the 9-unit process |
+| `AVP_Target_Implementation_Plan_Checklist.md` | Execution checklist for copy, station mapping, visual rebuilds and QA |
 
-## Current implementation status
+## Current Implementation Status
 
-The target narrative is now applied in code:
+- Live copy updated in `src/lib/copy.ts`.
+- Metadata updated in `src/app/layout.tsx`.
+- Architecture, storyboard, timeline, motion and asset docs updated under
+  `docs/`.
+- Station ids remain legacy implementation slots until visual QA is stable.
+- The existing optional upgrade scenes may stay after Unit 9, but they must not
+  be presented as part of the core nine-unit flow.
 
-- Live copy updated in `src/lib/copy.ts`
-- Metadata updated in `src/app/layout.tsx`
-- No-WebGL fallback updated in `src/components/NoWebGL.tsx`
-- Late-stage visuals rebuilt for Value Upgrading, Thermal Upgrading,
-  Torrefaction, Value Creation, Black Wood Pellet and Advanced Bioenergy
-- Asset inventory consolidated to `public/asset-manifest.json`
+## Next Priority
 
-Next implementation priority:
-
-1. Finish technical/docs cleanup and remove obsolete references.
-2. Run full QA: typecheck, build and visual smoke.
-3. Decide later whether to rename legacy station filenames after QA is stable.
-
-## Cleanup rule
-
-Keep `content-document` lean. Do not add separate migration notes unless they
-contain decisions that are not already captured in the checklist.
+1. Rebuild visual slots S05-S10 to match Buffer, Drying, Recovery, Dried
+   Grinding, Pelletizer and Finished Product.
+2. Keep the factory as one large continuous hall from chipping into later
+   machines.
+3. Re-run typecheck, build and visual screenshots after each station rebuild.
