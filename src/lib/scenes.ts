@@ -95,13 +95,13 @@ export const SECTIONS: Section[] = [
   {
     id: "forest",
     eyebrow: "Sustainable working forests",
-    title: "Grow.\nHarvest. Replant.",
+    title: "Grow. Harvest. Replant.",
     body: "50,000 hectares of FSC-certified forest. Every tree harvested is a new generation planted — an unbroken cycle of carbon capture.",
     tags: ["FSC FM", "50,000 ha", "Working forests"],
     in: 0.15,
     peak: 0.27,
     out: 0.45,
-    align: "left",
+    align: "center",
   },
   {
     id: "collection",
