@@ -8,11 +8,12 @@ import World from "@/three/World";
 import Post from "@/three/Post";
 import { PAGES } from "@/lib/scenes";
 import { detectQuality, type Quality } from "@/lib/quality";
-import { flags } from "@/lib/scrollStore";
+import { flags, scroll } from "@/lib/scrollStore";
 import Overlay from "./Overlay";
 import Header from "./Header";
 import Loader from "./Loader";
 import ForestVideo from "./ForestVideo";
+import MiniMap from "./MiniMap";
 
 function webglAvailable() {
   try {
@@ -39,6 +40,27 @@ export default function Experience() {
     setWebgl(webglAvailable());
     setQuality(detectQuality());
   }, [reduced]);
+
+  // While the forest video fully covers the screen, nothing on the canvas is
+  // visible — but the post chain (DoF + bloom + SMAA + noise + vignette) was
+  // still running every frame at full DPR, starving the video's decode and
+  // compositing. Drop it for that stretch. Both toggle points sit inside the
+  // fully-covered window, so the composer's teardown/rebuild is never seen.
+  const [covered, setCovered] = useState(false);
+  useEffect(() => {
+    let raf = 0;
+    let cur = false;
+    const tick = () => {
+      const c = scroll.offset > 0.21 && scroll.offset < 0.42;
+      if (c !== cur) {
+        cur = c;
+        setCovered(c);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   if (!webgl) {
     return (
@@ -69,13 +91,14 @@ export default function Experience() {
             <ScrollControls pages={PAGES} damping={0.22}>
               <World quality={quality} />
             </ScrollControls>
-            <Post />
+            {!covered && <Post />}
             <Preload all />
           </Suspense>
         </Canvas>
       </div>
       <ForestVideo />
       <Overlay />
+      <MiniMap />
       <Loader />
     </>
   );

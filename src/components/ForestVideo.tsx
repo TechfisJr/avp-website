@@ -10,19 +10,19 @@ const smooth = (a: number, b: number, x: number) => {
 };
 const lerp = (a: number, b: number, x: number) => a + (b - a) * x;
 
+const FULL = 74; // clip-circle radius (%) that fully covers the frame
+const FEATHER = 28; // softness of the descent wipe's leading edge, in %
+
 /**
- * Scene 2 forest, as a cinematic video layer — with *modern* transitions rather
- * than flat crossfades:
+ * Scene 2 forest video. Two different seams: a soft DESCENT WIPE on the way in
+ * (mask gradient sweeping down), a CIRCULAR IRIS on the way out.
  *
- *  - IN (pellet sphere -> forest): the storyboard's "punch through the Earth
- *    into the woods". As the dive bottoms out, a warm light-burst flashes and
- *    the footage rushes in from a blurred push-in (scale 1.22 + blur -> sharp),
- *    as if we broke through into sunlight.
- *  - OUT (forest -> hidden value): the footage pushes forward and racks out of
- *    focus (scale up + blur + fade), handing the frame to the next 3D scene
- *    which settles into focus behind it.
- *
- * Play is gated to the range; reduced-motion holds the poster with no moves.
+ * Perf notes — this layer sits full-screen over a live WebGL canvas, so it is
+ * deliberately frugal:
+ *   - styles are only written when they actually CHANGE (re-assigning
+ *     clip-path/mask every frame invalidates the compositor layer constantly)
+ *   - during the hold, clip-path and mask are set to "none" so the video
+ *     composites plainly, with no per-frame clipping work at all
  */
 export default function ForestVideo() {
   const wrap = useRef<HTMLDivElement>(null);
@@ -33,42 +33,72 @@ export default function ForestVideo() {
     let raf = 0;
     let playing = false;
     const reduce = flags.reducedMotion;
+    const last = { clip: "", mask: "", op: "", tf: "", flash: "" };
+
     const tick = () => {
       const o = scroll.offset;
+      const e = smooth(0.1, 0.19, o); // arriving (descent wipe)
+      const x = 1 - smooth(0.44, 0.5, o); // leaving (circular iris)
+      const p = Math.min(e, x);
 
-      const enter = smooth(0.1, 0.17, o); // 0 -> 1 arriving
-      const exit = 1 - smooth(0.44, 0.49, o); // 1 -> 0 leaving (short + clean)
-      const opacity = Math.min(enter, exit);
+      const w = wrap.current;
+      if (w) {
+        const op = reduce ? String(p) : p > 0.001 ? "1" : "0";
+        if (op !== last.op) {
+          w.style.opacity = op;
+          last.op = op;
+        }
 
-      if (wrap.current) wrap.current.style.opacity = String(opacity);
-
-      const v = vid.current;
-      if (v) {
         if (!reduce) {
-          // push-in on arrival, push-out on departure (multiply/add so each is
-          // neutral outside its own window). Blur is a heavy full-frame filter,
-          // so keep the EXIT blur small — it overlaps the collection scene
-          // waking up, and a big blur there is what made the seam lag.
-          const scale = lerp(1.18, 1.0, smooth(0.1, 0.22, o)) * lerp(1.0, 1.1, smooth(0.43, 0.49, o));
-          const blur = lerp(9, 0, smooth(0.1, 0.2, o)) + lerp(0, 4, smooth(0.43, 0.49, o));
-          v.style.transform = `scale(${scale.toFixed(3)})`;
-          v.style.filter = blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : "none";
-
-          // pause a touch earlier so the decoder is idle before the seam
-          if (opacity > 0.08 && !playing) {
-            v.play().catch(() => {});
-            playing = true;
-          } else if (opacity <= 0.08 && playing) {
-            v.pause();
-            playing = false;
+          // only clip while actually leaving; "none" during the hold
+          const clip =
+            x < 0.999 ? `circle(${(FULL * x).toFixed(2)}% at 50% 50%)` : "none";
+          if (clip !== last.clip) {
+            w.style.clipPath = clip;
+            last.clip = clip;
+          }
+          // only mask while actually arriving; "none" during the hold
+          let mask = "none";
+          if (e < 0.999) {
+            const b = lerp(0, 100 + FEATHER + 16, e);
+            mask = `linear-gradient(to bottom, #000 ${(b - FEATHER).toFixed(1)}%, transparent ${b.toFixed(1)}%)`;
+          }
+          if (mask !== last.mask) {
+            w.style.maskImage = mask;
+            w.style.webkitMaskImage = mask;
+            last.mask = mask;
           }
         }
       }
 
-      // warm light-burst peaking at the punch-through
+      const v = vid.current;
+      if (v && !reduce) {
+        // settle out of the overscan while arriving, then leave it alone
+        const tf =
+          e < 0.999
+            ? `translate3d(0, ${lerp(-6, 0, e).toFixed(2)}%, 0) scale(${lerp(1.1, 1.0, smooth(0.1, 0.26, o)).toFixed(3)})`
+            : "none";
+        if (tf !== last.tf) {
+          v.style.transform = tf;
+          last.tf = tf;
+        }
+
+        if (p > 0.08 && !playing) {
+          v.play().catch(() => {});
+          playing = true;
+        } else if (p <= 0.08 && playing) {
+          v.pause();
+          playing = false;
+        }
+      }
+
       if (flash.current && !reduce) {
         const f = smooth(0.09, 0.125, o) * (1 - smooth(0.125, 0.17, o));
-        flash.current.style.opacity = (f * 0.85).toFixed(3);
+        const fs = (f * 0.85).toFixed(3);
+        if (fs !== last.flash) {
+          flash.current.style.opacity = fs;
+          last.flash = fs;
+        }
       }
 
       raf = requestAnimationFrame(tick);

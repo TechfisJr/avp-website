@@ -407,6 +407,92 @@ body {
   background: linear-gradient(90deg, var(--green), var(--green-deep));
 }
 
+/* ---- factory mini-map (bottom left) ---- */
+.minimap {
+  position: fixed;
+  left: clamp(16px, 3vw, 40px);
+  bottom: clamp(18px, 3.5vh, 34px);
+  z-index: 3;
+  width: 248px;
+  padding: 14px 16px 12px;
+  border-radius: 14px;
+  background: rgba(9, 12, 8, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(236, 231, 219, 0.1);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+}
+.minimap-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+.minimap-count {
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+}
+.minimap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.mm-hall {
+  fill: rgba(236, 231, 219, 0.03);
+  stroke: rgba(236, 231, 219, 0.14);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+.mm-line {
+  fill: none;
+  stroke: rgba(236, 231, 219, 0.16);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+.mm-trace {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.mm-dot {
+  fill: #0b0f0a;
+  stroke: rgba(236, 231, 219, 0.32);
+  stroke-width: 1.6;
+  transition: r 0.3s ease;
+}
+.mm-dot.is-done {
+  stroke: var(--green);
+}
+.mm-dot.is-active {
+  fill: var(--green);
+  stroke: rgba(111, 174, 95, 0.35);
+  stroke-width: 4;
+}
+.minimap-label {
+  margin-top: 11px;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  color: var(--ink);
+}
+
+@media (max-width: 900px) {
+  .minimap {
+    display: none; /* would crowd the copy on small screens */
+  }
+}
+
 /* ---- preloader ---- */
 .loader {
   position: fixed;
