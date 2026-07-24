@@ -1,15 +1,17 @@
-import ExperienceLoader from "@/components/ExperienceLoader";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import SeoNarrative from "@/components/SeoNarrative";
+"use client";
+
+import dynamic from "next/dynamic";
+
+// The whole experience is WebGL/DOM-driven — never server-render it.
+const Experience = dynamic(() => import("@/components/Experience"), {
+  ssr: false,
+  loading: () => <div className="boot" aria-hidden />,
+});
 
 export default function Page() {
   return (
-    <>
-      <Header />
-      <ExperienceLoader />
-      <SeoNarrative />
-      <Footer />
-    </>
+    <main>
+      <Experience />
+    </main>
   );
 }

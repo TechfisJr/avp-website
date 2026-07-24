@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="22" height="34" viewBox="0 0 22 34" fill="none">
-  <rect x="1" y="1" width="20" height="32" rx="10" stroke="#EDE6DA" stroke-opacity=".4" stroke-width="1.5"/>
-  <circle cx="11" cy="10" r="2.5" fill="#E8A33D">
-    <animate attributeName="cy" values="9;22;9" dur="2.2s" repeatCount="indefinite" calcMode="spline" keySplines=".4 0 .2 1;.4 0 .2 1"/>
-    <animate attributeName="opacity" values="1;.15;1" dur="2.2s" repeatCount="indefinite"/>
-  </circle>
-</svg>

@@ -1,49 +1,42 @@
 "use client";
 
+import Studio from "./Studio";
+import Backdrop from "./Backdrop";
+import MachineKit from "./MachineKit";
+import Rig from "./Rig";
+import HeroPellets from "./scenes/HeroPellets";
+import Collection from "./scenes/Collection";
+import Drying from "./scenes/Drying";
+import Pelletizing from "./scenes/Pelletizing";
+import Export from "./scenes/Export";
+import Earth from "./scenes/Earth";
+import Motes from "./fx/Motes";
 import type { Quality } from "@/lib/quality";
-import CameraRig from "./CameraRig";
-import Atmosphere from "./Atmosphere";
-import ShadowEnroller from "./visual/ShadowEnroller";
-import HeroPellet from "./HeroPellet";
-import Hero from "./stations/Hero";
-import Forest from "./stations/Forest";
-import Collection from "./stations/Collection";
-import Screening from "./stations/Screening";
-import Grinding from "./stations/Grinding";
-import Drying from "./stations/Drying";
-import Conditioning from "./stations/Conditioning";
-import Pelletizing from "./stations/Pelletizing";
-import Cooling from "./stations/Cooling";
-import QualityControl from "./stations/QualityControl";
-import Packaging from "./stations/Packaging";
-import Warehouse from "./stations/Warehouse";
-import Logistics from "./stations/Logistics";
-import Energy from "./stations/Energy";
-import Circular from "./stations/Circular";
 
+/**
+ * Everything inside the scroll context: the camera rig, studio lighting, all
+ * seven story scenes (each self-culling to its scroll window), atmospheric
+ * motes, and a soft airy fog whose colour matches the page background so the
+ * far edge of every scene fades away invisibly.
+ */
 export default function World({ quality }: { quality: Quality }) {
-  const q = quality;
   return (
     <>
-      <CameraRig quality={q} />
-      <Atmosphere quality={q} />
-      <ShadowEnroller enabled={q.shadows} />
-      <HeroPellet />
-      <Hero quality={q} />
-      <Forest quality={q} />
-      <Collection quality={q} />
-      <Screening quality={q} />
-      <Grinding quality={q} />
-      <Drying quality={q} />
-      <Conditioning quality={q} />
-      <Pelletizing quality={q} />
-      <Cooling quality={q} />
-      <QualityControl quality={q} />
-      <Packaging quality={q} />
-      <Warehouse quality={q} />
-      <Logistics quality={q} />
-      <Energy quality={q} />
-      <Circular quality={q} />
+      <fog attach="fog" args={["#0c0e09", 14, 88]} />
+      <Rig />
+      <Backdrop />
+      <Studio />
+      <MachineKit />
+
+      <HeroPellets count={quality.pelletCount} />
+      {/* Scene 2 (forest) is a full-frame video layer — see ForestVideo */}
+      <Collection />
+      <Drying />
+      <Pelletizing />
+      <Export />
+      <Earth />
+
+      {quality.motes > 0 && <Motes count={quality.motes} />}
     </>
   );
 }

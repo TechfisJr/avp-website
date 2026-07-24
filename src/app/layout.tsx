@@ -1,51 +1,44 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Space_Grotesk } from "next/font/google";
-import { CONTENT, DEFAULT_LOCALE } from "@/lib/content";
-import { LocaleProvider } from "@/lib/i18n";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
-import "./chrome.css"; // loaded second so the chrome can layer over the film
 
-// "vietnamese" is required for the VI copy — without it the diacritics fall
-// back to a system font mid-headline.
-const fraunces = Fraunces({
-  subsets: ["latin", "latin-ext", "vietnamese"],
-  variable: "--font-display",
-  axes: ["opsz", "SOFT", "WONK"],
+// Elegant high-contrast serif for display headings (the refined, editorial feel
+// of the reference site); a clean grotesque for UI, eyebrows and body.
+const serif = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
+  display: "swap",
 });
-
-const grotesk = Space_Grotesk({
-  subsets: ["latin", "latin-ext", "vietnamese"],
-  variable: "--font-text",
+const sans = Inter({
+  subsets: ["latin", "vietnamese"], // brand + port names carry diacritics
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-sans",
+  display: "swap",
 });
-
-const base = CONTENT[DEFAULT_LOCALE];
 
 export const metadata: Metadata = {
-  title: base.meta.title,
-  description: base.meta.description,
-  icons: { icon: "/icons/pellet-mark.svg" },
-  openGraph: {
-    title: base.meta.title,
-    description: base.meta.description,
-    siteName: base.brand.legal,
-    locale: "en_US",
-    alternateLocale: ["vi_VN"],
-    type: "website",
-  },
+  title: "An Việt Phát · Wood Pellets — Sustainable Biomass Energy",
+  description:
+    "From FSC working forests to the mill: An Việt Phát wood pellets — a low-carbon energy solution replacing coal and oil.",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b0a08",
+  themeColor: "#0c0e0a",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    // lang is updated client-side by <LocaleProvider> when the visitor switches
-    // language; DEFAULT_LOCALE is what the server renders.
-    <html lang={base.htmlLang} className={`${fraunces.variable} ${grotesk.variable}`}>
-      <body>
-        <LocaleProvider>{children}</LocaleProvider>
-      </body>
+    <html lang="en" className={`${serif.variable} ${sans.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

@@ -1,17 +1,14 @@
-import type Lenis from "lenis";
+import * as THREE from "three";
 
-// Mutable progress store — written by ScrollTrigger, read in rAF/useFrame.
-// Never touches React state, so scrolling causes zero re-renders.
-export const scroll = {
-  t: 0, // global progress 0..1 across the cinematic track (excludes the footer)
-  v: 0, // normalized velocity
-};
+// A tiny mutable bridge between the R3F render loop (which owns the smoothed
+// scroll offset + camera focus) and the DOM overlay / post pipeline. No React
+// state on the hot path — every side reads/writes this object each frame.
+// offset is 0..1 across the whole scroll track.
 
-export const flags = {
-  reducedMotion: false,
-};
+export const scroll = { offset: 0 };
 
-// The live Lenis instance, registered by <Experience> so that nav links can
-// scroll smoothly through the same driver. Null under reduced motion, where
-// we deliberately fall back to native scrolling.
-export const smoothScroll: { instance: Lenis | null } = { instance: null };
+/** World point the camera is looking at — shared with depth-of-field so the
+ *  lens always focuses on whatever the shot is about. */
+export const focus = new THREE.Vector3();
+
+export const flags = { reducedMotion: false };

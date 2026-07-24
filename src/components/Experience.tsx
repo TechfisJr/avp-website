@@ -1,20 +1,20 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
-import { flags, scroll, smoothScroll } from "@/lib/scrollStore";
-import { TRACK_VH } from "@/lib/timeline";
-import { TRACK_ID } from "@/lib/navigate";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import * as THREE from "three";
+import { Canvas } from "@react-three/fiber";
+import { ScrollControls, Preload } from "@react-three/drei";
+import World from "@/three/World";
+import Post from "@/three/Post";
+import { PAGES } from "@/lib/scenes";
 import { detectQuality, type Quality } from "@/lib/quality";
-import CanvasRoot from "@/three/CanvasRoot";
+import { flags } from "@/lib/scrollStore";
 import Overlay from "./Overlay";
-import NoWebGL from "./NoWebGL";
+import Header from "./Header";
+import Loader from "./Loader";
+import ForestVideo from "./ForestVideo";
 
-gsap.registerPlugin(ScrollTrigger);
-
-function webglAvailable(): boolean {
+function webglAvailable() {
   try {
     const c = document.createElement("canvas");
     return !!(c.getContext("webgl2") || c.getContext("webgl"));
@@ -26,7 +26,6 @@ function webglAvailable(): boolean {
 export default function Experience() {
   const [quality, setQuality] = useState<Quality | null>(null);
   const [webgl, setWebgl] = useState(true);
-  const track = useRef<HTMLDivElement>(null);
 
   const reduced = useMemo(
     () =>
@@ -41,57 +40,43 @@ export default function Experience() {
     setQuality(detectQuality());
   }, [reduced]);
 
-  useEffect(() => {
-    if (!quality || !webgl || !track.current) return;
-
-    let lenis: Lenis | null = null;
-    if (!reduced) {
-      lenis = new Lenis({ lerp: 0.09, syncTouch: true });
-      lenis.on("scroll", ScrollTrigger.update);
-      gsap.ticker.add((time) => lenis!.raf(time * 1000));
-      gsap.ticker.lagSmoothing(0);
-      smoothScroll.instance = lenis;
-    }
-
-    // Progress 0..1 is measured across the cinematic track ONLY, so the
-    // contact footer that follows it scrolls normally instead of eating the
-    // last part of the timeline.
-    const st = ScrollTrigger.create({
-      trigger: track.current,
-      start: "top top",
-      end: "bottom bottom",
-      scrub: true,
-      onUpdate: (self) => {
-        scroll.t = self.progress;
-        scroll.v = self.getVelocity() / 4000;
-      },
-    });
-
-    return () => {
-      st.kill();
-      lenis?.destroy();
-      smoothScroll.instance = null;
-    };
-  }, [quality, webgl, reduced]);
-
-  if (!webgl) return <NoWebGL />;
-  if (!quality) return null;
+  if (!webgl) {
+    return (
+      <div className="fallback">
+        <h1>An Việt Phát · Wood Pellets</h1>
+        <p>Your browser does not support WebGL, which is required for the 3D experience.</p>
+      </div>
+    );
+  }
+  if (!quality) return <div className="boot" aria-hidden />;
 
   return (
     <>
-      {/* the only element with height; the canvas and overlay are fixed on top */}
-      <div
-        ref={track}
-        id={TRACK_ID}
-        className="scroll-track"
-        style={{ height: `${TRACK_VH}vh` }}
-      />
-      <CanvasRoot quality={quality} />
-      <div className="vignette" />
+      <Header />
+      <div className="canvas-root">
+        <Canvas
+          dpr={[1, quality.dpr]}
+          shadows={quality.shadows}
+          gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
+          camera={{ fov: 42, near: 0.1, far: 120, position: [0, 0.4, 7.2] }}
+          onCreated={({ gl }) => {
+            gl.toneMapping = THREE.ACESFilmicToneMapping;
+            gl.toneMappingExposure = 0.95;
+            gl.outputColorSpace = THREE.SRGBColorSpace;
+          }}
+        >
+          <Suspense fallback={null}>
+            <ScrollControls pages={PAGES} damping={0.22}>
+              <World quality={quality} />
+            </ScrollControls>
+            <Post />
+            <Preload all />
+          </Suspense>
+        </Canvas>
+      </div>
+      <ForestVideo />
       <Overlay />
-      {/* CSS grain only where the post pipeline is off — otherwise the
-          composer's Noise pass handles it and the two would compound */}
-      {!quality.postFX && <div className="grain" />}
+      <Loader />
     </>
   );
 }
